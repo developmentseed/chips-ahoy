@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <img src="" />
+    <span class="index"></span>
+    <span class="scene"></span>
+  </body>
+  <script>
+  var imgArray = []
+  var request = new XMLHttpRequest();
+  request.open('GET', 'https://api.developmentseed.org/satellites/?date_from=2014-02-01&date_to=2014-08-01&cloud_to=20&intersects={%20"type":%20"FeatureCollection",%20"features":%20[%20{%20"type":%20"Feature",%20"properties":%20{},%20"geometry":%20{%20"type":%20"Polygon",%20"coordinates":%20[%20[%20[%20112.5,%20-45.46013063792099%20],%20[%20154.3359375,%20-45.46013063792099%20],%20[%20154.3359375,%20-1.9332268264771106%20],%20[%20112.5,%20-1.9332268264771106%20],%20[%20112.5,%20-45.46013063792099%20]%20]%20]%20}%20}%20]%20}&fields=thumbnail&limit=30000', true);
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      var data = JSON.parse(request.responseText);
+      imgArray = data.results.map(a => a.thumbnail)
+      updateImage()
+    }
+  };
+  request.send();
+
+  var index = 0
+
+  function updateImage () {
+    document.querySelectorAll('img')[0].src = imgArray[index % imgArray.length]
+    document.querySelectorAll('.index')[0].innerHTML = index
+    document.querySelectorAll('.scene')[0].innerHTML = imgArray[index % imgArray.length]
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      index++
+      updateImage()
+    } else if (e.key === 'ArrowLeft') {
+      index--
+      updateImage()
+    }
+  })
+
+  </script>
+</html>
