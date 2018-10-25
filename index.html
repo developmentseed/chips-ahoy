@@ -3,31 +3,72 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <script src="saveas.js"></script>
   </head>
   <body>
     <img src="" />
-    <span class="index"></span>
-    <span class="scene"></span>
+    <table>
+      <tr><td>Index:</td><td class="index"></td></tr>
+      <tr><td>Scene:</td><td class="scene"></td></tr>
+      <tr><td>Status:</td><td class="status"></td></tr>
+    </table>
+    <div>
+      <label for="switcher">Go to index</label>
+      <input class="indexSwitcher" name="switcher" type="number" value="0" onChange="switcher()" />
+    </div>
+    <div>
+      <label for="file">Upload GeoJSON</label>
+      <input class="file" name="file" type="file" onChange="fileUpload()" />
+    </div>
+    <button onClick="save()">Save</button
+
+
   </body>
   <script>
-  var imgArray = []
-  var request = new XMLHttpRequest();
-  request.open('GET', 'https://api.developmentseed.org/satellites/?date_from=2014-02-01&date_to=2014-08-01&cloud_to=20&intersects={%20"type":%20"FeatureCollection",%20"features":%20[%20{%20"type":%20"Feature",%20"properties":%20{},%20"geometry":%20{%20"type":%20"Polygon",%20"coordinates":%20[%20[%20[%20112.5,%20-45.46013063792099%20],%20[%20154.3359375,%20-45.46013063792099%20],%20[%20154.3359375,%20-1.9332268264771106%20],%20[%20112.5,%20-1.9332268264771106%20],%20[%20112.5,%20-45.46013063792099%20]%20]%20]%20}%20}%20]%20}&fields=thumbnail&limit=30000', true);
-  request.onload = function() {
-    if (request.status >= 200 && request.status < 400) {
-      var data = JSON.parse(request.responseText);
-      imgArray = data.results.map(a => a.thumbnail)
+
+  window.imgArray = []
+
+  window.save = function save () {
+    var geo = { type: "FeatureCollection", features: window.imgArray }
+    var blob = new Blob([JSON.stringify(geo)], {type: "application/json;charset=utf-8"});
+    saveAs(blob, 'output.json');
+  }
+
+  window.fileUpload = function fileUpload () {
+    var file = document.querySelectorAll('.file')[0].files[0]
+    var reader = new FileReader()
+    reader.onload= () => {
+      window.imgArray = JSON.parse(reader.result).features
       updateImage()
     }
-  };
-  request.send();
+    reader.readAsText(file)
+  }
 
   var index = 0
 
+  window.switcher = function switcher (e) {
+    index = document.querySelectorAll('.indexSwitcher')[0].value
+    updateImage()
+  }
+
   function updateImage () {
-    document.querySelectorAll('img')[0].src = imgArray[index % imgArray.length]
+    var f = window.imgArray[index]
+    var [x, y, z] = f.id.match(/\d+/g)
+    document.querySelectorAll('img')[0].src = `http://api.mapbox.com/v4/digitalglobe.0a8e44ba/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpbWdrZjhlZjAwMnd0emtvNXYzYmFwZm4ifQ.5owPkJs5HMvoB8IQPyuwEw`
     document.querySelectorAll('.index')[0].innerHTML = index
-    document.querySelectorAll('.scene')[0].innerHTML = imgArray[index % imgArray.length]
+    document.querySelectorAll('.scene')[0].innerHTML = f.id
+    document.querySelectorAll('.status')[0].innerHTML = f.properties.status
+    document.querySelectorAll('.indexSwitcher')[0].value = index
+    switch (f.properties.status) {
+      case 'yes':
+        document.querySelectorAll('.status')[0].style.color = 'green'
+        break
+      case 'no':
+        document.querySelectorAll('.status')[0].style.color = 'red'
+        break
+      default:
+        document.querySelectorAll('.status')[0].style.color = 'black'
+    }
   }
 
   window.addEventListener('keydown', (e) => {
@@ -36,6 +77,14 @@
       updateImage()
     } else if (e.key === 'ArrowLeft') {
       index--
+      updateImage()
+    } else if (e.key === 'y') {
+      window.imgArray[index].properties.status = 'yes'
+      index++
+      updateImage()
+    } else if (e.key === 'n') {
+      window.imgArray[index].properties.status = 'no'
+      index++
       updateImage()
     }
   })
