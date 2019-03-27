@@ -3,7 +3,7 @@
 Used for validating machine learning chips.
 
 - Start running with `python -m http.server` or clicking on the `index.html`
-- Upload a `GeoJSON FeatureCollection`
+- Upload a `JSON` file
 - Use the keyboard to indicate whether the desired label is present in the chip
 - Use the input field to skip to a given chip
 - Save

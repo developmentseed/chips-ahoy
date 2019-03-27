@@ -2,26 +2,31 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Chips Ahoy</title>
     <script src="saveas.js"></script>
+    <style>
+    section { display: flex; flex-direction: row;}
+    img { flex: 1; }
+    table { flex: 1; }
+    </style>
   </head>
   <body>
-    <img src="" />
-    <table>
-      <tr><td>Index:</td><td class="index"></td></tr>
-      <tr><td>Scene:</td><td class="scene"></td></tr>
-      <tr><td>Status:</td><td class="status"></td></tr>
-    </table>
-    <div>
-      <label for="switcher">Go to index</label>
-      <input class="indexSwitcher" name="switcher" type="number" value="0" onChange="switcher()" />
-    </div>
-    <div>
-      <label for="file">Upload GeoJSON</label>
-      <input class="file" name="file" type="file" onChange="fileUpload()" />
-    </div>
-    <button onClick="save()">Save</button
-
+    <section>
+      <img src="" />
+      <table>
+        <tr><td>Index:</td><td class="index"></td></tr>
+        <tr><td>Status:</td><td class="status"></td></tr>
+      </table>
+      <div>
+        <label for="switcher">Go to index</label>
+        <input class="indexSwitcher" name="switcher" type="number" value="0" onChange="switcher()" />
+      </div>
+      <div>
+        <label for="file">Upload JSON</label>
+        <input class="file" name="file" type="file" onChange="fileUpload()" />
+      </div>
+      <button onClick="save()">Save</button>
+  </section>
 
   </body>
   <script>
@@ -29,8 +34,7 @@
   window.imgArray = []
 
   window.save = function save () {
-    var geo = { type: "FeatureCollection", features: window.imgArray }
-    var blob = new Blob([JSON.stringify(geo)], {type: "application/json;charset=utf-8"});
+    var blob = new Blob([JSON.stringify(window.imgArray)], {type: "application/json;charset=utf-8"});
     saveAs(blob, 'output.json');
   }
 
@@ -38,7 +42,7 @@
     var file = document.querySelectorAll('.file')[0].files[0]
     var reader = new FileReader()
     reader.onload= () => {
-      window.imgArray = JSON.parse(reader.result).features
+      window.imgArray = JSON.parse(reader.result).results
       updateImage()
     }
     reader.readAsText(file)
@@ -53,13 +57,11 @@
 
   function updateImage () {
     var f = window.imgArray[index]
-    var [x, y, z] = f.id.match(/\d+/g)
-    document.querySelectorAll('img')[0].src = `http://api.mapbox.com/v4/digitalglobe.0a8e44ba/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpbWdrZjhlZjAwMnd0emtvNXYzYmFwZm4ifQ.5owPkJs5HMvoB8IQPyuwEw`
+    document.querySelectorAll('img')[0].src = f.s3_url
     document.querySelectorAll('.index')[0].innerHTML = index
-    document.querySelectorAll('.scene')[0].innerHTML = f.id
-    document.querySelectorAll('.status')[0].innerHTML = f.properties.status
+    document.querySelectorAll('.status')[0].innerHTML = f.status
     document.querySelectorAll('.indexSwitcher')[0].value = index
-    switch (f.properties.status) {
+    switch (f.status) {
       case 'yes':
         document.querySelectorAll('.status')[0].style.color = 'green'
         break
@@ -79,11 +81,11 @@
       index--
       updateImage()
     } else if (e.key === 'y') {
-      window.imgArray[index].properties.status = 'yes'
+      window.imgArray[index].status = 'yes'
       index++
       updateImage()
     } else if (e.key === 'n') {
-      window.imgArray[index].properties.status = 'no'
+      window.imgArray[index].status = 'no'
       index++
       updateImage()
     }
