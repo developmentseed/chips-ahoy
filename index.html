@@ -17,17 +17,19 @@
       <input class="indexSwitcher" name="switcher" type="number" value="0" onChange="switcher()" />
     </div>
     <div>
+      <label for="imagesPath">Images Path</label>
+      <input class="imagesPath" name="imagesPath" type="text"  style="width:500px" placeholder="http://api.mapbox.com/v4/digitalglobe.0a8e44ba/{z}/{x}/{y}@2x.png?access_token=..." onChange="updateimagesPath()" />
+    </div>
+    <div>
       <label for="file">Upload GeoJSON</label>
       <input class="file" name="file" type="file" onChange="fileUpload()" />
     </div>
     <button onClick="save()">Save</button
-
-
   </body>
   <script>
 
   window.imgArray = []
-
+  window.imagesPath = ''
   window.save = function save () {
     var geo = { type: "FeatureCollection", features: window.imgArray }
     var blob = new Blob([JSON.stringify(geo)], {type: "application/json;charset=utf-8"});
@@ -51,10 +53,13 @@
     updateImage()
   }
 
+   window.updateimagesPath = function updateimagesPath(){
+    window.imagesPath = document.querySelectorAll('.imagesPath')[0].value
+  }
   function updateImage () {
     var f = window.imgArray[index]
     var [x, y, z] = f.id.match(/\d+/g)
-    document.querySelectorAll('img')[0].src = `http://api.mapbox.com/v4/digitalglobe.0a8e44ba/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpbWdrZjhlZjAwMnd0emtvNXYzYmFwZm4ifQ.5owPkJs5HMvoB8IQPyuwEw`
+    document.querySelectorAll('img')[0].src = window.imagesPath.replace('{z}',z).replace('{x}',x).replace('{y}',y)
     document.querySelectorAll('.index')[0].innerHTML = index
     document.querySelectorAll('.scene')[0].innerHTML = f.id
     document.querySelectorAll('.status')[0].innerHTML = f.properties.status
