@@ -29,7 +29,7 @@
   <script>
 
   window.imgArray = []
-  window.imagesPath = `http://api.mapbox.com/v4/digitalglobe.0a8e44ba/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpbWdrZjhlZjAwMnd0emtvNXYzYmFwZm4ifQ.5owPkJs5HMvoB8IQPyuwEw`
+  window.imagesPath = ''
   window.save = function save () {
     var geo = { type: "FeatureCollection", features: window.imgArray }
     var blob = new Blob([JSON.stringify(geo)], {type: "application/json;charset=utf-8"});
