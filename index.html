@@ -53,8 +53,7 @@
 
   function updateImage () {
     var f = window.imgArray[index]
-    var [x, y, z] = f.id.match(/\d+/g)
-    document.querySelectorAll('img')[0].src = `http://api.mapbox.com/v4/digitalglobe.0a8e44ba/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpbWdrZjhlZjAwMnd0emtvNXYzYmFwZm4ifQ.5owPkJs5HMvoB8IQPyuwEw`
+    document.querySelectorAll('img')[0].src = f.properties.url
     document.querySelectorAll('.index')[0].innerHTML = index
     document.querySelectorAll('.scene')[0].innerHTML = f.id
     document.querySelectorAll('.status')[0].innerHTML = f.properties.status
@@ -84,6 +83,10 @@
       updateImage()
     } else if (e.key === 'n') {
       window.imgArray[index].properties.status = 'no'
+      index++
+      updateImage()
+    } else if (e.key === 'u') {
+      window.imgArray[index].properties.status = 'unrecognized'
       index++
       updateImage()
     }
