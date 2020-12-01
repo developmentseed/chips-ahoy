@@ -75,17 +75,16 @@ function register_event(e, school_position) {
         }
     } else if (e.key === 'n') {
         window.imgArray[index].properties.status = 'no'
+        window.imgArray[index].properties.school_position = null
         index++
         updateImage()
     } else if (e.key === 'u') {
         window.imgArray[index].properties.status = 'unrecognized'
+        window.imgArray[index].properties.school_position = null
         index++
         updateImage()
     }
 }
-window.addEventListener('keydown', (e) => {
-    register_event(e, null)
-})
 
 function mousePos(event) {
     x = event.clientX
@@ -135,4 +134,9 @@ function displayGridImages() {
         }
     }
 }
+
+window.addEventListener('keydown', (e) => {
+    register_event(e, null)
+})
+
 window.addEventListener("click", mousePos)
