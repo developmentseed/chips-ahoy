@@ -1,8 +1,13 @@
 window.imgArray = []
 
 window.save = function save() {
-    var geo = { type: "FeatureCollection", features: window.imgArray }
-    var blob = new Blob([JSON.stringify(geo)], { type: "application/json;charset=utf-8" });
+    var geo = {
+        type: "FeatureCollection",
+        features: window.imgArray
+    }
+    var blob = new Blob([JSON.stringify(geo)], {
+        type: "application/json;charset=utf-8"
+    });
     saveAs(blob, 'output.json');
 }
 
@@ -18,7 +23,7 @@ window.fileUpload = function fileUpload() {
 }
 
 var index = 0
-var preLoadImages=20
+var preLoadImages = 20
 window.switcher = function switcher(e) {
     index = parseInt(document.querySelectorAll('.indexSwitcher')[0].value)
     updateImage()
@@ -60,8 +65,7 @@ function register_event(e, school_position) {
     } else if (e.key === 'ArrowLeft') {
         index--
         updateImage()
-    } 
-    else if (e.key === 'y') {
+    } else if (e.key === 'y') {
         window.imgArray[index].properties.status = 'yes'
         // Let's capture only when user make click in the image as "yes"
         if (school_position) {
@@ -69,8 +73,7 @@ function register_event(e, school_position) {
             index++
             updateImage()
         }
-    } 
-    else if (e.key === 'n') {
+    } else if (e.key === 'n') {
         window.imgArray[index].properties.status = 'no'
         index++
         updateImage()
@@ -97,39 +100,39 @@ function mousePos(event) {
 }
 
 function draw(school_position) {
-    var canvas = document.getElementById('canvas');
-    var context = canvas.getContext('2d');
-    context.beginPath();
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    var canvas = document.getElementById('canvas')
+    var context = canvas.getContext('2d')
+    context.beginPath()
+    context.clearRect(0, 0, canvas.width, canvas.height)
     if (school_position) {
-        var centerX = school_position[0];
-        var centerY = school_position[1];
-        var radius = 20;
-        context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-        context.lineWidth = 5;
-        context.strokeStyle = 'yellow';
-        context.stroke();
-        context.closePath();
+        var centerX = school_position[0]
+        var centerY = school_position[1]
+        var radius = 20
+        context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false)
+        context.lineWidth = 5
+        context.strokeStyle = 'yellow'
+        context.stroke()
+        context.closePath()
     }
 }
 
 function displayGridImages() {
-    images = window.imgArray;
+    images = window.imgArray
     var gridImagesDiv = document.getElementById("grid_images");
     for (var i = 0; i < images.length; i++) {
-        var element = images[i];
+        var element = images[i]
         if (i >= index && i < index + preLoadImages) {
-            var img = new Image();
-            img.src = element.properties.url;
-            img.className = 'grid_item';
-            img.id = 'img' + i;
-            gridImagesDiv.appendChild(img);
+            var img = new Image()
+            img.src = element.properties.url
+            img.className = 'grid_item'
+            img.id = 'img' + i
+            gridImagesDiv.appendChild(img)
         } else {
-            var imgToRemove = document.getElementById('img' + i);
+            var imgToRemove = document.getElementById('img' + i)
             if (typeof (imgToRemove) != 'undefined' && imgToRemove != null) {
-                gridImagesDiv.removeChild(imgToRemove);
+                gridImagesDiv.removeChild(imgToRemove)
             }
         }
     }
 }
-window.addEventListener("click", mousePos);
+window.addEventListener("click", mousePos)
