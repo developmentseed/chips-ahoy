@@ -16,6 +16,9 @@ window.fileUpload = function fileUpload() {
     var reader = new FileReader()
     reader.onload = () => {
         window.imgArray = JSON.parse(reader.result).features
+        for (var j = 0; j < window.imgArray.length; j++) {
+            window.imgArray[j]['properties']['url'] = window.imgArray[j]['properties']['url'].replace('/supertiles/', '/supertiles/supertiles_draw/')
+        }
         updateImage()
         displayGridImages()
     }
