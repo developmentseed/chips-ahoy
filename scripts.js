@@ -1,6 +1,9 @@
 window.imgArray = []
 
 window.save = function save() {
+    for (var j = 0; j < window.imgArray.length; j++) {
+        window.imgArray[j]['properties']['url'] = window.imgArray[j]['properties']['url'].replace('/supertiles/supertiles_draw/', '/supertiles/')
+    }
     var geo = {
         type: "FeatureCollection",
         features: window.imgArray
@@ -17,7 +20,9 @@ window.fileUpload = function fileUpload() {
     reader.onload = () => {
         window.imgArray = JSON.parse(reader.result).features
         for (var j = 0; j < window.imgArray.length; j++) {
-            window.imgArray[j]['properties']['url'] = window.imgArray[j]['properties']['url'].replace('/supertiles/', '/supertiles/supertiles_draw/')
+            if (window.imgArray[j]['properties']['url'].indexOf('supertiles_draw') < 0) {
+                window.imgArray[j]['properties']['url'] = window.imgArray[j]['properties']['url'].replace('/supertiles/', '/supertiles/supertiles_draw/')
+            }
         }
         updateImage()
         displayGridImages()
@@ -89,15 +94,25 @@ function register_event(e, school_position) {
     }
 }
 
+coords_temp = []
 function mousePos(event) {
     x = event.clientX
     y = event.clientY
-
-    school_position = [x, y]
+    e = document.createEvent('Event')
+    e.key = 'y'
+    console.log(event.shiftKey)
     if (x >= 0 && x <= 512 && y >= 0 && y <= 512) {
-        e = document.createEvent('Event')
-        e.key = 'y'
-        register_event(e, school_position)
+        school_position = [x, y]
+        if (event.shiftKey) {
+            coords_temp.push(school_position)
+        } else {
+            if (coords_temp.length > 0) {
+                register_event(e, coords_temp)
+            } else {
+                register_event(e, [school_position])
+            }
+            coords_temp = []
+        }
     }
 }
 
@@ -106,15 +121,19 @@ function draw(school_position) {
     var context = canvas.getContext('2d')
     context.beginPath()
     context.clearRect(0, 0, canvas.width, canvas.height)
+
     if (school_position) {
-        var centerX = school_position[0]
-        var centerY = school_position[1]
-        var radius = 20
-        context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false)
-        context.lineWidth = 5
-        context.strokeStyle = 'yellow'
-        context.stroke()
-        context.closePath()
+        for (let j = 0; j < school_position.length; j++) {
+            var school_p = school_position[j]
+            var centerX = school_p[0]
+            var centerY = school_p[1]
+            var radius = 20
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false)
+            context.lineWidth = 5
+            context.strokeStyle = 'yellow'
+            context.stroke()
+            context.closePath()
+        }
     }
 }
 
