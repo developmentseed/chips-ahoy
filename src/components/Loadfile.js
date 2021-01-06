@@ -21,7 +21,7 @@ class Loadfile extends Component {
 
   render () {
     return (
-      <div style={{ padding: 10 }}>
+      <>
         <Typography variant='caption' display='block' gutterBottom>
           Load geojson file
         </Typography>
@@ -36,10 +36,10 @@ class Loadfile extends Component {
             minFileSize={0}
             clickable
           >
-            <input type='submit' value='Choose a file' style={{ width: '210px', margin: '5px' }} />
+            <input type='submit' value='Choose a file' style={{ width: '96%', margin: '5px' }} />
           </Files>
         </Paper>
-      </div>
+      </>
     );
   }
 }

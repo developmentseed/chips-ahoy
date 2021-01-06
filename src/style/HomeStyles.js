@@ -66,7 +66,7 @@ const styles = theme => ({
   container: {
     marginTop: headerHeigth,
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    paddingBottom: theme.spacing(2),
   },
   button: {
     position: 'absolute',
@@ -91,8 +91,15 @@ const styles = theme => ({
     flexDirection: 'column',
   },
   fixedHeight: {
-    height: 240,
+    height: '74vh',
   },
+  fixedHeightSlider:{
+    height: '15vh',
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft:30,
+    paddingRight:30
+  }
 });
 
 export default styles;

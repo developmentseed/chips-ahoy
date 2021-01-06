@@ -9,16 +9,16 @@ import {
 } from '../actions/dataActions';
 
 const initialState = {
-  data: {features:[]},
-  feature:null,
+  data: { features: [] },
+  feature: null,
   loading: true,
   error: null,
   fileName: '',
   index: 0,
-  totalFeatures:0
+  totalFeatures: 0
 };
 
-export default function dataReducer (state = initialState, action) {
+export default function dataReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_DATA_BEGIN:
       return {
@@ -32,7 +32,7 @@ export default function dataReducer (state = initialState, action) {
         loading: false,
         data: action.payload.fData,
         fileName: action.payload.fileName,
-        totalFeatures: action.payload.totalFeatures,    
+        totalFeatures: action.payload.totalFeatures,
       };
     case FETCH_DATA_FAILURE:
       return {
@@ -46,21 +46,21 @@ export default function dataReducer (state = initialState, action) {
         ...state,
         index: action.payload.index
       };
-      case SET_FEATURE:
-        return {
-          ...state,
-          feature: action.payload.feature
-        };
+    case SET_FEATURE:
+      return {
+        ...state,
+        feature: action.payload.feature
+      };
     case UPDATE_DATA:
       return {
         ...state,
         data: action.payload.fData
       };
-      case UPDATE_FEATURE:
-        return {
-          ...state,
-          feature: action.payload.feature
-        };
+    case UPDATE_FEATURE:
+      return {
+        ...state,
+        feature: action.payload.feature
+      };
     default:
       return state;
   }

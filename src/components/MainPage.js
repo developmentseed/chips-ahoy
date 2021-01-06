@@ -1,24 +1,25 @@
 import React, { Component } from 'react';
 import clsx from 'clsx';
 import { withStyles } from '@material-ui/styles';
-import { Container, Grid, Paper, Box, Button } from '@material-ui/core';
+import { Container, Grid, Paper } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { saveAs } from 'file-saver';
 import styles from './../style/HomeStyles';
 import { downloadGeojsonFile } from '../actions/controlAction';
-import { fetchFeature ,updateFeature } from '../actions/dataActions';
-
+import { fetchFeature, updateFeature, setFeature } from '../actions/dataActions';
+import PaperImage from './PaperImage'
+import SidePanel from './SidePanel'
+import SliderImages from './SliderImages';
 
 class MainPage extends Component {
   constructor(props) {
     super(props);
     this.save = this.save.bind(this);
-    this.onClickFeature = this.onClickFeature.bind(this);
 
   }
   componentWillReceiveProps(nextProps) {
-    const { index, feature, data, totalFeatures, downloadGeojsonFile, fetchFeature } = this.props;
+    const { index, data, totalFeatures, downloadGeojsonFile, fetchFeature } = this.props;
     if (nextProps.index !== index) {
       fetchFeature(nextProps.index, data, totalFeatures)
     }
@@ -36,43 +37,30 @@ class MainPage extends Component {
       saveAs(blob, fileName);
     }
   }
-  onClickFeature() {
-    const { feature ,updateFeature} = this.props;
-    console.log(feature,this.props)
-    if (feature) {
-      feature.id = 'asdasdasd';
-      feature.properties.algo = 'dasdasdas'
-      feature.properties.algo1 = '1dasdasdas'
-      feature.properties.algo3 = '2dasdasdas'
-      feature.properties.algo4 = '3dasdasdas'
-      feature.properties.algo5 = '4dasdasdas'
-      updateFeature(feature);
-    }
-  }
   render() {
-    const { classes, feature } = this.props;
+    const { classes } = this.props;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    const fixedHeightSlider = clsx(classes.paper, classes.fixedHeightSlider);
 
     return (
       <main className={classes.content}>
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={6}>
-              <Paper className={fixedHeightPaper}>
-                image
-                {feature ? <Button onClick={this.onClickFeature} variant="contained" color="primary">
-                  add properties </Button> : null}
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={9} lg={9}>
+              <Paper className={fixedHeightPaper} elevation={3} >
+                <PaperImage />
               </Paper>
             </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <Paper className={fixedHeightPaper}>
-                new images
-            </Paper>
+            <Grid item xs={12} md={3} lg={3}>
+              <Paper className={fixedHeightPaper} elevation={3} >
+       
+                <SidePanel />
+              </Paper>
             </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                old images
-            </Paper>
+            <Grid item xs={12} md={12} lg={12}>
+              <div className={fixedHeightSlider}>
+                <SliderImages />
+              </div>
             </Grid>
           </Grid>
         </Container>
@@ -94,7 +82,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   downloadGeojsonFile,
   fetchFeature,
-  updateFeature
+  updateFeature,
+  setFeature
 
 }
 
