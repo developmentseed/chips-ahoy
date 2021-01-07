@@ -48,10 +48,7 @@ class Header extends Component {
 }
 
 const mapStateToProps = state => ({
-  labels: state.geojsonData.labels,
-  currentlabel: state.geojsonData.label,
   fileName: state.geojsonData.fileName,
-
 });
 
 export default compose(

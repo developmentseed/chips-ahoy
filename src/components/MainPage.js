@@ -7,7 +7,7 @@ import { compose } from 'recompose';
 import { saveAs } from 'file-saver';
 import styles from './../style/HomeStyles';
 import { downloadGeojsonFile } from '../actions/controlAction';
-import { fetchFeature, updateFeature, setFeature } from '../actions/dataActions';
+import { fetchFeature, updateIndex } from '../actions/dataActions';
 import PaperImage from './PaperImage'
 import SidePanel from './SidePanel'
 import SliderImages from './SliderImages';
@@ -16,8 +16,30 @@ class MainPage extends Component {
   constructor(props) {
     super(props);
     this.save = this.save.bind(this);
+    this.keyFunction = this.keyFunction.bind(this);
+  }
+  componentDidMount() {
+    document.addEventListener("keydown", this.keyFunction, false);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.keyFunction, false);
+  }
+  keyFunction(event) {
+    const { updateIndex, index } = this.props;
+    switch (event.key) {
+      case 'ArrowRight':
+        updateIndex(index + 1);
+        break;
+      case 'ArrowLeft':
+        updateIndex(index - 1);
+        break;
+      default:
+        console.log('otra tecla', event.key, index)
+        break;
+    }
 
   }
+
   componentWillReceiveProps(nextProps) {
     const { index, data, totalFeatures, downloadGeojsonFile, fetchFeature } = this.props;
     if (nextProps.index !== index) {
@@ -53,7 +75,6 @@ class MainPage extends Component {
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper} elevation={3} >
-       
                 <SidePanel />
               </Paper>
             </Grid>
@@ -72,7 +93,6 @@ class MainPage extends Component {
 
 const mapStateToProps = state => ({
   data: state.geojsonData.data,
-  feature: state.geojsonData.feature,
   index: state.geojsonData.index,
   totalFeatures: state.geojsonData.totalFeatures,
   fileName: state.geojsonData.fileName,
@@ -82,8 +102,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   downloadGeojsonFile,
   fetchFeature,
-  updateFeature,
-  setFeature
+  updateIndex
 
 }
 

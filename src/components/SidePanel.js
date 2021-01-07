@@ -12,7 +12,7 @@ import {
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import Loadfile from './Loadfile';
-import { setIndex } from '../actions/dataActions';
+import {updateIndex} from '../actions/dataActions';
 
 const styles = theme => ({
   lItem:{
@@ -43,7 +43,7 @@ class SidePanel extends Component {
     if (value === '' || re.test(value)) {
       value = parseInt(value)
       if (total >= value && value >= 0) {
-        this.props.dispatch(setIndex(value))
+        this.props.dispatch(updateIndex(value))
       }
       return;
     }

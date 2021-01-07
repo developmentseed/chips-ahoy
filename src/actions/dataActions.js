@@ -32,6 +32,18 @@ export const setFeature = feature => ({
   payload: { feature }
 });
 
+export function updateIndex(newIndex) {
+  return (dispatch, getState) => {
+    let { totalFeatures } = getState().geojsonData;
+    if (newIndex < 0) return null;
+    if (totalFeatures >= newIndex && newIndex >= 0) {
+      dispatch(setIndex(newIndex));
+    } else {
+      console.log('index out range')
+    }
+  };
+}
+
 
 export function fetchData(files) {
   return dispatch => {
@@ -41,8 +53,8 @@ export function fetchData(files) {
       const geojson = JSON.parse(fileReader.result);
       const total = (geojson.features || []).length
       dispatch(fetchDataSuccess(geojson, validateFileName(files[0].name), total));
-      dispatch(setIndex(0));
-      dispatch(setFeature(geojson.features[0]));
+      dispatch(updateIndex(0));
+      dispatch(fetchFeature(0, geojson, total));
     };
     fileReader.readAsText(files[0]);
   };
@@ -80,8 +92,7 @@ export function updateFeature(newFeature) {
     data.features[index] = newFeature
     dispatch(updateData(data))
     dispatch(fetchFeature(index, data, totalFeatures));
-    dispatch(setIndex(index+1));
-
+    dispatch(updateIndex(index + 1));
   };
 
 }

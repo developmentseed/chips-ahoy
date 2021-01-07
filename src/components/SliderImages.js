@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
 import Slider from 'react-slick';
-import { setIndex } from '../actions/dataActions';
+import { updateIndex } from '../actions/dataActions';
 
 const styles = theme => ({
   root: {
@@ -43,7 +43,7 @@ class SliderImages extends Component {
 
   handleClickCardAction(e, i) {
     e.preventDefault();
-    this.props.dispatch(setIndex(i))
+    this.props.dispatch(updateIndex(i))
   }
 
 
@@ -110,11 +110,7 @@ class SliderImages extends Component {
 
 const mapStateToProps = state => ({
   data: state.geojsonData.data,
-  feature: state.geojsonData.feature,
   index: state.geojsonData.index,
-  totalFeatures: state.geojsonData.totalFeatures,
-  fileName: state.geojsonData.fileName,
-  downloadFile: state.control.downloadFile
 
 });
 
