@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import clsx from 'clsx';
 import { withStyles } from '@material-ui/styles';
-import {  Card, CardActionArea, CardMedia } from '@material-ui/core';
+import { Card, CardActionArea, CardMedia } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
 import Slider from 'react-slick';
+import { setIndex } from '../actions/dataActions';
 
 const styles = theme => ({
   root: {
     maxWidth: 140,
-    marginLeft: 8,
-    marginRight: 8,
+    marginLeft: 5,
+    marginRight: 5,
     position: 'relative',
   },
   media: {
@@ -24,8 +25,11 @@ const styles = theme => ({
     color: 'red',
     fontSize: 30
   },
-  overlayUsed: {
+  overlayReviewed: {
     filter: 'grayscale(100%)'
+  },
+  overlayUsed: {
+    filter: 'sepia()'
   }
 });
 
@@ -33,19 +37,52 @@ const styles = theme => ({
 class SliderImages extends Component {
   constructor(props) {
     super(props);
-    this.state={}
+    this.state = {}
+    this.handleClickCardAction = this.handleClickCardAction.bind(this)
   }
 
+  handleClickCardAction(e, i) {
+    e.preventDefault();
+    this.props.dispatch(setIndex(i))
+  }
+
+
   render() {
-    const { classes, data, index,  } = this.props;
+    const { classes, data, index, } = this.props;
 
     var settings = {
       dots: false,
       infinite: false,
       speed: 500,
       slidesToShow: 6,
-      slidesToScroll: 2,
+      slidesToScroll: 4,
       initialSlide: 0,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 5,
+            slidesToScroll: 2,
+            infinite: true,
+            dots: true
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 2,
+            initialSlide: 2
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 1
+          }
+        }
+      ]
     };
     if (data.features.length === 0) return null;
 
@@ -54,9 +91,9 @@ class SliderImages extends Component {
         {
           data.features.map((geo, i) => (
             <Card className={classes.root} key={i}>
-              <CardActionArea>
+              <CardActionArea onClick={(e) => this.handleClickCardAction(e, i)}>
                 <CardMedia
-                  className={clsx(classes.media, (i === index) && classes.overlayUsed)}
+                  className={clsx(classes.media, geo.isreviewed && classes.overlayReviewed, i === index && classes.overlayUsed)}
                   image={geo.properties.url}
                   title="Image"
                 />
@@ -80,11 +117,8 @@ const mapStateToProps = state => ({
   downloadFile: state.control.downloadFile
 
 });
-const mapDispatchToProps = {
-
-}
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps),
   withStyles(styles)
 )(SliderImages);
