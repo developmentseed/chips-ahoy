@@ -12,17 +12,20 @@ import {
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import Loadfile from './Loadfile';
-import {updateIndex} from '../actions/dataActions';
+import { updateIndex } from '../actions/dataActions';
 
 const styles = theme => ({
-  lItem:{
-    paddingBottom:0,
-    paddingRight:0,
-    paddingLeft:0
+  lItem: {
+    paddingBottom: 0,
+    paddingRight: 0,
+    paddingLeft: 0
   },
   primaryText: {
     textAlign: 'center',
     color: '#808080',
+  },
+  secondaryText: {
+    color: 'red',
   }
 });
 
@@ -48,6 +51,12 @@ class SidePanel extends Component {
       return;
     }
   }
+  convertSecondaryText(text) {
+    if (!text) return '';
+    if (typeof (text) === "object") return JSON.stringify(text);
+    return `${text}`
+  }
+
   renderProperties() {
     const { classes, feature } = this.props;
     if (!feature || !feature.properties) return null;
@@ -56,8 +65,9 @@ class SidePanel extends Component {
         {Object.keys(feature.properties || {}).map((l, k) => (
           <ListItem key={`li-${k}`} className={classes.lItem}>
             <ListItemText
-              primary={l}
-              secondary={feature.properties[l]}
+              classes={(`${l}` === 'isreviewed') && feature.properties[l] ? { secondary: classes.secondaryText } : null}
+              primary={`${l}`}
+              secondary={this.convertSecondaryText(feature.properties[l])}
             />
           </ListItem>
         ))}
@@ -101,20 +111,20 @@ class SidePanel extends Component {
         </List>) : null}
         <List component="nav" >
           {total !== 0 ? (
-          <ListItem  className={classes.lItem}>
-            <ListItemText
-              primary="Total"
-            />
-            <ListItemSecondaryAction>
-              <Typography
-                variant="body1"
-                component="span"
-                color="textSecondary"
-              >
-                {total}
-              </Typography>
-            </ListItemSecondaryAction>
-          </ListItem>) : null}
+            <ListItem className={classes.lItem}>
+              <ListItemText
+                primary="Total"
+              />
+              <ListItemSecondaryAction>
+                <Typography
+                  variant="body1"
+                  component="span"
+                  color="textSecondary"
+                >
+                  {total}
+                </Typography>
+              </ListItemSecondaryAction>
+            </ListItem>) : null}
           {this.renderFeature()}
         </List>
         <Divider />
