@@ -93,7 +93,7 @@ class SliderImages extends Component {
             <Card className={classes.root} key={i}>
               <CardActionArea onClick={(e) => this.handleClickCardAction(e, i)}>
                 <CardMedia
-                  className={clsx(classes.media, geo.isreviewed && classes.overlayReviewed, i === index && classes.overlayUsed)}
+                  className={clsx(classes.media, geo.properties.isreviewed && classes.overlayReviewed, i === index && classes.overlayUsed)}
                   image={geo.properties.url}
                   title="Image"
                 />

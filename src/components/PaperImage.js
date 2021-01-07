@@ -2,10 +2,26 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import { updateFeature } from '../actions/dataActions';
 
 const styles = theme => ({
   content: {
-    height: 'auto'
+    height: 'auto',
+    position: 'relative'
+
+  },
+  dot: {
+    userSelect: 'none',
+    position: 'absolute',
+    margin: 0,
+    padding: 0,
+    fontSize: 60,
+    color: '#ffc107',
+    height: 0,
+    width: 0,
+    lineHeight: 0,
+    letterSpacing: 0,
+    fontWeight: 200,
   }
 });
 class PaperImage extends Component {
@@ -17,6 +33,8 @@ class PaperImage extends Component {
     }
     this.resizeHandler = this.resizeHandler.bind(this);
     this.handleImageClick = this.handleImageClick.bind(this);
+    this.renderDot = this.renderDot.bind(this);
+
   }
 
   componentDidMount() {
@@ -33,49 +51,79 @@ class PaperImage extends Component {
     const height = this.divElement.clientHeight;
     this.setState({ width, height });
   }
-  
+
   handleImageClick(e) {
     e.stopPropagation()
-    console.log(e,e.target)
+
+    const { feature, updateFeature } = this.props;
+
     const currentCoord = { x: e.clientX, y: e.clientY };
     const rect = this.image.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    console.log(currentCoord, "x: " + x + " y: " + y);
+    //  scale image
+    // currentWith/natutalWith 
+    const scale = (e.currentTarget.width / e.currentTarget.naturalWidth)
+    //  scale add properties
+    let newFature = Object(feature);
+
+    newFature.properties.reviewed = true
+    newFature.properties.isreviewed = true
+    newFature.properties.pointScale = { x: x / scale, y: y / scale }
+    newFature.properties.sizeImage = { x: e.currentTarget.naturalWidth, y: e.currentTarget.naturalHeight }
+
+    updateFeature(newFature);
+  }
+
+
+  renderDot() {
+    const { feature, classes } = this.props;
+    const { width } = this.state;
+
+    if (!(feature && feature.properties.pointScale && feature.properties.sizeImage)) return null
+    const { pointScale, sizeImage } = feature.properties;
+    const scaleX = width / sizeImage.x;
+
+    return (<p className={classes.dot} style={{ top: (scaleX * pointScale.y), left: (scaleX * pointScale.x) - 20 }}>X</p>)
   }
 
   render() {
     const { classes, feature } = this.props;
     const { width } = this.state;
+
     return (
       <div className={classes.content} ref={(divElement) => { this.divElement = divElement }} >
         {feature && feature.properties.url ?
-          <img 
-          ref={(c) => { this.image = c }}
-          src={feature.properties.url} 
-          onClick={this.handleImageClick}
-          width={width}
-          height="auto"
-          />
+          <>
+            <img
+              ref={(c) => { this.image = c }}
+              src={feature.properties.url}
+              onClick={this.handleImageClick}
+              onDoubleClick={this.handleDoubleClickImage}
+              width={width}
+              height="auto"
+            />
+            {this.renderDot()}
+          </>
           : null}
       </div>
     );
+
+
 
   }
 }
 
 
 const mapStateToProps = state => ({
-  data: state.geojsonData.data,
   feature: state.geojsonData.feature,
   index: state.geojsonData.index,
   totalFeatures: state.geojsonData.totalFeatures,
-  fileName: state.geojsonData.fileName,
-  downloadFile: state.control.downloadFile
 
 });
-const mapDispatchToProps = {
 
+const mapDispatchToProps = {
+  updateFeature
 }
 
 export default compose(
