@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
-import geojsonData from './dataReducer';
+
 import control from './controlReducers';
+import geojsonData from './dataReducer';
 
 export default combineReducers({
   geojsonData,
-  control,
+  control
 });

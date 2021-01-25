@@ -1,9 +1,9 @@
 import {
   FETCH_DATA_BEGIN,
-  FETCH_DATA_SUCCESS,
   FETCH_DATA_FAILURE,
-  SET_INDEX,
+  FETCH_DATA_SUCCESS,
   SET_FEATURE,
+  SET_INDEX,
   UPDATE_DATA,
   UPDATE_FEATURE
 } from '../actions/dataActions';
@@ -32,7 +32,7 @@ export default function dataReducer(state = initialState, action) {
         loading: false,
         data: action.payload.fData,
         fileName: action.payload.fileName,
-        totalFeatures: action.payload.totalFeatures,
+        totalFeatures: action.payload.totalFeatures
       };
     case FETCH_DATA_FAILURE:
       return {

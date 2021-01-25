@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import clsx from 'clsx';
-import { withStyles } from '@material-ui/styles';
 import { Container, Grid, Paper } from '@material-ui/core';
+import { withStyles } from '@material-ui/styles';
+import clsx from 'clsx';
+import { saveAs } from 'file-saver';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { saveAs } from 'file-saver';
-import styles from './../style/HomeStyles';
+
 import { downloadGeojsonFile } from '../actions/controlAction';
 import { fetchFeature, updateIndex } from '../actions/dataActions';
-import PaperImage from './PaperImage'
-import SidePanel from './SidePanel'
+import styles from './../style/HomeStyles';
+import PaperImage from './PaperImage';
+import SidePanel from './SidePanel';
 import SliderImages from './SliderImages';
 
 class MainPage extends Component {
@@ -19,10 +20,10 @@ class MainPage extends Component {
     this.keyFunction = this.keyFunction.bind(this);
   }
   componentDidMount() {
-    document.addEventListener("keydown", this.keyFunction, false);
+    document.addEventListener('keydown', this.keyFunction, false);
   }
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.keyFunction, false);
+    document.removeEventListener('keydown', this.keyFunction, false);
   }
   keyFunction(event) {
     const { updateIndex, index } = this.props;
@@ -34,16 +35,15 @@ class MainPage extends Component {
         updateIndex(index - 1);
         break;
       default:
-        console.log('otra tecla', event.key, index)
+        console.log('otra tecla', event.key, index);
         break;
     }
-
   }
 
   componentWillReceiveProps(nextProps) {
     const { index, data, totalFeatures, downloadGeojsonFile, fetchFeature } = this.props;
     if (nextProps.index !== index) {
-      fetchFeature(nextProps.index, data, totalFeatures)
+      fetchFeature(nextProps.index, data, totalFeatures);
     }
     // Download geojso file
     if (nextProps.downloadFile) {
@@ -55,7 +55,9 @@ class MainPage extends Component {
     const { data, fileName } = this.props;
 
     if (data && data.features) {
-      const blob = new Blob([JSON.stringify(data)], { type: 'application/json;charset=utf-8' });
+      const blob = new Blob([JSON.stringify(data)], {
+        type: 'application/json;charset=utf-8'
+      });
       saveAs(blob, fileName);
     }
   }
@@ -69,12 +71,12 @@ class MainPage extends Component {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={9} lg={9}>
-              <Paper className={fixedHeightPaper} elevation={3} >
+              <Paper className={fixedHeightPaper} elevation={3}>
                 <PaperImage />
               </Paper>
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
-              <Paper className={fixedHeightPaper} elevation={3} >
+              <Paper className={fixedHeightPaper} elevation={3}>
                 <SidePanel />
               </Paper>
             </Grid>
@@ -90,23 +92,17 @@ class MainPage extends Component {
   }
 }
 
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.geojsonData.data,
   index: state.geojsonData.index,
   totalFeatures: state.geojsonData.totalFeatures,
   fileName: state.geojsonData.fileName,
   downloadFile: state.control.downloadFile
-
 });
 const mapDispatchToProps = {
   downloadGeojsonFile,
   fetchFeature,
   updateIndex
+};
 
-}
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withStyles(styles)
-)(MainPage);
+export default compose(connect(mapStateToProps, mapDispatchToProps), withStyles(styles))(MainPage);

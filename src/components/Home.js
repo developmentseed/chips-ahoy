@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
 import { withStyles } from '@material-ui/styles';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+
+import styles from './../style/HomeStyles';
 import Header from './Header';
 import MainPage from './MainPage';
-import styles from './../style/HomeStyles';
 
 class Home extends Component {
   constructor(props) {
@@ -23,9 +24,6 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
-export default compose(
-  connect(mapStateToProps),
-  withStyles(styles)
-)(Home);
+export default compose(connect(mapStateToProps), withStyles(styles))(Home);

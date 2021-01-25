@@ -1,7 +1,7 @@
 const drawerWidth = 240;
 const headerHeigth = 50;
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex'
   },
@@ -11,7 +11,7 @@ const styles = theme => ({
       duration: theme.transitions.duration.leavingScreen
     }),
     flexGrow: 1,
-    background:'rgb(250, 250, 250)'
+    background: 'rgb(250, 250, 250)'
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -26,7 +26,7 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       minHeight: headerHeigth
     },
-    background:'#ffc107'
+    background: '#ffc107'
   },
   menuButton: {
     marginRight: theme.spacing(2)
@@ -54,7 +54,7 @@ const styles = theme => ({
   content: {
     flexGrow: 1,
     height: '100vh',
-    overflow: 'auto',
+    overflow: 'auto'
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -66,7 +66,7 @@ const styles = theme => ({
   container: {
     marginTop: headerHeigth,
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(2),
+    paddingBottom: theme.spacing(2)
   },
   button: {
     position: 'absolute',
@@ -88,17 +88,17 @@ const styles = theme => ({
     padding: theme.spacing(2),
     display: 'flex',
     overflow: 'auto',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   fixedHeight: {
-    height: '74vh',
+    height: '74vh'
   },
-  fixedHeightSlider:{
+  fixedHeightSlider: {
     height: '15vh',
     paddingTop: 0,
     paddingBottom: 0,
-    paddingLeft:30,
-    paddingRight:30
+    paddingLeft: 30,
+    paddingRight: 30
   }
 });
 

@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import {
-  Typography,
-  TextField,
   Divider,
   List,
   ListItem,
+  ListItemSecondaryAction,
   ListItemText,
-  ListItemSecondaryAction
+  TextField,
+  Typography
 } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import Loadfile from './Loadfile';
-import { updateIndex } from '../actions/dataActions';
 
-const styles = theme => ({
+import { updateIndex } from '../actions/dataActions';
+import Loadfile from './Loadfile';
+
+const styles = (theme) => ({
   lItem: {
     paddingBottom: 0,
     paddingRight: 0,
@@ -22,10 +23,10 @@ const styles = theme => ({
   },
   primaryText: {
     textAlign: 'center',
-    color: '#808080',
+    color: '#808080'
   },
   secondaryText: {
-    color: 'red',
+    color: 'red'
   }
 });
 
@@ -33,10 +34,9 @@ class SidePanel extends Component {
   constructor() {
     super();
     this.state = {
-      value: '',
+      value: ''
     };
     this.handleChange = this.handleChange.bind(this);
-
   }
 
   handleChange(e) {
@@ -44,17 +44,17 @@ class SidePanel extends Component {
     const re = /[0-9]+/g;
     let value = e.target.value;
     if (value === '' || re.test(value)) {
-      value = parseInt(value)
+      value = parseInt(value);
       if (total >= value && value >= 0) {
-        this.props.dispatch(updateIndex(value))
+        this.props.dispatch(updateIndex(value));
       }
       return;
     }
   }
   convertSecondaryText(text) {
     if (!text) return '';
-    if (typeof (text) === "object") return JSON.stringify(text);
-    return `${text}`
+    if (typeof text === 'object') return JSON.stringify(text);
+    return `${text}`;
   }
 
   renderProperties() {
@@ -65,14 +65,18 @@ class SidePanel extends Component {
         {Object.keys(feature.properties || {}).map((l, k) => (
           <ListItem key={`li-${k}`} className={classes.lItem}>
             <ListItemText
-              classes={(`${l}` === 'isreviewed') && feature.properties[l] ? { secondary: classes.secondaryText } : null}
+              classes={
+                `${l}` === 'isreviewed' && feature.properties[l]
+                  ? { secondary: classes.secondaryText }
+                  : null
+              }
               primary={`${l}`}
               secondary={this.convertSecondaryText(feature.properties[l])}
             />
           </ListItem>
         ))}
       </>
-    )
+    );
   }
 
   renderFeature() {
@@ -81,14 +85,11 @@ class SidePanel extends Component {
     return (
       <>
         <ListItem>
-          <ListItemText
-            primary="Properties"
-            classes={{ primary: classes.primaryText }}
-          />
+          <ListItemText primary="Properties" classes={{ primary: classes.primaryText }} />
         </ListItem>
         {this.renderProperties()}
       </>
-    )
+    );
   }
 
   render() {
@@ -97,34 +98,31 @@ class SidePanel extends Component {
     return (
       <div>
         {!feature ? <Loadfile /> : null}
-        {feature ? (<List component="nav" >
-          <ListItem  >
-            <TextField
-              id="index"
-              label="Index"
-              onChange={this.handleChange}
-              value={index}
-              type="number"
-            />
-          </ListItem>
-          <Divider />
-        </List>) : null}
-        <List component="nav" >
+        {feature ? (
+          <List component="nav">
+            <ListItem>
+              <TextField
+                id="index"
+                label="Index"
+                onChange={this.handleChange}
+                value={index}
+                type="number"
+              />
+            </ListItem>
+            <Divider />
+          </List>
+        ) : null}
+        <List component="nav">
           {total !== 0 ? (
             <ListItem className={classes.lItem}>
-              <ListItemText
-                primary="Total"
-              />
+              <ListItemText primary="Total" />
               <ListItemSecondaryAction>
-                <Typography
-                  variant="body1"
-                  component="span"
-                  color="textSecondary"
-                >
+                <Typography variant="body1" component="span" color="textSecondary">
                   {total}
                 </Typography>
               </ListItemSecondaryAction>
-            </ListItem>) : null}
+            </ListItem>
+          ) : null}
           {this.renderFeature()}
         </List>
         <Divider />
@@ -133,16 +131,10 @@ class SidePanel extends Component {
   }
 }
 
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   total: state.geojsonData.totalFeatures,
   index: state.geojsonData.index,
   feature: state.geojsonData.feature
 });
 
-
-
-export default compose(
-  connect(mapStateToProps),
-  withStyles(styles)
-)(SidePanel);
+export default compose(connect(mapStateToProps), withStyles(styles))(SidePanel);

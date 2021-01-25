@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
 import { withStyles } from '@material-ui/styles';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+
 import { updateFeature } from '../actions/dataActions';
 
-const styles = theme => ({
+const styles = (theme) => ({
   content: {
     height: 'auto',
     position: 'relative'
-
   },
   dot: {
     userSelect: 'none',
@@ -21,7 +21,7 @@ const styles = theme => ({
     width: 0,
     lineHeight: 0,
     letterSpacing: 0,
-    fontWeight: 200,
+    fontWeight: 200
   }
 });
 class PaperImage extends Component {
@@ -30,11 +30,10 @@ class PaperImage extends Component {
     this.state = {
       width: 0,
       height: 0
-    }
+    };
     this.resizeHandler = this.resizeHandler.bind(this);
     this.handleImageClick = this.handleImageClick.bind(this);
     this.renderDot = this.renderDot.bind(this);
-
   }
 
   componentDidMount() {
@@ -53,7 +52,7 @@ class PaperImage extends Component {
   }
 
   handleImageClick(e) {
-    e.stopPropagation()
+    e.stopPropagation();
 
     const { feature, updateFeature } = this.props;
 
@@ -62,29 +61,37 @@ class PaperImage extends Component {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     //  scale image
-    // currentWith/natutalWith 
-    const scale = (e.currentTarget.width / e.currentTarget.naturalWidth)
+    // currentWith/natutalWith
+    const scale = e.currentTarget.width / e.currentTarget.naturalWidth;
     //  scale add properties
     let newFature = Object(feature);
 
-    newFature.properties.reviewed = true
-    newFature.properties.isreviewed = true
-    newFature.properties.pointScale = { x: x / scale, y: y / scale }
-    newFature.properties.sizeImage = { x: e.currentTarget.naturalWidth, y: e.currentTarget.naturalHeight }
+    newFature.properties.reviewed = true;
+    newFature.properties.isreviewed = true;
+    newFature.properties.pointScale = { x: x / scale, y: y / scale };
+    newFature.properties.sizeImage = {
+      x: e.currentTarget.naturalWidth,
+      y: e.currentTarget.naturalHeight
+    };
 
     updateFeature(newFature);
   }
-
 
   renderDot() {
     const { feature, classes } = this.props;
     const { width } = this.state;
 
-    if (!(feature && feature.properties.pointScale && feature.properties.sizeImage)) return null
+    if (!(feature && feature.properties.pointScale && feature.properties.sizeImage)) return null;
     const { pointScale, sizeImage } = feature.properties;
     const scaleX = width / sizeImage.x;
 
-    return (<p className={classes.dot} style={{ top: (scaleX * pointScale.y), left: (scaleX * pointScale.x) - 20 }}>X</p>)
+    return (
+      <p
+        className={classes.dot}
+        style={{ top: scaleX * pointScale.y, left: scaleX * pointScale.x - 20 }}>
+        X
+      </p>
+    );
   }
 
   render() {
@@ -92,11 +99,17 @@ class PaperImage extends Component {
     const { width } = this.state;
 
     return (
-      <div className={classes.content} ref={(divElement) => { this.divElement = divElement }} >
-        {feature && feature.properties.url ?
+      <div
+        className={classes.content}
+        ref={(divElement) => {
+          this.divElement = divElement;
+        }}>
+        {feature && feature.properties.url ? (
           <>
             <img
-              ref={(c) => { this.image = c }}
+              ref={(c) => {
+                this.image = c;
+              }}
               src={feature.properties.url}
               onClick={this.handleImageClick}
               onDoubleClick={this.handleDoubleClickImage}
@@ -105,26 +118,21 @@ class PaperImage extends Component {
             />
             {this.renderDot()}
           </>
-          : null}
+        ) : null}
       </div>
     );
-
-
-
   }
 }
 
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   feature: state.geojsonData.feature,
   index: state.geojsonData.index,
-  totalFeatures: state.geojsonData.totalFeatures,
-
+  totalFeatures: state.geojsonData.totalFeatures
 });
 
 const mapDispatchToProps = {
   updateFeature
-}
+};
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

@@ -17,17 +17,17 @@ export const fetchDataSuccess = (fData, fileName, totalFeatures) => {
   };
 };
 
-export const fetchDataFailure = error => ({
+export const fetchDataFailure = (error) => ({
   type: FETCH_DATA_FAILURE,
   payload: { error }
 });
 
-export const setIndex = index => ({
+export const setIndex = (index) => ({
   type: SET_INDEX,
   payload: { index }
 });
 
-export const setFeature = feature => ({
+export const setFeature = (feature) => ({
   type: SET_FEATURE,
   payload: { feature }
 });
@@ -39,19 +39,18 @@ export function updateIndex(newIndex) {
     if (totalFeatures >= newIndex && newIndex >= 0) {
       dispatch(setIndex(newIndex));
     } else {
-      console.log('index out range')
+      console.log('index out range');
     }
   };
 }
 
-
 export function fetchData(files) {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(fetchDataBegin());
     const fileReader = new FileReader();
     fileReader.onload = function (e) {
       const geojson = JSON.parse(fileReader.result);
-      const total = (geojson.features || []).length
+      const total = (geojson.features || []).length;
       dispatch(fetchDataSuccess(geojson, validateFileName(files[0].name), total));
       dispatch(updateIndex(0));
       dispatch(fetchFeature(0, geojson, total));
@@ -60,16 +59,14 @@ export function fetchData(files) {
   };
 }
 
-
 //  fetch feature
 
-
 export function fetchFeature(index, data, totalFeatures) {
-  return dispatch => {
+  return (dispatch) => {
     if (totalFeatures >= index && index >= 0) {
-      dispatch(setFeature(data.features[index]))
+      dispatch(setFeature(data.features[index]));
     } else {
-      console.log('index out range')
+      console.log('index out range');
     }
   };
 }
@@ -79,7 +76,7 @@ export function fetchFeature(index, data, totalFeatures) {
 export const UPDATE_FEATURE = 'UPDATE_FEATURE';
 export const UPDATE_DATA = 'UPDATE_DATA';
 
-export const updateData = fData => {
+export const updateData = (fData) => {
   return {
     type: UPDATE_DATA,
     payload: { fData }
@@ -89,10 +86,9 @@ export const updateData = fData => {
 export function updateFeature(newFeature) {
   return (dispatch, getState) => {
     let { index, data, totalFeatures } = getState().geojsonData;
-    data.features[index] = newFeature
-    dispatch(updateData(data))
+    data.features[index] = newFeature;
+    dispatch(updateData(data));
     dispatch(fetchFeature(index, data, totalFeatures));
     dispatch(updateIndex(index + 1));
   };
-
 }

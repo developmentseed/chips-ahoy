@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { createMuiTheme } from '@material-ui/core/styles';
 import amber from '@material-ui/core/colors/amber';
 import red from '@material-ui/core/colors/red';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import React, { Component } from 'react';
+
 import Home from './components/Home';
 
 const theme = createMuiTheme({
@@ -14,7 +15,7 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
-  render () {
+  render() {
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />

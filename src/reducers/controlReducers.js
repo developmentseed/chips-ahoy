@@ -1,11 +1,10 @@
-import { DOWNLOAD_FILE, } from '../actions/controlAction';
+import { DOWNLOAD_FILE } from '../actions/controlAction';
 
 const initialState = {
-  downloadFile: false,
-
+  downloadFile: false
 };
 
-export default function dataReducer (state = initialState, action) {
+export default function dataReducer(state = initialState, action) {
   switch (action.type) {
     case DOWNLOAD_FILE:
       return {

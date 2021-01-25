@@ -9,6 +9,7 @@ Used for validating machine learning chips.
 - Save
 
 Keyboard commands:
+
 - Left arrow: back one chip
 - Right arrow: forward one chip
 - Y: assign status `"yes"` and go forward one chip
