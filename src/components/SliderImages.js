@@ -16,12 +16,13 @@ const styles = (theme) => ({
     position: 'relative'
   },
   media: {
-    height: 140
+    height: '8vh',
+    width: 'auto'
   },
   overlay: {
     position: 'absolute',
-    top: 50,
-    left: 50,
+    top: '3vh',
+    left: '5vh',
     color: 'red',
     fontSize: 30
   },

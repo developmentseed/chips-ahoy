@@ -7,8 +7,9 @@ import { updateFeature } from '../actions/dataActions';
 
 const styles = (theme) => ({
   content: {
-    height: 'auto',
-    position: 'relative'
+    position: 'relative',
+    maxHeight: '75vh',
+    width: 'auto'
   },
   dot: {
     userSelect: 'none',
@@ -48,6 +49,7 @@ class PaperImage extends Component {
   resizeHandler() {
     const width = this.divElement.clientWidth;
     const height = this.divElement.clientHeight;
+    console.log(this.state, width, height)
     this.setState({ width, height });
   }
 
@@ -56,7 +58,7 @@ class PaperImage extends Component {
 
     const { feature, updateFeature } = this.props;
 
-    const currentCoord = { x: e.clientX, y: e.clientY };
+    // const currentCoord = { x: e.clientX, y: e.clientY };
     const rect = this.image.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -114,7 +116,6 @@ class PaperImage extends Component {
               onClick={this.handleImageClick}
               onDoubleClick={this.handleDoubleClickImage}
               width={width}
-              height="auto"
             />
             {this.renderDot()}
           </>

@@ -91,10 +91,10 @@ const styles = (theme) => ({
     flexDirection: 'column'
   },
   fixedHeight: {
-    height: '74vh'
+    height: '79vh'
   },
   fixedHeightSlider: {
-    height: '15vh',
+    height: '10vh',
     paddingTop: 0,
     paddingBottom: 0,
     paddingLeft: 30,
