@@ -10,7 +10,9 @@ const useStyles = makeStyles({
   root: {
     height: '7px',
     '& .MuiLinearProgress-dashedColorSecondary': {
-      backgroundImage: 'radial-gradient(#ed3330 0%, #ed3330 16%, transparent 62%)'
+      backgroundImage: 'radial-gradient(#ed3330 0%, #ed3330 1%, transparent 2%)',
+      animation: 'none',
+      backgroundColor: '#ed333052'
     }
   }
 });

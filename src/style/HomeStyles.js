@@ -65,7 +65,7 @@ const styles = (theme) => ({
   },
   container: {
     marginTop: headerHeigth,
-    paddingTop: theme.spacing(4),
+    paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2)
   },
   button: {
@@ -91,7 +91,7 @@ const styles = (theme) => ({
     flexDirection: 'column'
   },
   fixedHeight: {
-    height: `calc(100vh - ${headerHeigth * 2}px)`
+    height: `calc(100vh - ${headerHeigth * 1.7}px)`
   },
   progressbarContainer: {
     position: 'relative',

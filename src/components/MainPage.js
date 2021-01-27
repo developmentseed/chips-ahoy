@@ -31,6 +31,11 @@ class MainPage extends Component {
     if (!feature) return;
     let newFature = Object(feature);
     newFature.properties._has_school = `${value}`;
+    ['pointScale', 'sizeImage'].forEach((i) => {
+      if (newFature.properties[i]) {
+        delete newFature.properties[i];
+      }
+    });
     updateFeature(newFature);
   }
 
@@ -50,7 +55,7 @@ class MainPage extends Component {
         updateIndex(index - 1);
         break;
       case '1':
-        this.updateFeatureKey(false);
+        this.updateFeatureKey('no');
         break;
       case '2':
         this.updateFeatureKey('unrecognized');
@@ -88,14 +93,14 @@ class MainPage extends Component {
 
     return (
       <main className={classes.content}>
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={9} lg={9}>
+        <Container maxWidth="xl" className={classes.container}>
+          <Grid container spacing={1}>
+            <Grid item xs={12} sm={6} md={9} lg={9} xl={8}>
               <Paper className={fixedHeightPaper} elevation={3}>
                 <PaperImage />
               </Paper>
             </Grid>
-            <Grid item xs={12} md={3} lg={3}>
+            <Grid item xs={12} sm={6} md={3} lg={3} xl={4}>
               <Paper className={fixedHeightPaper} elevation={3}>
                 <SidePanel />
               </Paper>

@@ -8,8 +8,8 @@ import { updateFeature } from '../actions/dataActions';
 const styles = (theme) => ({
   content: {
     position: 'relative',
-    maxHeight: '75vh',
-    width: 'auto'
+    width: 'auto',
+    height: `calc(100vh - 85px - 32px)`
   },
   dot: {
     userSelect: 'none',
@@ -30,7 +30,8 @@ class PaperImage extends Component {
     super(props);
     this.state = {
       width: 0,
-      height: 0
+      height: 0,
+      minor: 0
     };
     this.resizeHandler = this.resizeHandler.bind(this);
     this.handleImageClick = this.handleImageClick.bind(this);
@@ -49,7 +50,11 @@ class PaperImage extends Component {
   resizeHandler() {
     const width = this.divElement.clientWidth;
     const height = this.divElement.clientHeight;
-    this.setState({ width, height });
+    let minor = width;
+    if (width >= height) {
+      minor = height;
+    }
+    this.setState({ width, height, minor });
   }
 
   handleImageClick(e) {
@@ -67,7 +72,7 @@ class PaperImage extends Component {
     //  scale add properties
     let newFature = Object(feature);
 
-    newFature.properties._has_school = true;
+    newFature.properties._has_school = 'yes';
     newFature.properties.pointScale = { x: x / scale, y: y / scale };
     newFature.properties.sizeImage = {
       x: e.currentTarget.naturalWidth,
@@ -79,11 +84,11 @@ class PaperImage extends Component {
 
   renderDot() {
     const { feature, classes } = this.props;
-    const { width } = this.state;
+    const { minor } = this.state;
 
     if (!(feature && feature.properties.pointScale && feature.properties.sizeImage)) return null;
     const { pointScale, sizeImage } = feature.properties;
-    const scaleX = width / sizeImage.x;
+    const scaleX = minor / sizeImage.x;
 
     return (
       <p
@@ -96,8 +101,8 @@ class PaperImage extends Component {
 
   render() {
     const { classes, feature } = this.props;
-    const { width } = this.state;
-
+    const { minor } = this.state;
+    // console.log(width, height, minor);
     return (
       <div
         className={classes.content}
@@ -112,8 +117,8 @@ class PaperImage extends Component {
               }}
               src={feature.properties.url}
               onClick={this.handleImageClick}
-              onDoubleClick={this.handleDoubleClickImage}
-              width={width}
+              width={minor}
+              alt="img"
             />
             {this.renderDot()}
           </>
