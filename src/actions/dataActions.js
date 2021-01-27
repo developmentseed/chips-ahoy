@@ -1,5 +1,3 @@
-import { InsertInvitationOutlined } from '@material-ui/icons';
-
 import { rangeImages, validateFileName } from '../utils/validate';
 
 export const FETCH_DATA_BEGIN = 'FETCH_DATA_BEGIN';
@@ -50,7 +48,7 @@ export function fetchData(files) {
   return (dispatch) => {
     dispatch(fetchDataBegin());
     const fileReader = new FileReader();
-    fileReader.onload = function (e) {
+    fileReader.onload = function () {
       const geojson = JSON.parse(fileReader.result);
       const total = (geojson.features || []).length;
       dispatch(fetchDataSuccess(geojson, validateFileName(files[0].name), total));

@@ -24,6 +24,6 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = () => ({});
 
 export default compose(connect(mapStateToProps), withStyles(styles))(Home);

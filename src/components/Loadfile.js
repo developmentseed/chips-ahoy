@@ -16,7 +16,7 @@ class Loadfile extends Component {
     this.props.dispatch(fetchData(files));
   }
 
-  onFilesError(error, file) {
+  onFilesError(error) {
     console.err('error code ' + error.code + ': ' + error.message);
   }
 
