@@ -60,18 +60,18 @@ class SidePanel extends Component {
   renderProperties() {
     const { classes, feature } = this.props;
     if (!feature || !feature.properties) return null;
+    const properties = Object.keys(feature.properties || {})
+      .sort()
+      .filter((i) => !['__reviewed'].includes(i))
+      .map((i) => ({ key: `${i}`, value: `${feature.properties[i]}` }));
     return (
       <>
-        {Object.keys(feature.properties || {}).map((l, k) => (
+        {properties.map((l, k) => (
           <ListItem key={`li-${k}`} className={classes.lItem}>
             <ListItemText
-              classes={
-                `${l}` === 'isreviewed' && feature.properties[l]
-                  ? { secondary: classes.secondaryText }
-                  : null
-              }
-              primary={`${l}`}
-              secondary={this.convertSecondaryText(feature.properties[l])}
+              classes={`${l.key}`.startsWith('_') ? { secondary: classes.secondaryText } : null}
+              primary={`${l.key}`}
+              secondary={this.convertSecondaryText(l.value)}
             />
           </ListItem>
         ))}
