@@ -88,6 +88,7 @@ export const updateData = (fData) => {
 export function updateFeature(newFeature) {
   return (dispatch, getState) => {
     let { index, data, totalFeatures } = getState().geojsonData;
+    newFeature.properties.__reviewed = true;
     data.features[index] = newFeature;
     dispatch(updateData(data));
     dispatch(fetchFeature(index, data, totalFeatures));

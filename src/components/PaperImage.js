@@ -67,8 +67,7 @@ class PaperImage extends Component {
     //  scale add properties
     let newFature = Object(feature);
 
-    newFature.properties.reviewed = true;
-    newFature.properties.isreviewed = true;
+    newFature.properties._has_school = true;
     newFature.properties.pointScale = { x: x / scale, y: y / scale };
     newFature.properties.sizeImage = {
       x: e.currentTarget.naturalWidth,

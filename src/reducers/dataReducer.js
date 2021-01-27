@@ -4,9 +4,9 @@ import {
   FETCH_DATA_SUCCESS,
   SET_FEATURE,
   SET_INDEX,
+  UPDATE_BUFFER,
   UPDATE_DATA,
-  UPDATE_FEATURE,
-  UPDATE_BUFFER
+  UPDATE_FEATURE
 } from '../actions/dataActions';
 
 const initialState = {

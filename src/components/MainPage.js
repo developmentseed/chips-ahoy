@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
 import { downloadGeojsonFile } from '../actions/controlAction';
-import { fetchFeature, updateIndex } from '../actions/dataActions';
+import { fetchFeature, updateFeature, updateIndex } from '../actions/dataActions';
 import styles from './../style/HomeStyles';
 import PaperImage from './PaperImage';
 import SidePanel from './SidePanel';
@@ -17,6 +17,7 @@ class MainPage extends Component {
     super(props);
     this.save = this.save.bind(this);
     this.keyFunction = this.keyFunction.bind(this);
+    this.updateFeatureKey = this.updateFeatureKey.bind(this);
   }
   componentDidMount() {
     document.addEventListener('keydown', this.keyFunction, false);
@@ -24,6 +25,15 @@ class MainPage extends Component {
   componentWillUnmount() {
     document.removeEventListener('keydown', this.keyFunction, false);
   }
+
+  updateFeatureKey(value) {
+    const { feature, updateFeature } = this.props;
+    if (!feature) return;
+    let newFature = Object(feature);
+    newFature.properties._has_school = `${value}`;
+    updateFeature(newFature);
+  }
+
   keyFunction(event) {
     const { updateIndex, index } = this.props;
     switch (event.key) {
@@ -39,8 +49,14 @@ class MainPage extends Component {
       case 'a':
         updateIndex(index - 1);
         break;
+      case '1':
+        this.updateFeatureKey(false);
+        break;
+      case '2':
+        this.updateFeatureKey('unrecognized');
+        break;
       default:
-        console.log('a tecla', event.key, index);
+        console.log('another key', event.key);
         break;
     }
   }
@@ -93,6 +109,7 @@ class MainPage extends Component {
 
 const mapStateToProps = (state) => ({
   data: state.geojsonData.data,
+  feature: state.geojsonData.feature,
   index: state.geojsonData.index,
   totalFeatures: state.geojsonData.totalFeatures,
   fileName: state.geojsonData.fileName,
@@ -101,7 +118,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   downloadGeojsonFile,
   fetchFeature,
-  updateIndex
+  updateIndex,
+  updateFeature
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withStyles(styles))(MainPage);
