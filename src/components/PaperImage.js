@@ -49,7 +49,6 @@ class PaperImage extends Component {
   resizeHandler() {
     const width = this.divElement.clientWidth;
     const height = this.divElement.clientHeight;
-    console.log(this.state, width, height)
     this.setState({ width, height });
   }
 

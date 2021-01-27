@@ -11,7 +11,6 @@ import { fetchFeature, updateIndex } from '../actions/dataActions';
 import styles from './../style/HomeStyles';
 import PaperImage from './PaperImage';
 import SidePanel from './SidePanel';
-import SliderImages from './SliderImages';
 
 class MainPage extends Component {
   constructor(props) {
@@ -31,11 +30,17 @@ class MainPage extends Component {
       case 'ArrowRight':
         updateIndex(index + 1);
         break;
+      case 'd':
+        updateIndex(index + 1);
+        break;
       case 'ArrowLeft':
         updateIndex(index - 1);
         break;
+      case 'a':
+        updateIndex(index - 1);
+        break;
       default:
-        console.log('otra tecla', event.key, index);
+        console.log('a tecla', event.key, index);
         break;
     }
   }
@@ -64,7 +69,6 @@ class MainPage extends Component {
   render() {
     const { classes } = this.props;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-    const fixedHeightSlider = clsx(classes.paper, classes.fixedHeightSlider);
 
     return (
       <main className={classes.content}>
@@ -79,11 +83,6 @@ class MainPage extends Component {
               <Paper className={fixedHeightPaper} elevation={3}>
                 <SidePanel />
               </Paper>
-            </Grid>
-            <Grid item xs={12} md={12} lg={12}>
-              <div className={fixedHeightSlider}>
-                <SliderImages />
-              </div>
             </Grid>
           </Grid>
         </Container>

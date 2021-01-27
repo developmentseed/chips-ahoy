@@ -1,4 +1,6 @@
-import { validateFileName } from '../utils/validate';
+import { InsertInvitationOutlined } from '@material-ui/icons';
+
+import { rangeImages, validateFileName } from '../utils/validate';
 
 export const FETCH_DATA_BEGIN = 'FETCH_DATA_BEGIN';
 export const FETCH_DATA_SUCCESS = 'FETCH_DATA_SUCCESS';
@@ -90,5 +92,21 @@ export function updateFeature(newFeature) {
     dispatch(updateData(data));
     dispatch(fetchFeature(index, data, totalFeatures));
     dispatch(updateIndex(index + 1));
+    dispatch(preloadImages(index, data));
+  };
+}
+
+// preload image
+export function preloadImages(index, data) {
+  return (dispatch) => {
+    const { start, end } = rangeImages(index);
+    const data_tmp = data.features.slice(start, end);
+    let gridImagesDiv = [];
+    for (var geo of data_tmp) {
+      let img = new Image();
+      img.src = geo.properties.url;
+      img.id = `img_${geo.properties.url}`;
+      gridImagesDiv.push(img);
+    }
   };
 }

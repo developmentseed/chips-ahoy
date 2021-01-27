@@ -8,6 +8,7 @@ import { compose } from 'recompose';
 
 import { downloadGeojsonFile } from '../actions/controlAction';
 import styles from '../style/HomeStyles';
+import ProgressBar from './ProgressBar';
 
 class Header extends Component {
   constructor() {
@@ -37,6 +38,7 @@ class Header extends Component {
           <Typography variant="subtitle2" className={classes.nameFile}>
             {fileName}
           </Typography>
+          <ProgressBar />
           {totalFeatures !== 0 ? (
             <Button className={classes.button} color="inherit" onClick={this.downloadFile}>
               Download

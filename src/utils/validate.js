@@ -8,3 +8,14 @@ export function validateFileName(fileName) {
 
   return newName + ext;
 }
+
+export function rangeImages(index, range = 35) {
+  if (index <= range) {
+    if (index >= range / 2) {
+      return { start: index - 5, end: range + 5 };
+    }
+    return { start: index, end: range + 5 };
+  }
+
+  return { start: index - 5, end: index + range - 5 };
+}

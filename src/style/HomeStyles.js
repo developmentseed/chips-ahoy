@@ -91,14 +91,12 @@ const styles = (theme) => ({
     flexDirection: 'column'
   },
   fixedHeight: {
-    height: '79vh'
+    height: `calc(100vh - ${headerHeigth * 2}px)`
   },
-  fixedHeightSlider: {
-    height: '10vh',
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: 30,
-    paddingRight: 30
+  progressbarContainer: {
+    position: 'relative',
+    marginLeft: 0,
+    width: `calc(100vw - ${drawerWidth * 3}px)`
   }
 });
 

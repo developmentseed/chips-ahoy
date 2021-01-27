@@ -26,13 +26,11 @@
   },
   "homepage": "https://github.com/developmentseed/chips-ahoy#readme",
   "dependencies": {
-    "@mapbox/tile-cover": "^3.0.2",
     "@material-ui/core": "^4.4.0",
     "@material-ui/icons": "^4.2.1",
     "@material-ui/styles": "^4.5.0",
     "chroma-js": "^2.0.6",
     "file-saver": "^2.0.2",
-    "mapbox-gl": "^1.2.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-files": "^2.4.8",
@@ -40,10 +38,8 @@
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.1.0",
-    "react-slick": "^0.27.13",
     "recompose": "^0.30.0",
     "redux": "^4.0.4",
-    "redux-api-middleware": "^3.0.1",
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
