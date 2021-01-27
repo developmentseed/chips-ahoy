@@ -5,7 +5,8 @@ import {
   SET_FEATURE,
   SET_INDEX,
   UPDATE_DATA,
-  UPDATE_FEATURE
+  UPDATE_FEATURE,
+  UPDATE_BUFFER
 } from '../actions/dataActions';
 
 const initialState = {
@@ -15,7 +16,8 @@ const initialState = {
   error: null,
   fileName: '',
   index: 0,
-  totalFeatures: 0
+  totalFeatures: 0,
+  buffer: 0
 };
 
 export default function dataReducer(state = initialState, action) {
@@ -60,6 +62,11 @@ export default function dataReducer(state = initialState, action) {
       return {
         ...state,
         feature: action.payload.feature
+      };
+    case UPDATE_BUFFER:
+      return {
+        ...state,
+        buffer: action.payload.buffer
       };
     default:
       return state;

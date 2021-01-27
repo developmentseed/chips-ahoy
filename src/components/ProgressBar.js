@@ -46,31 +46,32 @@ class ProgressBar extends Component {
   }
 
   calculateBuffer() {
-    const { totalFeatures, index } = this.props;
+    const { totalFeatures, buffer, index } = this.props;
 
     if (totalFeatures === index) {
       return { completed: 0, buffer: 0 };
     }
     const completed = (index / totalFeatures) * 100;
+    const preload = (buffer / totalFeatures) * 100;
 
-    return { completed, buffer: completed + 20 };
+    return { completed, preload };
   }
 
   render() {
     const { classes, totalFeatures } = this.props;
-    const { completed, buffer } = this.calculateBuffer();
+    const { completed, preload } = this.calculateBuffer();
 
     if (totalFeatures == 0) return null;
     return (
       <div className={classes.progressbarContainer}>
-        <LinearProgressWithLabel value={completed} valueBuffer={buffer} />
+        <LinearProgressWithLabel value={completed} valueBuffer={preload} />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  data: state.geojsonData.data,
+  buffer: state.geojsonData.buffer,
   index: state.geojsonData.index,
   totalFeatures: state.geojsonData.totalFeatures
 });

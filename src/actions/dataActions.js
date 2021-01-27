@@ -92,21 +92,39 @@ export function updateFeature(newFeature) {
     dispatch(updateData(data));
     dispatch(fetchFeature(index, data, totalFeatures));
     dispatch(updateIndex(index + 1));
-    dispatch(preloadImages(index, data));
+    dispatch(preloadImages(index, data, totalFeatures));
   };
 }
 
 // preload image
-export function preloadImages(index, data) {
+
+export const UPDATE_BUFFER = 'UPDATE_BUFFER';
+
+export const updateBuffer = (buffer) => {
+  return {
+    type: UPDATE_BUFFER,
+    payload: { buffer }
+  };
+};
+
+export function preloadImages(index, data, totalFeatures) {
   return (dispatch) => {
-    const { start, end } = rangeImages(index);
+    let { start, end } = rangeImages(index);
+    if (end >= totalFeatures) {
+      end = totalFeatures;
+    }
     const data_tmp = data.features.slice(start, end);
     let gridImagesDiv = [];
-    for (var geo of data_tmp) {
-      let img = new Image();
-      img.src = geo.properties.url;
-      img.id = `img_${geo.properties.url}`;
-      gridImagesDiv.push(img);
+    for (var [i, geo] of data_tmp.entries()) {
+      try {
+        let img = new Image();
+        img.src = geo.properties.url;
+        img.id = `img_${geo.properties.url}`;
+        gridImagesDiv.push(img);
+        dispatch(updateBuffer(start + i));
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 }
