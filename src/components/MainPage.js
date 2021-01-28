@@ -95,14 +95,14 @@ class MainPage extends Component {
       <main className={classes.content}>
         <Container maxWidth="xl" className={classes.container}>
           <Grid container spacing={1}>
-            <Grid item xs={12} sm={6} md={9} lg={9} xl={8}>
-              <Paper className={fixedHeightPaper} elevation={3}>
-                <PaperImage />
-              </Paper>
-            </Grid>
             <Grid item xs={12} sm={6} md={3} lg={3} xl={4}>
               <Paper className={fixedHeightPaper} elevation={3}>
                 <SidePanel />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} md={9} lg={9} xl={8}>
+              <Paper className={fixedHeightPaper} elevation={3}>
+                <PaperImage />
               </Paper>
             </Grid>
           </Grid>
