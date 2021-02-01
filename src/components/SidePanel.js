@@ -53,7 +53,7 @@ class SidePanel extends Component {
   }
   convertSecondaryText(text) {
     if (!text) return '';
-    if (typeof text === 'object') return JSON.stringify(text);
+    if (`${typeof text}` === 'object') return JSON.stringify(text);
     return `${text}`;
   }
 
@@ -63,7 +63,7 @@ class SidePanel extends Component {
     const properties = Object.keys(feature.properties || {})
       .sort()
       .filter((i) => !['__reviewed'].includes(i))
-      .map((i) => ({ key: `${i}`, value: `${feature.properties[i]}` }));
+      .map((i) => ({ key: `${i}`, value: feature.properties[i] }));
     return (
       <>
         {properties.map((l, k) => (

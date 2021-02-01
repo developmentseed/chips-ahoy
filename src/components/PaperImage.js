@@ -73,11 +73,11 @@ class PaperImage extends Component {
     let newFature = Object(feature);
 
     newFature.properties._has_school = 'yes';
-    newFature.properties.pointScale = { x: x / scale, y: y / scale };
-    newFature.properties.sizeImage = {
-      x: e.currentTarget.naturalWidth,
-      y: e.currentTarget.naturalHeight
-    };
+    newFature.properties.pointScale = Object({ x: x / scale, y: y / scale });
+    newFature.properties.sizeImage = Object({
+      width: e.currentTarget.naturalWidth,
+      height: e.currentTarget.naturalHeight
+    });
 
     updateFeature(newFature);
   }
@@ -88,7 +88,7 @@ class PaperImage extends Component {
 
     if (!(feature && feature.properties.pointScale && feature.properties.sizeImage)) return null;
     const { pointScale, sizeImage } = feature.properties;
-    const scaleX = minor / sizeImage.x;
+    const scaleX = minor / sizeImage.width;
 
     return (
       <p
