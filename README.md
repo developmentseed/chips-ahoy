@@ -2,15 +2,13 @@
 
 Used for validating machine learning chips.
 
-- Start running with `python -m http.server` or clicking on the `index.html`
 - Upload a `GeoJSON FeatureCollection`
-- Use the keyboard to indicate whether the desired label is present in the chip
-- Use the input field to skip to a given chip
-- Save
+- Use the `url` properties for load a image.
 
-Keyboard commands:
+commands:
 
-- Left arrow: back one chip
-- Right arrow: forward one chip
-- Y: assign status `"yes"` and go forward one chip
-- N: assign status `"no"` and go forward one chip
+- `Left arrow` or `a`: back one chip
+- `Right arrow` or `d`: forward one chip
+- `1` : assign `_has_school=no` and go forward one chip
+- `2` : assign `_has_school=unrecognized` and go forward one chip
+- `click on the image` : assign `_has_school=yes`, `pointScale={x,y}`, `sizeImage={width,height}` of the imagen and go forward one chip
