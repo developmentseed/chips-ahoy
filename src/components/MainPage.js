@@ -66,7 +66,7 @@ class MainPage extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { index, data, totalFeatures, downloadGeojsonFile, fetchFeature } = this.props;
     if (nextProps.index !== index) {
       fetchFeature(nextProps.index, data, totalFeatures);

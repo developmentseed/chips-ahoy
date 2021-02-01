@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 
 import { updateFeature } from '../actions/dataActions';
 
-const styles = (theme) => ({
+const styles = () => ({
   content: {
     position: 'relative',
     width: 'auto',

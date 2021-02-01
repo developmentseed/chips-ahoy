@@ -10,6 +10,7 @@ import MainPage from './MainPage';
 class Home extends Component {
   constructor(props) {
     super(props);
+    this.state = {};
   }
   render() {
     // const open =true;

@@ -63,7 +63,7 @@ class ProgressBar extends Component {
     const { classes, totalFeatures } = this.props;
     const { completed, preload } = this.calculateBuffer();
 
-    if (totalFeatures == 0) return null;
+    if (totalFeatures === 0) return null;
     return (
       <div className={classes.progressbarContainer}>
         <LinearProgressWithLabel value={completed} valueBuffer={preload} />

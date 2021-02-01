@@ -15,7 +15,7 @@ import { compose } from 'recompose';
 import { updateIndex } from '../actions/dataActions';
 import Loadfile from './Loadfile';
 
-const styles = (theme) => ({
+const styles = () => ({
   lItem: {
     paddingBottom: 0,
     paddingRight: 0,
