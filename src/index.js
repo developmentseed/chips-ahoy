@@ -10,7 +10,7 @@ import store from './store';
 ReactDOM.render(
   <HttpsRedirect>
     <Provider store={store}>
-      <BrowserRouter basename="/chip-ahoy">
+      <BrowserRouter basename="/chips-ahoy">
         <Switch>
           <Route exact component={App} path="/" />
         </Switch>

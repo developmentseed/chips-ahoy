@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/developmentseed/chips-ahoy/issues"
   },
-  "homepage": "https://github.com/developmentseed/chips-ahoy#readme",
+  "homepage": "http://devseed.com/chips-ahoy/",
   "dependencies": {
     "@material-ui/core": "^4.4.0",
     "@material-ui/icons": "^4.2.1",
