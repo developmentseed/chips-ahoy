@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/developmentseed/chips-ahoy/static/js/main.45354c1d.chunk.js",
-    "main.js.map": "/developmentseed/chips-ahoy/static/js/main.45354c1d.chunk.js.map",
-    "runtime~main.js": "/developmentseed/chips-ahoy/static/js/runtime~main.f27b31bc.js",
-    "runtime~main.js.map": "/developmentseed/chips-ahoy/static/js/runtime~main.f27b31bc.js.map",
-    "static/js/2.8d344ddd.chunk.js": "/developmentseed/chips-ahoy/static/js/2.8d344ddd.chunk.js",
-    "static/js/2.8d344ddd.chunk.js.map": "/developmentseed/chips-ahoy/static/js/2.8d344ddd.chunk.js.map",
-    "index.html": "/developmentseed/chips-ahoy/index.html",
-    "precache-manifest.e10412bd6801273fa579a38506a15425.js": "/developmentseed/chips-ahoy/precache-manifest.e10412bd6801273fa579a38506a15425.js",
-    "service-worker.js": "/developmentseed/chips-ahoy/service-worker.js"
+    "main.js": "/chips-ahoy/static/js/main.45354c1d.chunk.js",
+    "main.js.map": "/chips-ahoy/static/js/main.45354c1d.chunk.js.map",
+    "runtime~main.js": "/chips-ahoy/static/js/runtime~main.644ce2a7.js",
+    "runtime~main.js.map": "/chips-ahoy/static/js/runtime~main.644ce2a7.js.map",
+    "static/js/2.8d344ddd.chunk.js": "/chips-ahoy/static/js/2.8d344ddd.chunk.js",
+    "static/js/2.8d344ddd.chunk.js.map": "/chips-ahoy/static/js/2.8d344ddd.chunk.js.map",
+    "index.html": "/chips-ahoy/index.html",
+    "precache-manifest.92d0a08b1ef26d41341f92dbcfd5196e.js": "/chips-ahoy/precache-manifest.92d0a08b1ef26d41341f92dbcfd5196e.js",
+    "service-worker.js": "/chips-ahoy/service-worker.js"
   }
 }
