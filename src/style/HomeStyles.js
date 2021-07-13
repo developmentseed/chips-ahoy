@@ -1,5 +1,5 @@
 const drawerWidth = 240;
-const headerHeigth = 50;
+const headerHeigth = 55;
 
 const styles = (theme) => ({
   root: {

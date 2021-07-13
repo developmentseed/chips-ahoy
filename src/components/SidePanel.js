@@ -19,7 +19,8 @@ const styles = () => ({
   lItem: {
     paddingBottom: 0,
     paddingRight: 0,
-    paddingLeft: 0
+    paddingLeft: 0,
+    wordWrap: 'break-word'
   },
   primaryText: {
     textAlign: 'center',

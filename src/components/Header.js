@@ -33,7 +33,7 @@ class Header extends Component {
             <Weekend />
           </IconButton>
           <Typography variant="h6" noWrap>
-            CHIP-AHOY
+            CHIPS-AHOY
           </Typography>
           <Typography variant="subtitle2" className={classes.nameFile}>
             {fileName}
@@ -41,7 +41,7 @@ class Header extends Component {
           <ProgressBar />
           {totalFeatures !== 0 ? (
             <Button className={classes.button} color="inherit" onClick={this.downloadFile}>
-              Download
+              DOWNLOAD
             </Button>
           ) : null}
         </Toolbar>
