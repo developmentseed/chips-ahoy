@@ -5,7 +5,7 @@ Author: @developmentseed
 """
 import json
 import logging
-from uuid import uuid1 
+from uuid import uuid1
 from itertools import islice
 
 import click
@@ -15,7 +15,7 @@ from shapely.geometry import shape
 from smart_open import open
 from tqdm import tqdm
 
-logging.basicConfig(level = logging.INFO)
+logging.basicConfig(level=logging.INFO)
 
 
 def chunk(it, size):
@@ -80,16 +80,14 @@ def main(geojson_file, zoom, url_map_service, geojson_output, chuck):
     ]
 
     logging.info(f"Total features : {len(new_features)}")
-    
+
     if chuck:
         for k, i in enumerate(list(chunk(new_features, chuck))):
             with open(
                 geojson_output.replace(".geojson", f"_{k}.geojson"), "w"
             ) as out_geo:
                 out_geo.write(
-                    json.dumps(fc(i), ensure_ascii=False)
-                    .encode("utf8")
-                    .decode()
+                    json.dumps(fc(i), ensure_ascii=False).encode("utf8").decode()
                 )
     else:
         with open(geojson_output, "w") as out_geo:
