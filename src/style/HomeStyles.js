@@ -26,10 +26,15 @@ const styles = (theme) => ({
     [theme.breakpoints.up('sm')]: {
       minHeight: headerHeigth
     },
-    background: '#ffc107'
+    background: '#ffc107',
+    display: 'flex',
+    flexDirection: 'row',
+    alignContent: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(1)
   },
   hide: {
     display: 'none'
@@ -69,13 +74,10 @@ const styles = (theme) => ({
     paddingBottom: theme.spacing(2)
   },
   button: {
-    position: 'absolute',
-    right: '5px',
     color: '#fff !important',
     textTransform: 'uppercase',
     textDecoration: 'none',
     background: '#ed3330',
-    display: 'inline-block',
     border: 'none',
     textAlign: 'center',
     width: '180px'
@@ -97,6 +99,9 @@ const styles = (theme) => ({
     position: 'relative',
     marginLeft: 0,
     width: `calc(100vw - ${drawerWidth * 3}px)`
+  },
+  justifyCo: {
+    justifyContent: 'flex-start'
   }
 });
 

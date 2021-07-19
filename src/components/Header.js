@@ -22,9 +22,13 @@ class Header extends Component {
 
   render() {
     const { classes, fileName, totalFeatures } = this.props;
+    const hasFeatures = totalFeatures !== 0;
     return (
       <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar className={classes.toolbar}>
+        <Toolbar
+          className={
+            hasFeatures ? clsx(classes.toolbar) : clsx(classes.toolbar, classes.justifyCo)
+          }>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -39,7 +43,7 @@ class Header extends Component {
             {fileName}
           </Typography>
           <ProgressBar />
-          {totalFeatures !== 0 ? (
+          {hasFeatures ? (
             <Button className={classes.button} color="inherit" onClick={this.downloadFile}>
               DOWNLOAD
             </Button>

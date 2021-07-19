@@ -31,7 +31,7 @@ function LinearProgressWithLabel(props) {
           {...props}
         />
       </Box>
-      <Box minWidth={35}>
+      <Box minWidth={40}>
         <Typography variant="subtitle2">{`${Math.round(props.value * 10) / 10}%`}</Typography>
       </Box>
     </Box>
