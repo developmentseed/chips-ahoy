@@ -1,0 +1,71 @@
+{
+  "name": "chips-ahoy",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Used for validating machine learning chips.",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "./node_modules/.bin/eslint src/ --ext .js",
+    "format": "prettier --write './**/*.{js,jsx,css,md,json}' --config ./.prettierrc",
+    "deploy": "yarn build && gh-pages -d build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/developmentseed/chips-ahoy.git"
+  },
+  "author": {
+    "name": "Development Seed",
+    "url": "https://developmentseed.org"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/developmentseed/chips-ahoy/issues"
+  },
+  "homepage": "http://devseed.com/chips-ahoy/",
+  "dependencies": {
+    "@material-ui/core": "^4.4.0",
+    "@material-ui/icons": "^4.2.1",
+    "@material-ui/styles": "^4.5.0",
+    "chroma-js": "^2.0.6",
+    "file-saver": "^2.0.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-files": "^2.4.8",
+    "react-https-redirect": "^1.1.0",
+    "react-redux": "^7.1.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.1.0",
+    "recompose": "^0.30.0",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "gh-pages": "^2.0.1",
+    "prettier": "^2.2.1"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
