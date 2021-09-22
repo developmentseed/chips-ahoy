@@ -1,7 +1,7 @@
 export function makeChartData(data) {
+  if (!data) return null;
   const { features } = data;
-
-  if (!features) return null;
+  if (features.length === 0) return null;
   var yes = 0;
   var no = 0;
   var unrecognized = 0;

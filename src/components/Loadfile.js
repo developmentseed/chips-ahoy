@@ -17,7 +17,7 @@ class Loadfile extends Component {
   }
 
   onFilesError(error) {
-    console.err('error code ' + error.code + ': ' + error.message);
+    console.error('error code ' + error.code + ': ' + error.message);
   }
 
   render() {
