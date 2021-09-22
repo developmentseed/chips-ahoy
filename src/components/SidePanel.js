@@ -10,11 +10,29 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { compose } from 'recompose';
 
 import { updateIndex } from '../actions/dataActions';
 import { headerHeigth } from '../style/HomeStyles';
+import { makeChartData } from '../utils/utils';
 import Loadfile from './Loadfile';
+
+const COLORS = ['#28a745', '#dc3545', '#17a2b8', '#6c757d'];
+
+const RADIAN = Math.PI / 180;
+
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
 
 const styles = () => ({
   container: {
@@ -27,10 +45,13 @@ const styles = () => ({
   listfeatures: {
     display: 'flex',
     flexDirection: 'column',
-    maxHeight: `calc(100vh - 64px - 32px - ${headerHeigth * 1.7}px)`,
+    maxHeight: `calc(100vh - 64px - 32px - 230px - ${headerHeigth * 1.7}px)`,
     overflow: 'auto',
     width: '100%',
     padding: 0
+  },
+  chartContainer: {
+    height: 230
   },
   lItem: {
     paddingBottom: 0,
@@ -113,7 +134,8 @@ class SidePanel extends Component {
   }
 
   render() {
-    const { classes, total, index, feature } = this.props;
+    const { classes, total, index, feature, data } = this.props;
+    const dataChart = makeChartData(data);
 
     return (
       <div className={classes.container}>
@@ -146,6 +168,28 @@ class SidePanel extends Component {
           {this.renderFeature()}
         </List>
         <Divider />
+        {feature && dataChart ? (
+          <div className={classes.chartContainer}>
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={dataChart}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={renderCustomizedLabel}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value">
+                  {dataChart.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        ) : null}
       </div>
     );
   }
@@ -154,7 +198,8 @@ class SidePanel extends Component {
 const mapStateToProps = (state) => ({
   total: state.geojsonData.totalFeatures,
   index: state.geojsonData.index,
-  feature: state.geojsonData.feature
+  feature: state.geojsonData.feature,
+  data: state.geojsonData.data
 });
 
 export default compose(connect(mapStateToProps), withStyles(styles))(SidePanel);

@@ -104,7 +104,8 @@ const styles = (theme) => ({
     justifyContent: 'flex-start'
   },
   overflowNone: {
-    overflow: 'unset'
+    overflow: 'unset',
+    paddingRight: 1
   }
 });
 
