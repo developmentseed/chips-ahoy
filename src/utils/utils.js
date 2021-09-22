@@ -27,6 +27,6 @@ export function makeChartData(data) {
     { name: 'yes', value: yes },
     { name: 'no', value: no },
     { name: 'unrecognized', value: unrecognized },
-    { name: 'un review', value: features.length - yes - no - unrecognized }
+    { name: 'unreviewed', value: features.length - yes - no - unrecognized }
   ];
 }
