@@ -1,5 +1,5 @@
 const drawerWidth = 240;
-const headerHeigth = 55;
+export const headerHeigth = 55;
 
 const styles = (theme) => ({
   root: {
@@ -102,6 +102,9 @@ const styles = (theme) => ({
   },
   justifyCo: {
     justifyContent: 'flex-start'
+  },
+  overflowNone: {
+    overflow: 'unset'
   }
 });
 

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { withStyles } from '@material-ui/styles';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -72,7 +74,7 @@ class PaperImage extends Component {
     //  scale add properties
     let newFature = Object(feature);
 
-    newFature.properties._has_school = 'yes';
+    newFature.properties.dc_has_pattern_school = 'yes';
     newFature.properties.pointScale = Object({ x: x / scale, y: y / scale });
     newFature.properties.sizeImage = Object({
       width: e.currentTarget.naturalWidth,

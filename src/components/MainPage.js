@@ -30,7 +30,7 @@ class MainPage extends Component {
     const { feature, updateFeature } = this.props;
     if (!feature) return;
     let newFature = Object(feature);
-    newFature.properties._has_school = `${value}`;
+    newFature.properties.dc_has_pattern_school = `${value}`;
     ['pointScale', 'sizeImage'].forEach((i) => {
       if (newFature.properties[i]) {
         delete newFature.properties[i];
@@ -96,7 +96,7 @@ class MainPage extends Component {
         <Container maxWidth="xl" className={classes.container}>
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6} md={3} lg={3} xl={4}>
-              <Paper className={fixedHeightPaper} elevation={3}>
+              <Paper className={clsx(fixedHeightPaper, classes.overflowNone)} elevation={3}>
                 <SidePanel />
               </Paper>
             </Grid>

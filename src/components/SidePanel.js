@@ -13,9 +13,25 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
 import { updateIndex } from '../actions/dataActions';
+import { headerHeigth } from '../style/HomeStyles';
 import Loadfile from './Loadfile';
 
 const styles = () => ({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignContent: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'stretch'
+  },
+  listfeatures: {
+    display: 'flex',
+    flexDirection: 'column',
+    maxHeight: `calc(100vh - 64px - 32px - ${headerHeigth * 1.7}px)`,
+    overflow: 'auto',
+    width: '100%',
+    padding: 0
+  },
   lItem: {
     paddingBottom: 0,
     paddingRight: 0,
@@ -27,7 +43,8 @@ const styles = () => ({
     color: '#808080'
   },
   secondaryText: {
-    color: 'red'
+    color: 'red',
+    fontSize: '1rem'
   }
 });
 
@@ -70,7 +87,9 @@ class SidePanel extends Component {
         {properties.map((l, k) => (
           <ListItem key={`li-${k}`} className={classes.lItem}>
             <ListItemText
-              classes={`${l.key}`.startsWith('_') ? { secondary: classes.secondaryText } : null}
+              classes={
+                l.key === 'dc_has_pattern_school' ? { secondary: classes.secondaryText } : null
+              }
               primary={`${l.key}`}
               secondary={this.convertSecondaryText(l.value)}
             />
@@ -84,12 +103,12 @@ class SidePanel extends Component {
     const { classes, feature } = this.props;
     if (!feature || !feature.properties) return null;
     return (
-      <>
+      <React.Fragment>
         <ListItem>
           <ListItemText primary="Properties" classes={{ primary: classes.primaryText }} />
         </ListItem>
         {this.renderProperties()}
-      </>
+      </React.Fragment>
     );
   }
 
@@ -97,7 +116,7 @@ class SidePanel extends Component {
     const { classes, total, index, feature } = this.props;
 
     return (
-      <div>
+      <div className={classes.container}>
         {!feature ? <Loadfile /> : null}
         {feature ? (
           <List component="nav">
@@ -113,7 +132,7 @@ class SidePanel extends Component {
             <Divider />
           </List>
         ) : null}
-        <List component="nav">
+        <List component="nav" className={classes.listfeatures}>
           {total !== 0 ? (
             <ListItem className={classes.lItem}>
               <ListItemText primary="Total" />
