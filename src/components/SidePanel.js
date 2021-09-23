@@ -18,17 +18,24 @@ import { headerHeigth } from '../style/HomeStyles';
 import { makeChartData } from '../utils/utils';
 import Loadfile from './Loadfile';
 
-const COLORS = ['#28a745', '#dc3545', '#17a2b8', '#6c757d'];
+const COLORS = ['#00A650', '#E92D44', '#FFCD40', '#6c757d'];
 
 const RADIAN = Math.PI / 180;
 
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, value }) => {
+const renderCustomizedLabel = (props) => {
+  const { cx, cy, midAngle, innerRadius, outerRadius, percent, value, name } = props;
+
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
   if (!value) return null;
   return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+    <text
+      x={x}
+      y={y}
+      fill={name === 'unrecognized' ? '#000000de' : 'white'}
+      textAnchor={x > cx ? 'start' : 'end'}
+      dominantBaseline="central">
       {`${(percent * 100).toFixed(0)}%`}
     </text>
   );
