@@ -19,12 +19,12 @@ const styles = () => ({
     margin: 0,
     padding: 0,
     fontSize: 60,
-    color: '#ffc107',
+    color: '#00FF00',
     height: 0,
     width: 0,
     lineHeight: 0,
     letterSpacing: 0,
-    fontWeight: 200
+    fontWeight: 400
   }
 });
 class PaperImage extends Component {
