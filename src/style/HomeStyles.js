@@ -105,7 +105,7 @@ const styles = (theme) => ({
   },
   overflowNone: {
     overflow: 'unset',
-    paddingRight: 1
+    padding: 0
   }
 });
 

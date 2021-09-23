@@ -22,35 +22,19 @@ const COLORS = ['#28a745', '#dc3545', '#17a2b8', '#6c757d'];
 
 const RADIAN = Math.PI / 180;
 
-const renderCustomizedLabel = (prop) => {
-  const { percent, fill, cx, cy, midAngle, outerRadius } = prop;
-  const sin = Math.sin(-RADIAN * midAngle);
-  const cos = Math.cos(-RADIAN * midAngle);
-  const sx = cx + (outerRadius + 10) * cos;
-  const sy = cy + (outerRadius + 10) * sin;
-  const mx = cx + (outerRadius + 20) * cos;
-  const my = cy + (outerRadius + 20) * sin;
-  const ex = mx + (cos >= 0 ? 1 : -1) * 2;
-  const ey = my;
-  const textAnchor = cos >= 0 ? 'start' : 'end';
-
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, value }) => {
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  if (!value) return null;
   return (
-    <g>
-      <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
-      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 2}
-        y={ey + (cos >= 0 ? 1 : -1) * 2}
-        textAnchor={textAnchor}
-        fill={fill}
-        fontSize="0.874rem">
-        {`${(percent * 100).toFixed(2)}%`}
-      </text>
-    </g>
+    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
   );
 };
 
-const styles = () => ({
+const styles = (theme) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -61,13 +45,15 @@ const styles = () => ({
   listfeatures: {
     display: 'flex',
     flexDirection: 'column',
-    maxHeight: `calc(100vh - 64px - 32px - 230px - ${headerHeigth * 1.7}px)`,
+    maxHeight: `calc(100vh - 64px - 32px - 250px - ${headerHeigth * 1.7}px)`,
     overflow: 'auto',
     width: '100%',
-    padding: 0
+    padding: theme.spacing(2),
+    paddingRight: 0
   },
   chartContainer: {
-    height: 230
+    height: 250,
+    padding: 0
   },
   lItem: {
     paddingBottom: 0,
@@ -82,6 +68,9 @@ const styles = () => ({
   secondaryText: {
     color: 'red',
     fontSize: '1rem'
+  },
+  paddinBox: {
+    padding: theme.spacing(2)
   }
 });
 
@@ -156,19 +145,30 @@ class SidePanel extends Component {
     if (!dataChart) return null;
 
     return (
-      <div className={classes.chartContainer}>
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie data={dataChart} cx="50%" cy="50%" label={renderCustomizedLabel} dataKey="value">
-              {dataChart.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
+      <React.Fragment>
+        <Divider />
+        <div className={classes.chartContainer}>
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart height={250}>
+              <Pie
+                data={dataChart}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={renderCustomizedLabel}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value">
+                {dataChart.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </React.Fragment>
     );
   }
   render() {
@@ -178,18 +178,15 @@ class SidePanel extends Component {
       <div className={classes.container}>
         {!feature ? <Loadfile /> : null}
         {feature ? (
-          <List component="nav">
-            <ListItem>
-              <TextField
-                id="index"
-                label="Index"
-                onChange={this.handleChange}
-                value={index}
-                type="number"
-              />
-            </ListItem>
-            <Divider />
-          </List>
+          <div className={classes.paddinBox}>
+            <TextField
+              id="index"
+              label="Index"
+              onChange={this.handleChange}
+              value={index}
+              type="number"
+            />
+          </div>
         ) : null}
         <List component="nav" className={classes.listfeatures}>
           {total !== 0 ? (
@@ -204,7 +201,6 @@ class SidePanel extends Component {
           ) : null}
           {this.renderFeature()}
         </List>
-        <Divider />
         {this.renderChart()}
       </div>
     );
