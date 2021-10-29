@@ -1,9 +1,12 @@
 import {
+  AppBar,
   Divider,
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
+  Tab,
+  Tabs,
   TextField,
   Typography
 } from '@material-ui/core';
@@ -17,11 +20,11 @@ import { updateIndex } from '../actions/dataActions';
 import { headerHeigth } from '../style/HomeStyles';
 import { makeChartData } from '../utils/utils';
 import Loadfile from './Loadfile';
-
+import TabPanel from './TabPanel';
 const COLORS = ['#00A650', '#E92D44', '#FFCD40', '#6c757d'];
 
 const RADIAN = Math.PI / 180;
-
+const IMAGEHEIGHT = 250;
 const renderCustomizedLabel = (props) => {
   const { cx, cy, midAngle, innerRadius, outerRadius, percent, value, name } = props;
 
@@ -44,6 +47,7 @@ const renderCustomizedLabel = (props) => {
 const styles = (theme) => ({
   container: {
     display: 'flex',
+    flex: 1,
     flexDirection: 'column',
     alignContent: 'center',
     justifyContent: 'space-between',
@@ -52,14 +56,18 @@ const styles = (theme) => ({
   listfeatures: {
     display: 'flex',
     flexDirection: 'column',
-    maxHeight: `calc(100vh - 64px - 32px - 250px - ${headerHeigth * 1.7}px)`,
+    maxHeight: `calc(100vh - 64px - 32px - 70px - ${IMAGEHEIGHT}px - ${headerHeigth * 1.7}px)`,
     overflow: 'auto',
     width: '100%',
     padding: theme.spacing(2),
     paddingRight: 0
   },
+  tabContainer: {
+    height: 320,
+    padding: 0
+  },
   chartContainer: {
-    height: 250,
+    height: IMAGEHEIGHT,
     padding: 0
   },
   lItem: {
@@ -78,6 +86,14 @@ const styles = (theme) => ({
   },
   paddinBox: {
     padding: theme.spacing(2)
+  },
+  imageContainer: {
+    textAlign: 'center',
+    padding: 10,
+    height: IMAGEHEIGHT
+  },
+  image: {
+    maxHeight: IMAGEHEIGHT
   }
 });
 
@@ -85,9 +101,16 @@ class SidePanel extends Component {
   constructor() {
     super();
     this.state = {
-      value: ''
+      value: '',
+      focus_tab: 0
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeTab = this.handleChangeTab.bind(this);
+  }
+  handleChangeTab(ev, focus_tab) {
+    const { feature } = this.props;
+    console.warn(feature, focus_tab);
+    this.setState({ focus_tab });
   }
 
   handleChange(e) {
@@ -152,35 +175,71 @@ class SidePanel extends Component {
     if (!dataChart) return null;
 
     return (
-      <React.Fragment>
+      <div className={classes.chartContainer}>
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart height={IMAGEHEIGHT}>
+            <Pie
+              data={dataChart}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={renderCustomizedLabel}
+              outerRadius={80}
+              fill="#8884d8"
+              dataKey="value">
+              {dataChart.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    );
+  }
+  renderContextImage() {
+    const { classes, feature } = this.props;
+    return (
+      <div className={classes.imageContainer}>
+        {feature && feature.properties && feature.properties.url_supertile ? (
+          <img src={feature.properties.url_supertile} alt="img" className={classes.image} />
+        ) : null}
+      </div>
+    );
+  }
+  renderTabs() {
+    let { focus_tab } = this.state;
+    const { classes, feature, total } = this.props;
+    if (!feature || total === 0) return null;
+    const has_supertile = feature && feature.properties && feature.properties.url_supertile;
+
+    return (
+      <div className={classes.tabContainer}>
         <Divider />
-        <div className={classes.chartContainer}>
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart height={250}>
-              <Pie
-                data={dataChart}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={renderCustomizedLabel}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value">
-                {dataChart.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-      </React.Fragment>
+        <AppBar position="static">
+          <Tabs
+            value={focus_tab}
+            indicatorColor="secondary"
+            textColor="inherit"
+            variant="scrollable"
+            scrollButtons="auto"
+            onChange={this.handleChangeTab}>
+            <Tab label="Chart" />
+            <Tab label="Map" disabled={!has_supertile} />
+          </Tabs>
+        </AppBar>
+        <TabPanel value={focus_tab} index={0}>
+          {this.renderChart()}
+        </TabPanel>
+        <TabPanel value={focus_tab} index={1}>
+          {this.renderContextImage()}
+        </TabPanel>
+      </div>
     );
   }
   render() {
     const { classes, total, index, feature } = this.props;
-
     return (
       <div className={classes.container}>
         {!feature ? <Loadfile /> : null}
@@ -208,7 +267,7 @@ class SidePanel extends Component {
           ) : null}
           {this.renderFeature()}
         </List>
-        {this.renderChart()}
+        {this.renderTabs()}
       </div>
     );
   }
