@@ -28,3 +28,7 @@ Used for validating machine learning chips.
 - `1` : assign `dc_has_pattern_school=no` and go forward one chip
 - `2` : assign `dc_has_pattern_school=unrecognized` and go forward one chip
 - `click on the image` : assign `dc_has_pattern_school=yes`, `pointScale={x,y}`, `sizeImage={width,height}` of the imagen and go forward one chip
+
+## Scripts
+
+The scripts to process data are in [geokit](http://devseed.com/geokit-doc-seed/usage/chips-ahoy/)
