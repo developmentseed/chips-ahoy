@@ -142,8 +142,6 @@ class SidePanel extends Component {
     this.handleChangeTab = this.handleChangeTab.bind(this);
   }
   handleChangeTab(ev, focus_tab) {
-    const { feature } = this.props;
-    console.warn(feature, focus_tab);
     this.setState({ focus_tab });
   }
 
