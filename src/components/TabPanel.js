@@ -1,7 +1,6 @@
 import React from 'react';
 
 function TabPanel(props) {
-  console.log(props);
   const { children, value, index, ...other } = props;
   if (value !== index) {
     return (
