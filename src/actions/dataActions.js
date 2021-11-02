@@ -119,6 +119,15 @@ export function preloadImages(index, data, totalFeatures) {
         let img = new Image();
         img.src = geo.properties.url;
         img.id = `img_${geo.properties.url}`;
+        if (geo.properties.tiles_neighbors) {
+          for (var [keyTiNe, valueTiNe] of Object.entries(geo.properties.tiles_neighbors)) {
+            let img_ti_ne = new Image();
+            img_ti_ne.src = valueTiNe;
+            img_ti_ne.id = `img_${valueTiNe}`;
+            img_ti_ne.alt = `img_${geo.properties.url}__${keyTiNe}`;
+            gridImagesDiv.push(img_ti_ne);
+          }
+        }
         gridImagesDiv.push(img);
         dispatch(updateBuffer(start + i));
       } catch (error) {
