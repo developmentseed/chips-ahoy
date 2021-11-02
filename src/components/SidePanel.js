@@ -321,27 +321,26 @@ class SidePanel extends Component {
     const { classes, feature, total } = this.props;
     if (!feature || total === 0) return null;
     const has_supertile = feature && feature.properties && feature.properties.tiles_neighbors;
-
     return (
       <div className={classes.tabContainer}>
-        <Divider />
-        <AppBar position="static">
+        <AppBar position="static" color="default">
           <Tabs
             value={focus_tab}
             indicatorColor="secondary"
             textColor="inherit"
             variant="scrollable"
             scrollButtons="auto"
+            disableRipple
             onChange={this.handleChangeTab}>
-            <Tab label="Chart" />
             <Tab label="Map" disabled={!has_supertile} />
+            <Tab label="Chart" />
           </Tabs>
         </AppBar>
         <TabPanel value={focus_tab} index={0}>
-          {this.renderChart()}
+          {this.renderContextImage()}
         </TabPanel>
         <TabPanel value={focus_tab} index={1}>
-          {this.renderContextImage()}
+          {this.renderChart()}
         </TabPanel>
       </div>
     );
@@ -362,7 +361,9 @@ class SidePanel extends Component {
             />
           </div>
         ) : null}
-        <List component="nav" className={classes.listfeatures}>
+        {this.renderTabs()}
+        <Divider />
+        <List component="div" className={classes.listfeatures}>
           {total !== 0 ? (
             <ListItem className={classes.lItem}>
               <ListItemText primary="Total" />
@@ -375,7 +376,6 @@ class SidePanel extends Component {
           ) : null}
           {this.renderFeature()}
         </List>
-        {this.renderTabs()}
       </div>
     );
   }
