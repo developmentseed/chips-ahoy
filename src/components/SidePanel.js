@@ -320,7 +320,7 @@ class SidePanel extends Component {
     let { focus_tab } = this.state;
     const { classes, feature, total } = this.props;
     if (!feature || total === 0) return null;
-    const has_supertile = feature && feature.properties && feature.properties.url_supertile;
+    const has_supertile = feature && feature.properties && feature.properties.tiles_neighbors;
 
     return (
       <div className={classes.tabContainer}>
