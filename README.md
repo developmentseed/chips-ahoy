@@ -2,6 +2,8 @@
 
 Used for validating machine learning chips.
 
+![Peek 2021-11-04 09-39](https://user-images.githubusercontent.com/12978932/140334426-188775bc-23e3-420c-ba24-fdc08f60ce15.gif)
+
 - Upload a `GeoJSON FeatureCollection`
 - Use the `url` properties for load a image.
 
