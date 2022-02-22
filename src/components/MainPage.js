@@ -74,72 +74,73 @@ class MainPage extends Component {
 
     // vacant_lots , shift == false
     if (key === 'q' && !shift) {
-      NotificationManager.success('Paved');
+      NotificationManager.success('Paved', 'vacant_lots', 1800);
       this.updateFeatureKey('prop_feature__vacant_lots__paved');
     }
     if (key === 'w' && !shift) {
-      NotificationManager.success('Info Unpaved');
+      NotificationManager.success('Info Unpaved', 'vacant_lots', 1800);
       this.updateFeatureKey('prop_feature__vacant_lots__unpaved');
     }
     if (key === 'e' && !shift) {
-      NotificationManager.success('Info Overgrown');
+      NotificationManager.success('Info Overgrown', 'vacant_lots', 1800);
       this.updateFeatureKey('prop_feature__vacant_lots__overgrown');
     }
     if (key === 'a' && !shift) {
-      NotificationManager.success('Fenced');
+      NotificationManager.success('Fenced', 'vacant_lots', 1800);
       this.updateFeatureKey('prop_feature__vacant_lots__fenced');
     }
     if (key === 's' && !shift) {
-      NotificationManager.success('Side Fences only');
+      NotificationManager.success('Side Fences only', 'vacant_lots', 1800);
       this.updateFeatureKey('prop_feature__vacant_lots__side_fences_only');
     }
     if (key === 'd' && !shift) {
-      NotificationManager.success('Litter/dumping/Tires');
-      this.updateFeatureKey('prop_feature__vacant_lots__litter_dumping_tires');
+      NotificationManager.success('Construction activity', 'vacant_lots', 1800);
+      this.updateFeatureKey('prop_feature__vacant_lots__construction_activity');
     }
     if (key === 'z' && !shift) {
-      NotificationManager.success('Side Fences only');
-      this.updateFeatureKey('prop_feature__vacant_lots__side_fences_only');
+      NotificationManager.success('Litter/dumping/Tires', 'vacant_lots', 1800);
+      this.updateFeatureKey('prop_feature__vacant_lots__litter_dumping_tires');
     }
+
     // Structures , shift == true
     if (key === 'q' && shift) {
-      NotificationManager.info('Damaged roof');
+      NotificationManager.info('Damaged roof', 'structures', 1800);
       this.updateFeatureKey('prop_feature__structures__damaged_roof');
     }
     if (key === 'w' && shift) {
-      NotificationManager.info('Broken windows / doors ');
+      NotificationManager.info('Broken windows / doors ', 'structures', 1800);
       this.updateFeatureKey('prop_feature__structures__broken_windows_doors');
     }
     if (key === 'e' && shift) {
-      NotificationManager.info('Missing windows / doors');
+      NotificationManager.info('Missing windows / doors', 'structures', 1800);
       this.updateFeatureKey('prop_feature__structures__missing_windows_doors');
     }
     if (key === 'a' && shift) {
-      NotificationManager.info('Boarded up windows / doors ');
+      NotificationManager.info('Boarded up windows / doors ', 'structures', 1800);
       this.updateFeatureKey('prop_feature__structures__boarded_up_windows_doors');
     }
     if (key === 's' && shift) {
-      NotificationManager.info('Overgrown lawn ');
+      NotificationManager.info('Overgrown lawn ', 'structures', 1800);
       this.updateFeatureKey('prop_feature__structures__overgrown_lawn');
     }
     if (key === 'd' && shift) {
-      NotificationManager.info('Overgrown shrubbery/trees');
+      NotificationManager.info('Overgrown shrubbery/trees', 'structures', 1800);
       this.updateFeatureKey('prop_feature__structures__overgrown_shrubbery_trees');
     }
     if (key === 'z' && shift) {
-      NotificationManager.info('Structural issues ');
+      NotificationManager.info('Structural issues ', 'structures', 1800);
       this.updateFeatureKey('prop_feature__structures__structural_issues');
     }
     if (key === 'x' && shift) {
-      NotificationManager.info('Faded paint');
+      NotificationManager.info('Faded paint', 'structures', 1800);
       this.updateFeatureKey('prop_feature__structures__faded_paint');
     }
     if (key === 'c' && shift) {
-      NotificationManager.info('Litter in / around structure');
+      NotificationManager.info('Litter in / around structure', 'structures', 1800);
       this.updateFeatureKey('prop_feature__structures__litter_in_around_structure');
     }
     if (key === 'v' && shift) {
-      NotificationManager.info('Abandoned vehicle');
+      NotificationManager.info('Abandoned vehicle', 'structures', 1800);
       this.updateFeatureKey('prop_feature__structures__abandoned_vehicle');
     }
 
@@ -175,14 +176,14 @@ class MainPage extends Component {
       <main className={classes.content}>
         <Container maxWidth="xl" className={classes.container}>
           <Grid container spacing={1}>
-            <Grid item xs={12} sm={6} md={3} lg={3} xl={4}>
-              <Paper className={clsx(fixedHeightPaper, classes.overflowNone)} elevation={3}>
-                <SidePanel />
-              </Paper>
-            </Grid>
             <Grid item xs={12} sm={6} md={9} lg={9} xl={8}>
               <Paper className={fixedHeightPaper} elevation={3}>
                 <PaperImage />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3} lg={3} xl={4}>
+              <Paper className={clsx(fixedHeightPaper, classes.overflowNone)} elevation={3}>
+                <SidePanel />
               </Paper>
             </Grid>
           </Grid>

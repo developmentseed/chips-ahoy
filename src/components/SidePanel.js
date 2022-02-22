@@ -15,6 +15,8 @@ import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
 import { updateIndex, updateFeature } from '../actions/dataActions';
 import { headerHeigth } from '../style/HomeStyles';
@@ -25,27 +27,8 @@ import { v4 as uuidv4 } from 'uuid';
 const COLORS = ['#00A650', '#E92D44', '#FFCD40', '#6c757d'];
 
 const RADIAN = Math.PI / 180;
-const CHECKBOXHEIGHT = 750;
+const CHECKBOXHEIGHT = 650;
 const IMAGE_SCALE = 100;
-
-const renderCustomizedLabel = (props) => {
-  const { cx, cy, midAngle, innerRadius, outerRadius, percent, value, name } = props;
-
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-  if (!value) return null;
-  return (
-    <text
-      x={x}
-      y={y}
-      fill={name === 'unrecognized' ? '#000000de' : 'white'}
-      textAnchor={x > cx ? 'start' : 'end'}
-      dominantBaseline="central">
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
 
 const styles = (theme) => ({
   container: {
@@ -66,7 +49,7 @@ const styles = (theme) => ({
     paddingRight: 0
   },
   tabContainer: {
-    minHeight: CHECKBOXHEIGHT + 32,
+    minHeight: CHECKBOXHEIGHT + 5,
     padding: 0
   },
   chartContainer: {
@@ -105,6 +88,10 @@ const styles = (theme) => ({
     width: 'auto',
     pointerEvents: 'none'
   },
+  label: {
+    fontSize: '1rem',
+    fontWeight: 600
+  },
   tableBig: {
     height: (CHECKBOXHEIGHT - IMAGE_SCALE) * 3,
     width: (CHECKBOXHEIGHT - IMAGE_SCALE) * 3,
@@ -131,6 +118,12 @@ const styles = (theme) => ({
   div9: { gridArea: '3 / 3 / 4 / 4', border: '1px solid red', pointerEvents: 'none' }
 });
 
+const CustomCheckBox = withStyles({
+  root: {
+    paddingBottom: 4,
+    paddingTop: 4
+  }
+})((props) => <Checkbox {...props} />);
 class SidePanel extends Component {
   constructor() {
     super();
@@ -306,11 +299,11 @@ class SidePanel extends Component {
     return (
       <div className={classes.canvasContainer}>
         <FormControl size="small">
-          <label>Vacant lots</label>
+          <label className={classes.label}>Vacant lots</label>
           <FormGroup>
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__vacant_lots__paved}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__vacant_lots__paved"
@@ -320,7 +313,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__vacant_lots__unpaved}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__vacant_lots__unpaved"
@@ -330,7 +323,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__vacant_lots__overgrown}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__vacant_lots__overgrown"
@@ -340,7 +333,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__vacant_lots__fenced}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__vacant_lots__fenced"
@@ -350,7 +343,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__vacant_lots__side_fences_only}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__vacant_lots__side_fences_only"
@@ -360,7 +353,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__vacant_lots__construction_activity}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__vacant_lots__construction_activity"
@@ -370,7 +363,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__vacant_lots__litter_dumping_tires}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__vacant_lots__litter_dumping_tires"
@@ -379,11 +372,12 @@ class SidePanel extends Component {
               label="Litter/dumping/Tires"
             />
           </FormGroup>
-          <label>Structures</label>
+          <label className={classes.label}>Structures</label>
+          <Divider />
           <FormGroup>
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__structures__damaged_roof}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__structures__damaged_roof"
@@ -394,7 +388,7 @@ class SidePanel extends Component {
 
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__structures__broken_windows_doors}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__structures__broken_windows_doors"
@@ -404,7 +398,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__structures__missing_windows_doors}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__structures__missing_windows_doors"
@@ -414,7 +408,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__structures__boarded_up_windows_doors}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__structures__boarded_up_windows_doors"
@@ -424,7 +418,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__structures__overgrown_lawn}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__structures__overgrown_lawn"
@@ -434,7 +428,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__structures__overgrown_shrubbery_trees}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__structures__overgrown_shrubbery_trees"
@@ -444,7 +438,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__structures__structural_issues}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__structures__structural_issues"
@@ -454,7 +448,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__structures__faded_paint}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__structures__faded_paint"
@@ -464,7 +458,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__structures__litter_in_around_structure}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__structures__litter_in_around_structure"
@@ -474,7 +468,7 @@ class SidePanel extends Component {
             />
             <FormControlLabel
               control={
-                <Checkbox
+                <CustomCheckBox
                   checked={prop_feature__structures__abandoned_vehicle}
                   onChange={this.handleChangeCheck}
                   name="prop_feature__structures__abandoned_vehicle"
