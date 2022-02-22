@@ -14,13 +14,13 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { compose } from 'recompose';
 
 import { updateIndex, updateFeature } from '../actions/dataActions';
 import { headerHeigth } from '../style/HomeStyles';
 import { makeChartData } from '../utils/utils';
 import Loadfile from './Loadfile';
+import { v4 as uuidv4 } from 'uuid';
 
 const COLORS = ['#00A650', '#E92D44', '#FFCD40', '#6c757d'];
 
@@ -163,7 +163,36 @@ class SidePanel extends Component {
     this.handleChangeCheck = this.handleChangeCheck.bind(this);
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
+    const { feature } = nextProps;
+    if (feature && feature.properties) {
+      const props_state = Object.keys(feature.properties || {})
+        .sort()
+        .filter((i) => i.includes('prop_feature'))
+        .reduce((a, v) => ({ ...a, [v]: feature.properties[v] }), {});
+      let initial_state = {
+        // cat 1
+        prop_feature__vacant_lots__paved: false,
+        prop_feature__vacant_lots__unpaved: false,
+        prop_feature__vacant_lots__overgrown: false,
+        prop_feature__vacant_lots__fenced: false,
+        prop_feature__vacant_lots__side_fences_only: false,
+        prop_feature__vacant_lots__construction_activity: false,
+        prop_feature__vacant_lots__litter_dumping_tires: false,
+        // cat 2
+        prop_feature__structures__damaged_roof: false,
+        prop_feature__structures__broken_windows_doors: false,
+        prop_feature__structures__missing_windows_doors: false,
+        prop_feature__structures__boarded_up_windows_doors: false,
+        prop_feature__structures__overgrown_lawn: false,
+        prop_feature__structures__overgrown_shrubbery_trees: false,
+        prop_feature__structures__structural_issues: false,
+        prop_feature__structures__faded_paint: false,
+        prop_feature__structures__litter_in_around_structure: false,
+        prop_feature__structures__abandoned_vehicle: false,
+        ...props_state
+      };
+      this.setState({ ...initial_state });
+    }
   }
   handleChangeTab(ev, focus_tab) {
     this.setState({ focus_tab });
@@ -194,7 +223,7 @@ class SidePanel extends Component {
     const old_value = !!newFature.properties[e.target.name];
 
     newFature.properties[e.target.name] = !old_value;
-    newFature.properties.datetime = new Date().getTime();
+    newFature.properties.uuid_difference = uuidv4();
 
     [('pointScale', 'sizeImage')].forEach((i) => {
       if (newFature.properties[i]) {
@@ -213,7 +242,7 @@ class SidePanel extends Component {
   renderProperties() {
     const { classes, feature } = this.props;
     if (!feature || !feature.properties) return null;
-    const datetime = feature.properties.datetime || new Date().getTime();
+    const uuid_difference = feature.properties.uuid_difference || uuidv4();
 
     const properties = Object.keys(feature.properties || {})
       .sort()
@@ -222,7 +251,7 @@ class SidePanel extends Component {
     return (
       <>
         {properties.map((l, k) => (
-          <ListItem key={`li-${datetime}-${k}`} className={classes.lItem}>
+          <ListItem key={`li-${uuid_difference}-${k}`} className={classes.lItem}>
             <ListItemText
               classes={l.key.includes('__') ? { secondary: classes.secondaryText } : null}
               primary={`${l.key}`.replace('prop_feature__', '')}

@@ -88,12 +88,13 @@ export function updateFeature(newFeature, next_page = false) {
     let { index, data, totalFeatures } = getState().geojsonData;
     newFeature.properties.__reviewed = true;
     data.features[index] = newFeature;
-    dispatch(updateData(data));
-    dispatch(fetchFeature(index, data, totalFeatures));
+    const newData = { ...data };
+    dispatch(updateData(newData));
+    dispatch(fetchFeature(index, newData, totalFeatures));
     if (next_page) {
       dispatch(updateIndex(index + 1));
+      dispatch(preloadImages(index, newData, totalFeatures));
     }
-    dispatch(preloadImages(index, data, totalFeatures));
   };
 }
 

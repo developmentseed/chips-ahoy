@@ -13,6 +13,8 @@ import PaperImage from './PaperImage';
 import SidePanel from './SidePanel';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import 'react-notifications/lib/notifications.css';
 
 class MainPage extends Component {
@@ -37,8 +39,7 @@ class MainPage extends Component {
     const old_value = !!newFature.properties[value];
 
     newFature.properties[value] = !old_value;
-    newFature.properties.datetime = new Date().getTime();
-
+    newFature.properties.uuid_difference = uuidv4();
     [('pointScale', 'sizeImage')].forEach((i) => {
       if (newFature.properties[i]) {
         delete newFature.properties[i];
@@ -102,43 +103,43 @@ class MainPage extends Component {
     }
     // Structures , shift == true
     if (key === 'q' && shift) {
-      NotificationManager.success('Damaged roof');
+      NotificationManager.info('Damaged roof');
       this.updateFeatureKey('prop_feature__structures__damaged_roof');
     }
     if (key === 'w' && shift) {
-      NotificationManager.success('Broken windows / doors ');
+      NotificationManager.info('Broken windows / doors ');
       this.updateFeatureKey('prop_feature__structures__broken_windows_doors');
     }
     if (key === 'e' && shift) {
-      NotificationManager.success('Missing windows / doors');
+      NotificationManager.info('Missing windows / doors');
       this.updateFeatureKey('prop_feature__structures__missing_windows_doors');
     }
     if (key === 'a' && shift) {
-      NotificationManager.success('Boarded up windows / doors ');
+      NotificationManager.info('Boarded up windows / doors ');
       this.updateFeatureKey('prop_feature__structures__boarded_up_windows_doors');
     }
     if (key === 's' && shift) {
-      NotificationManager.success('Overgrown lawn ');
+      NotificationManager.info('Overgrown lawn ');
       this.updateFeatureKey('prop_feature__structures__overgrown_lawn');
     }
     if (key === 'd' && shift) {
-      NotificationManager.success('Overgrown shrubbery/trees');
+      NotificationManager.info('Overgrown shrubbery/trees');
       this.updateFeatureKey('prop_feature__structures__overgrown_shrubbery_trees');
     }
     if (key === 'z' && shift) {
-      NotificationManager.success('Structural issues ');
+      NotificationManager.info('Structural issues ');
       this.updateFeatureKey('prop_feature__structures__structural_issues');
     }
     if (key === 'x' && shift) {
-      NotificationManager.success('Faded paint');
+      NotificationManager.info('Faded paint');
       this.updateFeatureKey('prop_feature__structures__faded_paint');
     }
     if (key === 'c' && shift) {
-      NotificationManager.success('Litter in / around structure');
+      NotificationManager.info('Litter in / around structure');
       this.updateFeatureKey('prop_feature__structures__litter_in_around_structure');
     }
     if (key === 'v' && shift) {
-      NotificationManager.success('Abandoned vehicle');
+      NotificationManager.info('Abandoned vehicle');
       this.updateFeatureKey('prop_feature__structures__abandoned_vehicle');
     }
 
@@ -167,7 +168,7 @@ class MainPage extends Component {
     }
   }
   render() {
-    const { classes } = this.props;
+    const { classes, feature } = this.props;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
