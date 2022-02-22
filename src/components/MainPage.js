@@ -11,6 +11,9 @@ import { fetchFeature, updateFeature, updateIndex } from '../actions/dataActions
 import styles from './../style/HomeStyles';
 import PaperImage from './PaperImage';
 import SidePanel from './SidePanel';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+
+import 'react-notifications/lib/notifications.css';
 
 class MainPage extends Component {
   constructor(props) {
@@ -30,8 +33,13 @@ class MainPage extends Component {
     const { feature, updateFeature } = this.props;
     if (!feature) return;
     let newFature = Object(feature);
-    newFature.properties.dc_has_pattern_school = `${value}`;
-    ['pointScale', 'sizeImage'].forEach((i) => {
+    // category
+    const old_value = !!newFature.properties[value];
+
+    newFature.properties[value] = !old_value;
+    newFature.properties.datetime = new Date().getTime();
+
+    [('pointScale', 'sizeImage')].forEach((i) => {
       if (newFature.properties[i]) {
         delete newFature.properties[i];
       }
@@ -40,30 +48,101 @@ class MainPage extends Component {
   }
 
   keyFunction(event) {
-    const { updateIndex, index } = this.props;
-    switch (event.key) {
-      case 'ArrowRight':
+    const { updateIndex, index, totalFeatures } = this.props;
+    const shift = event.shiftKey;
+    const key = `${event.key}`.toLocaleLowerCase();
+    if (!totalFeatures) return;
+
+    // generic
+    switch (key) {
+      case 'arrowright':
         updateIndex(index + 1);
         break;
-      case 'd':
+      case '2':
         updateIndex(index + 1);
         break;
-      case 'ArrowLeft':
-        updateIndex(index - 1);
-        break;
-      case 'a':
+      case 'arrowleft':
         updateIndex(index - 1);
         break;
       case '1':
-        this.updateFeatureKey('no');
-        break;
-      case '2':
-        this.updateFeatureKey('unrecognized');
+        updateIndex(index - 1);
         break;
       default:
-        console.log('another key', event.key);
         break;
     }
+
+    // vacant_lots , shift == false
+    if (key === 'q' && !shift) {
+      NotificationManager.success('Paved');
+      this.updateFeatureKey('prop_feature__vacant_lots__paved');
+    }
+    if (key === 'w' && !shift) {
+      NotificationManager.success('Info Unpaved');
+      this.updateFeatureKey('prop_feature__vacant_lots__unpaved');
+    }
+    if (key === 'e' && !shift) {
+      NotificationManager.success('Info Overgrown');
+      this.updateFeatureKey('prop_feature__vacant_lots__overgrown');
+    }
+    if (key === 'a' && !shift) {
+      NotificationManager.success('Fenced');
+      this.updateFeatureKey('prop_feature__vacant_lots__fenced');
+    }
+    if (key === 's' && !shift) {
+      NotificationManager.success('Side Fences only');
+      this.updateFeatureKey('prop_feature__vacant_lots__side_fences_only');
+    }
+    if (key === 'd' && !shift) {
+      NotificationManager.success('Litter/dumping/Tires');
+      this.updateFeatureKey('prop_feature__vacant_lots__litter_dumping_tires');
+    }
+    if (key === 'z' && !shift) {
+      NotificationManager.success('Side Fences only');
+      this.updateFeatureKey('prop_feature__vacant_lots__side_fences_only');
+    }
+    // Structures , shift == true
+    if (key === 'q' && shift) {
+      NotificationManager.success('Damaged roof');
+      this.updateFeatureKey('prop_feature__structures__damaged_roof');
+    }
+    if (key === 'w' && shift) {
+      NotificationManager.success('Broken windows / doors ');
+      this.updateFeatureKey('prop_feature__structures__broken_windows_doors');
+    }
+    if (key === 'e' && shift) {
+      NotificationManager.success('Missing windows / doors');
+      this.updateFeatureKey('prop_feature__structures__missing_windows_doors');
+    }
+    if (key === 'a' && shift) {
+      NotificationManager.success('Boarded up windows / doors ');
+      this.updateFeatureKey('prop_feature__structures__boarded_up_windows_doors');
+    }
+    if (key === 's' && shift) {
+      NotificationManager.success('Overgrown lawn ');
+      this.updateFeatureKey('prop_feature__structures__overgrown_lawn');
+    }
+    if (key === 'd' && shift) {
+      NotificationManager.success('Overgrown shrubbery/trees');
+      this.updateFeatureKey('prop_feature__structures__overgrown_shrubbery_trees');
+    }
+    if (key === 'z' && shift) {
+      NotificationManager.success('Structural issues ');
+      this.updateFeatureKey('prop_feature__structures__structural_issues');
+    }
+    if (key === 'x' && shift) {
+      NotificationManager.success('Faded paint');
+      this.updateFeatureKey('prop_feature__structures__faded_paint');
+    }
+    if (key === 'c' && shift) {
+      NotificationManager.success('Litter in / around structure');
+      this.updateFeatureKey('prop_feature__structures__litter_in_around_structure');
+    }
+    if (key === 'v' && shift) {
+      NotificationManager.success('Abandoned vehicle');
+      this.updateFeatureKey('prop_feature__structures__abandoned_vehicle');
+    }
+
+    console.log(' key', key, 'shiftKey', shift);
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -106,6 +185,7 @@ class MainPage extends Component {
               </Paper>
             </Grid>
           </Grid>
+          <NotificationContainer />
         </Container>
       </main>
     );

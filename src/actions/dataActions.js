@@ -83,14 +83,16 @@ export const updateData = (fData) => {
   };
 };
 
-export function updateFeature(newFeature) {
+export function updateFeature(newFeature, next_page = false) {
   return (dispatch, getState) => {
     let { index, data, totalFeatures } = getState().geojsonData;
     newFeature.properties.__reviewed = true;
     data.features[index] = newFeature;
     dispatch(updateData(data));
     dispatch(fetchFeature(index, data, totalFeatures));
-    dispatch(updateIndex(index + 1));
+    if (next_page) {
+      dispatch(updateIndex(index + 1));
+    }
     dispatch(preloadImages(index, data, totalFeatures));
   };
 }

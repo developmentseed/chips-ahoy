@@ -1,14 +1,15 @@
 import {
-  AppBar,
   Divider,
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Tab,
-  Tabs,
   TextField,
-  Typography
+  Typography,
+  FormControl,
+  FormGroup,
+  Checkbox,
+  FormControlLabel
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
@@ -16,16 +17,15 @@ import { connect } from 'react-redux';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { compose } from 'recompose';
 
-import { updateIndex } from '../actions/dataActions';
+import { updateIndex, updateFeature } from '../actions/dataActions';
 import { headerHeigth } from '../style/HomeStyles';
 import { makeChartData } from '../utils/utils';
 import Loadfile from './Loadfile';
-import TabPanel from './TabPanel';
 
 const COLORS = ['#00A650', '#E92D44', '#FFCD40', '#6c757d'];
 
 const RADIAN = Math.PI / 180;
-const IMAGEHEIGHT = 250;
+const CHECKBOXHEIGHT = 750;
 const IMAGE_SCALE = 100;
 
 const renderCustomizedLabel = (props) => {
@@ -53,24 +53,24 @@ const styles = (theme) => ({
     flex: 1,
     flexDirection: 'column',
     alignContent: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'stretch'
   },
   listfeatures: {
     display: 'flex',
     flexDirection: 'column',
-    maxHeight: `calc(100vh - 64px - 32px - 70px - ${IMAGEHEIGHT}px - ${headerHeigth * 1.7}px)`,
+    maxHeight: `calc(100vh - 64px - 32px - 70px - ${CHECKBOXHEIGHT}px - ${headerHeigth * 1.7}px)`,
     overflow: 'auto',
     width: '100%',
     padding: theme.spacing(2),
     paddingRight: 0
   },
   tabContainer: {
-    height: 320,
+    minHeight: CHECKBOXHEIGHT + 32,
     padding: 0
   },
   chartContainer: {
-    height: IMAGEHEIGHT,
+    height: CHECKBOXHEIGHT,
     padding: 0
   },
   lItem: {
@@ -91,26 +91,26 @@ const styles = (theme) => ({
     padding: theme.spacing(2)
   },
   canvasContainer: {
-    textAlign: 'center',
+    textAlign: 'left',
     padding: 8,
-    height: IMAGEHEIGHT
+    height: CHECKBOXHEIGHT
   },
   image: {
-    maxHeight: IMAGEHEIGHT
+    maxHeight: CHECKBOXHEIGHT
   },
   tableSmall: {
     overflow: 'hidden',
-    height: IMAGEHEIGHT,
+    height: CHECKBOXHEIGHT,
     position: 'relative',
     width: 'auto',
     pointerEvents: 'none'
   },
   tableBig: {
-    height: (IMAGEHEIGHT - IMAGE_SCALE) * 3,
-    width: (IMAGEHEIGHT - IMAGE_SCALE) * 3,
+    height: (CHECKBOXHEIGHT - IMAGE_SCALE) * 3,
+    width: (CHECKBOXHEIGHT - IMAGE_SCALE) * 3,
     display: 'grid',
-    gridTemplateColumns: `repeat(3, ${IMAGEHEIGHT - IMAGE_SCALE}px)`,
-    gridTemplateRows: `repeat(3, ${IMAGEHEIGHT - IMAGE_SCALE}px)`,
+    gridTemplateColumns: `repeat(3, ${CHECKBOXHEIGHT - IMAGE_SCALE}px)`,
+    gridTemplateRows: `repeat(3, ${CHECKBOXHEIGHT - IMAGE_SCALE}px)`,
     gridColumnGap: 0,
     gridRowGap: 0,
     overflow: 'hidden',
@@ -136,10 +136,34 @@ class SidePanel extends Component {
     super();
     this.state = {
       value: '',
-      focus_tab: 0
+      focus_tab: 0,
+      // states
+      // cat 1
+      prop_feature__vacant_lots__paved: false,
+      prop_feature__vacant_lots__unpaved: false,
+      prop_feature__vacant_lots__overgrown: false,
+      prop_feature__vacant_lots__fenced: false,
+      prop_feature__vacant_lots__side_fences_only: false,
+      prop_feature__vacant_lots__construction_activity: false,
+      prop_feature__vacant_lots__litter_dumping_tires: false,
+      // cat 2
+      prop_feature__structures__damaged_roof: false,
+      prop_feature__structures__broken_windows_doors: false,
+      prop_feature__structures__missing_windows_doors: false,
+      prop_feature__structures__boarded_up_windows_doors: false,
+      prop_feature__structures__overgrown_lawn: false,
+      prop_feature__structures__overgrown_shrubbery_trees: false,
+      prop_feature__structures__structural_issues: false,
+      prop_feature__structures__faded_paint: false,
+      prop_feature__structures__litter_in_around_structure: false,
+      prop_feature__structures__abandoned_vehicle: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeTab = this.handleChangeTab.bind(this);
+    this.handleChangeCheck = this.handleChangeCheck.bind(this);
+  }
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
   }
   handleChangeTab(ev, focus_tab) {
     this.setState({ focus_tab });
@@ -157,8 +181,31 @@ class SidePanel extends Component {
       return;
     }
   }
+
+  handleChangeCheck(e) {
+    const { feature, updateFeature } = this.props;
+    this.setState({
+      [e.target.name]: e.target.checked
+    });
+    // update props feature
+
+    let newFature = Object(feature);
+    // category
+    const old_value = !!newFature.properties[e.target.name];
+
+    newFature.properties[e.target.name] = !old_value;
+    newFature.properties.datetime = new Date().getTime();
+
+    [('pointScale', 'sizeImage')].forEach((i) => {
+      if (newFature.properties[i]) {
+        delete newFature.properties[i];
+      }
+    });
+    updateFeature(newFature);
+  }
+
   convertSecondaryText(text) {
-    if (!text) return '';
+    if (['', null, undefined].includes(text)) return '';
     if (`${typeof text}` === 'object') return JSON.stringify(text);
     return `${text}`;
   }
@@ -166,21 +213,25 @@ class SidePanel extends Component {
   renderProperties() {
     const { classes, feature } = this.props;
     if (!feature || !feature.properties) return null;
+    const datetime = feature.properties.datetime || new Date().getTime();
+
     const properties = Object.keys(feature.properties || {})
       .sort()
-      .filter((i) => !['__reviewed', 'tiles_neighbors'].includes(i))
+      .filter((i) => i.includes('prop_feature'))
       .map((i) => ({ key: `${i}`, value: feature.properties[i] }));
     return (
       <>
         {properties.map((l, k) => (
-          <ListItem key={`li-${k}`} className={classes.lItem}>
+          <ListItem key={`li-${datetime}-${k}`} className={classes.lItem}>
             <ListItemText
-              classes={
-                l.key === 'dc_has_pattern_school' ? { secondary: classes.secondaryText } : null
-              }
-              primary={`${l.key}`}
-              secondary={this.convertSecondaryText(l.value)}
+              classes={l.key.includes('__') ? { secondary: classes.secondaryText } : null}
+              primary={`${l.key}`.replace('prop_feature__', '')}
             />
+            <ListItemSecondaryAction>
+              <Typography variant="body1" component="span" color="textSecondary">
+                {this.convertSecondaryText(l.value)}
+              </Typography>
+            </ListItemSecondaryAction>
           </ListItem>
         ))}
       </>
@@ -190,6 +241,7 @@ class SidePanel extends Component {
   renderFeature() {
     const { classes, feature } = this.props;
     if (!feature || !feature.properties) return null;
+
     return (
       <React.Fragment>
         <ListItem>
@@ -200,149 +252,221 @@ class SidePanel extends Component {
     );
   }
 
-  renderChart() {
-    const { data, classes } = this.props;
-    const dataChart = makeChartData(data);
-
-    if (!dataChart) return null;
-
-    return (
-      <div className={classes.chartContainer}>
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart height={IMAGEHEIGHT}>
-            <Pie
-              data={dataChart}
-              cx="50%"
-              cy="50%"
-              labelLine={false}
-              label={renderCustomizedLabel}
-              outerRadius={80}
-              fill="#8884d8"
-              dataKey="value">
-              {dataChart.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
-    );
-  }
-  renderContextImage() {
-    const { classes, feature } = this.props;
+  renderCheckboxs() {
+    const { classes } = this.props;
+    const {
+      prop_feature__vacant_lots__paved,
+      prop_feature__vacant_lots__unpaved,
+      prop_feature__vacant_lots__overgrown,
+      prop_feature__vacant_lots__fenced,
+      prop_feature__vacant_lots__side_fences_only,
+      prop_feature__vacant_lots__construction_activity,
+      prop_feature__vacant_lots__litter_dumping_tires,
+      prop_feature__structures__damaged_roof,
+      prop_feature__structures__broken_windows_doors,
+      prop_feature__structures__missing_windows_doors,
+      prop_feature__structures__boarded_up_windows_doors,
+      prop_feature__structures__overgrown_lawn,
+      prop_feature__structures__overgrown_shrubbery_trees,
+      prop_feature__structures__structural_issues,
+      prop_feature__structures__faded_paint,
+      prop_feature__structures__litter_in_around_structure,
+      prop_feature__structures__abandoned_vehicle
+    } = this.state;
 
     return (
       <div className={classes.canvasContainer}>
-        <div className={classes.tableSmall}>
-          {feature && feature.properties && feature.properties.tiles_neighbors ? (
-            <div className={classes.tableBig}>
-              <div className={classes.div1}>
-                <img
-                  alt="tn_0"
-                  src={feature.properties.tiles_neighbors.tn_0}
-                  height={IMAGEHEIGHT - IMAGE_SCALE}
-                  width={IMAGEHEIGHT - IMAGE_SCALE}
+        <FormControl size="small">
+          <label>Vacant lots</label>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__vacant_lots__paved}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__vacant_lots__paved"
                 />
-              </div>
-              <div className={classes.div2}>
-                <img
-                  alt="tn_3"
-                  src={feature.properties.tiles_neighbors.tn_3}
-                  height={IMAGEHEIGHT - IMAGE_SCALE}
-                  width={IMAGEHEIGHT - IMAGE_SCALE}
+              }
+              label="Paved"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__vacant_lots__unpaved}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__vacant_lots__unpaved"
                 />
-              </div>
-              <div className={classes.div3}>
-                <img
-                  alt="tn_5"
-                  src={feature.properties.tiles_neighbors.tn_5}
-                  height={IMAGEHEIGHT - IMAGE_SCALE}
-                  width={IMAGEHEIGHT - IMAGE_SCALE}
+              }
+              label="Unpaved"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__vacant_lots__overgrown}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__vacant_lots__overgrown"
                 />
-              </div>
-              <div className={classes.div4}>
-                <img
-                  alt="tn_1"
-                  src={feature.properties.tiles_neighbors.tn_1}
-                  height={IMAGEHEIGHT - IMAGE_SCALE}
-                  width={IMAGEHEIGHT - IMAGE_SCALE}
+              }
+              label="Overgrown"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__vacant_lots__fenced}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__vacant_lots__fenced"
                 />
-              </div>
-              <div className={classes.div5}>
-                <img
-                  alt="url"
-                  src={feature.properties.url}
-                  height={IMAGEHEIGHT - IMAGE_SCALE}
-                  width={IMAGEHEIGHT - IMAGE_SCALE}
+              }
+              label="Fenced"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__vacant_lots__side_fences_only}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__vacant_lots__side_fences_only"
                 />
-              </div>
-              <div className={classes.div6}>
-                <img
-                  alt="tn_6"
-                  src={feature.properties.tiles_neighbors.tn_6}
-                  height={IMAGEHEIGHT - IMAGE_SCALE}
-                  width={IMAGEHEIGHT - IMAGE_SCALE}
+              }
+              label="Side Fences only"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__vacant_lots__construction_activity}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__vacant_lots__construction_activity"
                 />
-              </div>
-              <div className={classes.div7}>
-                <img
-                  alt="tn_2"
-                  src={feature.properties.tiles_neighbors.tn_2}
-                  height={IMAGEHEIGHT - IMAGE_SCALE}
-                  width={IMAGEHEIGHT - IMAGE_SCALE}
+              }
+              label="Construction activity"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__vacant_lots__litter_dumping_tires}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__vacant_lots__litter_dumping_tires"
                 />
-              </div>
-              <div className={classes.div8}>
-                <img
-                  alt="tn_4"
-                  src={feature.properties.tiles_neighbors.tn_4}
-                  height={IMAGEHEIGHT - IMAGE_SCALE}
-                  width={IMAGEHEIGHT - IMAGE_SCALE}
+              }
+              label="Litter/dumping/Tires"
+            />
+          </FormGroup>
+          <label>Structures</label>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__structures__damaged_roof}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__damaged_roof"
                 />
-              </div>
-              <div className={classes.div9}>
-                <img
-                  alt="tn_7"
-                  src={feature.properties.tiles_neighbors.tn_7}
-                  height={IMAGEHEIGHT - IMAGE_SCALE}
-                  width={IMAGEHEIGHT - IMAGE_SCALE}
+              }
+              label="Damaged roof"
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__structures__broken_windows_doors}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__broken_windows_doors"
                 />
-              </div>
-            </div>
-          ) : null}
-        </div>
+              }
+              label="Broken windows / doors"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__structures__missing_windows_doors}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__missing_windows_doors"
+                />
+              }
+              label="Missing windows / doors"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__structures__boarded_up_windows_doors}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__boarded_up_windows_doors"
+                />
+              }
+              label="Boarded up windows / doors"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__structures__overgrown_lawn}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__overgrown_lawn"
+                />
+              }
+              label="Overgrown lawn "
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__structures__overgrown_shrubbery_trees}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__overgrown_shrubbery_trees"
+                />
+              }
+              label="Overgrown shrubbery/trees"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__structures__structural_issues}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__structural_issues"
+                />
+              }
+              label="Structural issues"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__structures__faded_paint}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__faded_paint"
+                />
+              }
+              label="Faded paint"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__structures__litter_in_around_structure}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__litter_in_around_structure"
+                />
+              }
+              label="Litter in / around structure"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={prop_feature__structures__abandoned_vehicle}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__abandoned_vehicle"
+                />
+              }
+              label="Abandoned vehicle"
+            />
+          </FormGroup>
+        </FormControl>
       </div>
     );
   }
+
   renderTabs() {
-    let { focus_tab } = this.state;
     const { classes, feature, total } = this.props;
     if (!feature || total === 0) return null;
-    const has_supertile = feature && feature.properties && feature.properties.tiles_neighbors;
     return (
-      <div className={classes.tabContainer}>
-        <AppBar position="static" color="default">
-          <Tabs
-            value={focus_tab}
-            indicatorColor="secondary"
-            textColor="inherit"
-            variant="scrollable"
-            scrollButtons="auto"
-            disableRipple
-            onChange={this.handleChangeTab}>
-            <Tab label="Map" disabled={!has_supertile} />
-            <Tab label="Chart" />
-          </Tabs>
-        </AppBar>
-        <TabPanel value={focus_tab} index={0}>
-          {this.renderContextImage()}
-        </TabPanel>
-        <TabPanel value={focus_tab} index={1}>
-          {this.renderChart()}
-        </TabPanel>
-      </div>
+      <React.Fragment>
+        <div className={classes.tabContainer}>{this.renderCheckboxs()}</div>
+        <Divider />
+      </React.Fragment>
     );
   }
   render() {
@@ -359,10 +483,10 @@ class SidePanel extends Component {
               value={index}
               type="number"
             />
+            <Divider />
           </div>
         ) : null}
         {this.renderTabs()}
-        <Divider />
         <List component="div" className={classes.listfeatures}>
           {total !== 0 ? (
             <ListItem className={classes.lItem}>
@@ -387,5 +511,7 @@ const mapStateToProps = (state) => ({
   feature: state.geojsonData.feature,
   data: state.geojsonData.data
 });
-
-export default compose(connect(mapStateToProps), withStyles(styles))(SidePanel);
+const mapDispatchToProps = {
+  updateFeature
+};
+export default compose(connect(mapStateToProps, mapDispatchToProps), withStyles(styles))(SidePanel);

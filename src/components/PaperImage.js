@@ -65,23 +65,23 @@ class PaperImage extends Component {
     const { feature, updateFeature } = this.props;
 
     // const currentCoord = { x: e.clientX, y: e.clientY };
-    const rect = this.image.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    //  scale image
-    // currentWith/natutalWith
-    const scale = e.currentTarget.width / e.currentTarget.naturalWidth;
-    //  scale add properties
+    // const rect = this.image.getBoundingClientRect();
+    // const x = e.clientX - rect.left;
+    // const y = e.clientY - rect.top;
+    // //  scale image
+    // // currentWith/natutalWith
+    // const scale = e.currentTarget.width / e.currentTarget.naturalWidth;
+    // //  scale add properties
     let newFature = Object(feature);
+    newFature.properties.timestamp = Date.now();
+    // newFature.properties.dc_has_pattern_school = 'yes';
+    // newFature.properties.pointScale = Object({ x: x / scale, y: y / scale });
+    // newFature.properties.sizeImage = Object({
+    //   width: e.currentTarget.naturalWidth,
+    //   height: e.currentTarget.naturalHeight
+    // });
 
-    newFature.properties.dc_has_pattern_school = 'yes';
-    newFature.properties.pointScale = Object({ x: x / scale, y: y / scale });
-    newFature.properties.sizeImage = Object({
-      width: e.currentTarget.naturalWidth,
-      height: e.currentTarget.naturalHeight
-    });
-
-    updateFeature(newFature);
+    updateFeature(newFature, true);
   }
 
   renderDot() {
