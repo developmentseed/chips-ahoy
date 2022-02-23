@@ -1,32 +1,26 @@
 import {
+  Checkbox,
   Divider,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
   TextField,
-  Typography,
-  FormControl,
-  FormGroup,
-  Checkbox,
-  FormControlLabel
+  Typography
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-
-import { updateIndex, updateFeature } from '../actions/dataActions';
-import { headerHeigth } from '../style/HomeStyles';
-import { makeChartData } from '../utils/utils';
-import Loadfile from './Loadfile';
 import { v4 as uuidv4 } from 'uuid';
 
-const COLORS = ['#00A650', '#E92D44', '#FFCD40', '#6c757d'];
+import { updateFeature, updateIndex } from '../actions/dataActions';
+import { headerHeigth } from '../style/HomeStyles';
+import Loadfile from './Loadfile';
 
-const RADIAN = Math.PI / 180;
 const CHECKBOXHEIGHT = 650;
 const IMAGE_SCALE = 100;
 
