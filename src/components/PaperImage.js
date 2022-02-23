@@ -11,7 +11,8 @@ const styles = () => ({
   content: {
     position: 'relative',
     width: 'auto',
-    height: `calc(100vh - 85px - 32px)`
+    height: `calc(100vh - 85px - 32px)`,
+    textAlign: 'end'
   },
   dot: {
     userSelect: 'none',
@@ -117,6 +118,7 @@ class PaperImage extends Component {
               ref={(c) => {
                 this.image = c;
               }}
+              key={feature.properties.url}
               src={feature.properties.url}
               onClick={this.handleImageClick}
               width={minor}
