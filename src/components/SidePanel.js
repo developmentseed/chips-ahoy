@@ -21,7 +21,7 @@ import { updateFeature, updateIndex } from '../actions/dataActions';
 import { headerHeigth } from '../style/HomeStyles';
 import Loadfile from './Loadfile';
 
-const CHECKBOXHEIGHT = 650;
+const CHECKBOXHEIGHT = 530;
 const IMAGE_SCALE = 100;
 
 const styles = (theme) => ({
@@ -51,10 +51,16 @@ const styles = (theme) => ({
     padding: 0
   },
   lItem: {
-    paddingBottom: 0,
+    paddingBottom: 2,
     paddingRight: 0,
     paddingLeft: 0,
+    paddingTop: 2,
+
     wordWrap: 'break-word'
+  },
+  lItemText: {
+    marginBottom: 2,
+    marginTop: 2
   },
   primaryText: {
     textAlign: 'center',
@@ -130,8 +136,6 @@ class SidePanel extends Component {
       prop_feature__vacant_lots__unpaved: false,
       prop_feature__vacant_lots__overgrown: false,
       prop_feature__vacant_lots__fenced: false,
-      prop_feature__vacant_lots__side_fences_only: false,
-      prop_feature__vacant_lots__construction_activity: false,
       prop_feature__vacant_lots__litter_dumping_tires: false,
       // cat 2
       prop_feature__structures__damaged_roof: false,
@@ -142,8 +146,7 @@ class SidePanel extends Component {
       prop_feature__structures__overgrown_shrubbery_trees: false,
       prop_feature__structures__structural_issues: false,
       prop_feature__structures__faded_paint: false,
-      prop_feature__structures__litter_in_around_structure: false,
-      prop_feature__structures__abandoned_vehicle: false
+      prop_feature__structures__litter_in_around_structure: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeTab = this.handleChangeTab.bind(this);
@@ -162,8 +165,6 @@ class SidePanel extends Component {
         prop_feature__vacant_lots__unpaved: false,
         prop_feature__vacant_lots__overgrown: false,
         prop_feature__vacant_lots__fenced: false,
-        prop_feature__vacant_lots__side_fences_only: false,
-        prop_feature__vacant_lots__construction_activity: false,
         prop_feature__vacant_lots__litter_dumping_tires: false,
         // cat 2
         prop_feature__structures__damaged_roof: false,
@@ -175,7 +176,6 @@ class SidePanel extends Component {
         prop_feature__structures__structural_issues: false,
         prop_feature__structures__faded_paint: false,
         prop_feature__structures__litter_in_around_structure: false,
-        prop_feature__structures__abandoned_vehicle: false,
         ...props_state
       };
       this.setState({ ...initial_state });
@@ -233,6 +233,7 @@ class SidePanel extends Component {
 
     const properties = Object.keys(feature.properties || {})
       .sort()
+      .reverse()
       .filter((i) => i.includes('prop_feature'))
       .map((i) => ({ key: `${i}`, value: feature.properties[i] }));
     return (
@@ -240,8 +241,11 @@ class SidePanel extends Component {
         {properties.map((l, k) => (
           <ListItem key={`li-${uuid_difference}-${k}`} className={classes.lItem}>
             <ListItemText
-              classes={l.key.includes('__') ? { secondary: classes.secondaryText } : null}
-              primary={`${l.key}`.replace('prop_feature__', '')}
+              className={classes.lItemText}
+              primary={`${l.key}`
+                .replace('prop_feature__', '')
+                .replace('structures__', 'struc/ ')
+                .replace('vacant_lots__', 'VLots/ ')}
             />
             <ListItemSecondaryAction>
               <Typography variant="body1" component="span" color="textSecondary">
@@ -275,8 +279,6 @@ class SidePanel extends Component {
       prop_feature__vacant_lots__unpaved,
       prop_feature__vacant_lots__overgrown,
       prop_feature__vacant_lots__fenced,
-      prop_feature__vacant_lots__side_fences_only,
-      prop_feature__vacant_lots__construction_activity,
       prop_feature__vacant_lots__litter_dumping_tires,
       prop_feature__structures__damaged_roof,
       prop_feature__structures__broken_windows_doors,
@@ -286,8 +288,7 @@ class SidePanel extends Component {
       prop_feature__structures__overgrown_shrubbery_trees,
       prop_feature__structures__structural_issues,
       prop_feature__structures__faded_paint,
-      prop_feature__structures__litter_in_around_structure,
-      prop_feature__structures__abandoned_vehicle
+      prop_feature__structures__litter_in_around_structure
     } = this.state;
 
     return (
@@ -303,7 +304,7 @@ class SidePanel extends Component {
                   name="prop_feature__vacant_lots__paved"
                 />
               }
-              label="Paved"
+              label="Paved (q)"
             />
             <FormControlLabel
               control={
@@ -313,7 +314,7 @@ class SidePanel extends Component {
                   name="prop_feature__vacant_lots__unpaved"
                 />
               }
-              label="Unpaved"
+              label="Unpaved (w)"
             />
             <FormControlLabel
               control={
@@ -323,7 +324,7 @@ class SidePanel extends Component {
                   name="prop_feature__vacant_lots__overgrown"
                 />
               }
-              label="Overgrown"
+              label="Overgrown (e)"
             />
             <FormControlLabel
               control={
@@ -333,27 +334,7 @@ class SidePanel extends Component {
                   name="prop_feature__vacant_lots__fenced"
                 />
               }
-              label="Fenced"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__vacant_lots__side_fences_only}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__vacant_lots__side_fences_only"
-                />
-              }
-              label="Side Fences only"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__vacant_lots__construction_activity}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__vacant_lots__construction_activity"
-                />
-              }
-              label="Construction activity"
+              label="Fenced (a)"
             />
             <FormControlLabel
               control={
@@ -363,7 +344,7 @@ class SidePanel extends Component {
                   name="prop_feature__vacant_lots__litter_dumping_tires"
                 />
               }
-              label="Litter/dumping/Tires"
+              label="Litter/dumping/Tires (s)"
             />
           </FormGroup>
           <label className={classes.label}>Structures</label>
@@ -377,7 +358,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__damaged_roof"
                 />
               }
-              label="Damaged roof"
+              label="Damaged roof (shift + q)"
             />
 
             <FormControlLabel
@@ -388,7 +369,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__broken_windows_doors"
                 />
               }
-              label="Broken windows / doors"
+              label="Broken windows/doors (shift + w)"
             />
             <FormControlLabel
               control={
@@ -398,7 +379,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__missing_windows_doors"
                 />
               }
-              label="Missing windows / doors"
+              label="Missing windows/doors (shift + e)"
             />
             <FormControlLabel
               control={
@@ -408,7 +389,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__boarded_up_windows_doors"
                 />
               }
-              label="Boarded up windows / doors"
+              label="Boarded up windows/doors (shift + a)"
             />
             <FormControlLabel
               control={
@@ -418,7 +399,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__overgrown_lawn"
                 />
               }
-              label="Overgrown lawn "
+              label="Overgrown lawn (shift + s)"
             />
             <FormControlLabel
               control={
@@ -428,7 +409,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__overgrown_shrubbery_trees"
                 />
               }
-              label="Overgrown shrubbery/trees"
+              label="Overgrown shrubbery/trees (shift + d)"
             />
             <FormControlLabel
               control={
@@ -438,7 +419,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__structural_issues"
                 />
               }
-              label="Structural issues"
+              label="Structural issues (shift + z)"
             />
             <FormControlLabel
               control={
@@ -448,7 +429,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__faded_paint"
                 />
               }
-              label="Faded paint"
+              label="Faded paint (shift + x)"
             />
             <FormControlLabel
               control={
@@ -458,17 +439,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__litter_in_around_structure"
                 />
               }
-              label="Litter in / around structure"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__abandoned_vehicle}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__abandoned_vehicle"
-                />
-              }
-              label="Abandoned vehicle"
+              label="Litter in/around structure (shift + c)"
             />
           </FormGroup>
         </FormControl>

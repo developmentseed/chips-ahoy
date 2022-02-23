@@ -89,14 +89,6 @@ class MainPage extends Component {
       this.updateFeatureKey('prop_feature__vacant_lots__fenced');
     }
     if (key === 's' && !shift) {
-      NotificationManager.success('Side Fences only', 'vacant_lots', 800);
-      this.updateFeatureKey('prop_feature__vacant_lots__side_fences_only');
-    }
-    if (key === 'd' && !shift) {
-      NotificationManager.success('Construction activity', 'vacant_lots', 800);
-      this.updateFeatureKey('prop_feature__vacant_lots__construction_activity');
-    }
-    if (key === 'z' && !shift) {
       NotificationManager.success('Litter/dumping/Tires', 'vacant_lots', 800);
       this.updateFeatureKey('prop_feature__vacant_lots__litter_dumping_tires');
     }
@@ -138,11 +130,6 @@ class MainPage extends Component {
       NotificationManager.info('Litter in / around structure', 'structures', 800);
       this.updateFeatureKey('prop_feature__structures__litter_in_around_structure');
     }
-    if (key === 'v' && shift) {
-      NotificationManager.info('Abandoned vehicle', 'structures', 800);
-      this.updateFeatureKey('prop_feature__structures__abandoned_vehicle');
-    }
-
     console.log(' key', key, 'shiftKey', shift);
   }
 
