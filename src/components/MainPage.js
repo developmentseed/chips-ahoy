@@ -148,7 +148,24 @@ class MainPage extends Component {
     const { data, fileName } = this.props;
 
     if (data && data.features) {
-      const blob = new Blob([JSON.stringify(data)], {
+      let dataUpdate = {
+        ...data,
+        features: data.features.map((feat) => {
+          const prop_feats = Object.keys(feat.properties || {})
+            .filter((i) => i.includes('prop_feature'))
+            .map((i) => ({ key: `${i}`, value: feat.properties[i] }));
+
+          const feat_cat = {
+            sub_category: prop_feats.filter((j) => j.value).map((j) => j.key.split('__')[2]),
+            category: [
+              ...new Set(prop_feats.filter((j) => j.value).map((j) => j.key.split('__')[1]))
+            ]
+          };
+          const new_feat = { ...feat, properties: { ...feat.properties, ...feat_cat } };
+          return new_feat;
+        })
+      };
+      const blob = new Blob([JSON.stringify(dataUpdate)], {
         type: 'application/json;charset=utf-8'
       });
       saveAs(blob, fileName);
