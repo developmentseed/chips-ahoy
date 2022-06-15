@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1c395a8f14dda64ce2bb61bc76f2b3f6",
+    "revision": "da91c1a4ec4bd55e7b2078080e6207b4",
     "url": "/chips-ahoy/index.html"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/chips-ahoy/static/js/2.dc8b3342.chunk.js"
   },
   {
-    "revision": "9bb44700067fbeaa19e9",
-    "url": "/chips-ahoy/static/js/main.1749ce94.chunk.js"
+    "revision": "43688d614632824cfda8",
+    "url": "/chips-ahoy/static/js/main.9631f7f3.chunk.js"
   },
   {
     "revision": "d4cf3fbbc2df632c564c",
