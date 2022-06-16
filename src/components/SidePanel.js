@@ -75,8 +75,8 @@ const styles = (theme) => ({
   },
   canvasContainer: {
     textAlign: 'left',
-    padding: 8,
-    height: CHECKBOXHEIGHT
+    padding: 8
+    // height: CHECKBOXHEIGHT
   },
   image: {
     maxHeight: CHECKBOXHEIGHT
@@ -134,13 +134,13 @@ class SidePanel extends Component {
       // cat 1
       prop_feature__vacant_lots__paved: false,
       prop_feature__vacant_lots__unpaved: false,
-      prop_feature__vacant_lots__overgrown: false,
+      prop_feature__vacant_lots__overgrown_lawn: false,
+      prop_feature__vacant_lots__overgrown_shrubbery_trees: false,
       prop_feature__vacant_lots__fenced: false,
       prop_feature__vacant_lots__litter_dumping_tires: false,
       // cat 2
       prop_feature__structures__damaged_roof: false,
-      prop_feature__structures__broken_windows_doors: false,
-      prop_feature__structures__missing_windows_doors: false,
+      prop_feature__structures__broken_missing_windows_doors: false,
       prop_feature__structures__boarded_up_windows_doors: false,
       prop_feature__structures__overgrown_lawn: false,
       prop_feature__structures__overgrown_shrubbery_trees: false,
@@ -163,13 +163,13 @@ class SidePanel extends Component {
         // cat 1
         prop_feature__vacant_lots__paved: false,
         prop_feature__vacant_lots__unpaved: false,
-        prop_feature__vacant_lots__overgrown: false,
+        prop_feature__vacant_lots__overgrown_lawn: false,
+        prop_feature__vacant_lots__overgrown_shrubbery_trees: false,
         prop_feature__vacant_lots__fenced: false,
         prop_feature__vacant_lots__litter_dumping_tires: false,
         // cat 2
         prop_feature__structures__damaged_roof: false,
-        prop_feature__structures__broken_windows_doors: false,
-        prop_feature__structures__missing_windows_doors: false,
+        prop_feature__structures__broken_missing_windows_doors: false,
         prop_feature__structures__boarded_up_windows_doors: false,
         prop_feature__structures__overgrown_lawn: false,
         prop_feature__structures__overgrown_shrubbery_trees: false,
@@ -186,15 +186,19 @@ class SidePanel extends Component {
   }
 
   handleChange(e) {
-    const { total } = this.props;
-    const re = /[0-9]+/g;
-    let value = e.target.value;
-    if (value === '' || re.test(value)) {
-      value = parseInt(value);
-      if (total >= value && value >= 0) {
-        this.props.dispatch(updateIndex(value));
+    const { total, updateIndex } = this.props;
+
+    try {
+      const re = /[0-9]+/g;
+      let value = e.target.value;
+      if (value === '' || re.test(value)) {
+        value = parseInt(value);
+        if (total >= value && value >= 0) {
+          updateIndex(value);
+        }
       }
-      return;
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -277,12 +281,12 @@ class SidePanel extends Component {
     const {
       prop_feature__vacant_lots__paved,
       prop_feature__vacant_lots__unpaved,
-      prop_feature__vacant_lots__overgrown,
+      prop_feature__vacant_lots__overgrown_lawn,
+      prop_feature__vacant_lots__overgrown_shrubbery_trees,
       prop_feature__vacant_lots__fenced,
       prop_feature__vacant_lots__litter_dumping_tires,
       prop_feature__structures__damaged_roof,
-      prop_feature__structures__broken_windows_doors,
-      prop_feature__structures__missing_windows_doors,
+      prop_feature__structures__broken_missing_windows_doors,
       prop_feature__structures__boarded_up_windows_doors,
       prop_feature__structures__overgrown_lawn,
       prop_feature__structures__overgrown_shrubbery_trees,
@@ -304,7 +308,7 @@ class SidePanel extends Component {
                   name="prop_feature__vacant_lots__paved"
                 />
               }
-              label="Paved (q)"
+              label="Paved"
             />
             <FormControlLabel
               control={
@@ -314,17 +318,27 @@ class SidePanel extends Component {
                   name="prop_feature__vacant_lots__unpaved"
                 />
               }
-              label="Unpaved (w)"
+              label="Unpaved"
             />
             <FormControlLabel
               control={
                 <CustomCheckBox
-                  checked={prop_feature__vacant_lots__overgrown}
+                  checked={prop_feature__vacant_lots__overgrown_lawn}
                   onChange={this.handleChangeCheck}
-                  name="prop_feature__vacant_lots__overgrown"
+                  name="prop_feature__vacant_lots__overgrown_lawn"
                 />
               }
-              label="Overgrown (e)"
+              label="Overgrown lawn"
+            />
+            <FormControlLabel
+              control={
+                <CustomCheckBox
+                  checked={prop_feature__vacant_lots__overgrown_shrubbery_trees}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__vacant_lots__overgrown_shrubbery_trees"
+                />
+              }
+              label="Overgrown shrubbery/trees"
             />
             <FormControlLabel
               control={
@@ -334,7 +348,7 @@ class SidePanel extends Component {
                   name="prop_feature__vacant_lots__fenced"
                 />
               }
-              label="Fenced (a)"
+              label="Fenced"
             />
             <FormControlLabel
               control={
@@ -344,7 +358,7 @@ class SidePanel extends Component {
                   name="prop_feature__vacant_lots__litter_dumping_tires"
                 />
               }
-              label="Litter/dumping/Tires (s)"
+              label="Litter/dumping/Tires"
             />
           </FormGroup>
           <label className={classes.label}>Structures</label>
@@ -358,58 +372,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__damaged_roof"
                 />
               }
-              label="Damaged roof (shift + q)"
-            />
-
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__broken_windows_doors}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__broken_windows_doors"
-                />
-              }
-              label="Broken windows/doors (shift + w)"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__missing_windows_doors}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__missing_windows_doors"
-                />
-              }
-              label="Missing windows/doors (shift + e)"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__boarded_up_windows_doors}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__boarded_up_windows_doors"
-                />
-              }
-              label="Boarded up windows/doors (shift + a)"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__overgrown_lawn}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__overgrown_lawn"
-                />
-              }
-              label="Overgrown lawn (shift + s)"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__overgrown_shrubbery_trees}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__overgrown_shrubbery_trees"
-                />
-              }
-              label="Overgrown shrubbery/trees (shift + d)"
+              label="Damaged roof"
             />
             <FormControlLabel
               control={
@@ -419,7 +382,47 @@ class SidePanel extends Component {
                   name="prop_feature__structures__structural_issues"
                 />
               }
-              label="Structural issues (shift + z)"
+              label="Structural issues"
+            />
+            <FormControlLabel
+              control={
+                <CustomCheckBox
+                  checked={prop_feature__structures__broken_missing_windows_doors}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__broken_missing_windows_doors"
+                />
+              }
+              label="Broken/missing windows/doors "
+            />
+            <FormControlLabel
+              control={
+                <CustomCheckBox
+                  checked={prop_feature__structures__boarded_up_windows_doors}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__boarded_up_windows_doors"
+                />
+              }
+              label="Boarded up windows/doors"
+            />
+            <FormControlLabel
+              control={
+                <CustomCheckBox
+                  checked={prop_feature__structures__overgrown_lawn}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__overgrown_lawn"
+                />
+              }
+              label="Overgrown lawn"
+            />
+            <FormControlLabel
+              control={
+                <CustomCheckBox
+                  checked={prop_feature__structures__overgrown_shrubbery_trees}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__structures__overgrown_shrubbery_trees"
+                />
+              }
+              label="Overgrown shrubbery/trees"
             />
             <FormControlLabel
               control={
@@ -429,7 +432,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__faded_paint"
                 />
               }
-              label="Faded paint (shift + x)"
+              label="Faded paint"
             />
             <FormControlLabel
               control={
@@ -439,7 +442,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__litter_in_around_structure"
                 />
               }
-              label="Litter in/around structure (shift + c)"
+              label="Litter in/around structure"
             />
           </FormGroup>
         </FormControl>
@@ -461,7 +464,7 @@ class SidePanel extends Component {
     const { classes, total, index, feature } = this.props;
     return (
       <div className={classes.container}>
-        {!feature ? <Loadfile /> : null}
+        {!feature && !total ? <Loadfile /> : null}
         {feature ? (
           <div className={classes.paddinBox}>
             <TextField
@@ -500,6 +503,7 @@ const mapStateToProps = (state) => ({
   data: state.geojsonData.data
 });
 const mapDispatchToProps = {
-  updateFeature
+  updateFeature,
+  updateIndex
 };
 export default compose(connect(mapStateToProps, mapDispatchToProps), withStyles(styles))(SidePanel);

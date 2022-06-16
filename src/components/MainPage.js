@@ -5,13 +5,13 @@ import { withStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import { saveAs } from 'file-saver';
 import React, { Component } from 'react';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationContainer } from 'react-notifications';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { downloadGeojsonFile } from '../actions/controlAction';
-import { fetchFeature, updateFeature, updateIndex } from '../actions/dataActions';
+import { fetchFeature, preloadImages, updateFeature, updateIndex } from '../actions/dataActions';
 import styles from './../style/HomeStyles';
 import PaperImage from './PaperImage';
 import SidePanel from './SidePanel';
@@ -48,7 +48,7 @@ class MainPage extends Component {
   }
 
   keyFunction(event) {
-    const { updateIndex, index, totalFeatures } = this.props;
+    const { updateIndex, index, data, totalFeatures, preloadImages } = this.props;
     const shift = event.shiftKey;
     const key = `${event.key}`.toLocaleLowerCase();
     if (!totalFeatures) return;
@@ -57,6 +57,8 @@ class MainPage extends Component {
     switch (key) {
       case 'arrowright':
         updateIndex(index + 1);
+        const newData = { ...data };
+        preloadImages(index, newData, totalFeatures);
         break;
       case '2':
         updateIndex(index + 1);
@@ -69,66 +71,6 @@ class MainPage extends Component {
         break;
       default:
         break;
-    }
-
-    // vacant_lots , shift == false
-    if (key === 'q' && !shift) {
-      NotificationManager.success('Paved', 'vacant_lots', 800);
-      this.updateFeatureKey('prop_feature__vacant_lots__paved');
-    }
-    if (key === 'w' && !shift) {
-      NotificationManager.success('Info Unpaved', 'vacant_lots', 800);
-      this.updateFeatureKey('prop_feature__vacant_lots__unpaved');
-    }
-    if (key === 'e' && !shift) {
-      NotificationManager.success('Info Overgrown', 'vacant_lots', 800);
-      this.updateFeatureKey('prop_feature__vacant_lots__overgrown');
-    }
-    if (key === 'a' && !shift) {
-      NotificationManager.success('Fenced', 'vacant_lots', 800);
-      this.updateFeatureKey('prop_feature__vacant_lots__fenced');
-    }
-    if (key === 's' && !shift) {
-      NotificationManager.success('Litter/dumping/Tires', 'vacant_lots', 800);
-      this.updateFeatureKey('prop_feature__vacant_lots__litter_dumping_tires');
-    }
-
-    // Structures , shift == true
-    if (key === 'q' && shift) {
-      NotificationManager.info('Damaged roof', 'structures', 800);
-      this.updateFeatureKey('prop_feature__structures__damaged_roof');
-    }
-    if (key === 'w' && shift) {
-      NotificationManager.info('Broken windows / doors ', 'structures', 800);
-      this.updateFeatureKey('prop_feature__structures__broken_windows_doors');
-    }
-    if (key === 'e' && shift) {
-      NotificationManager.info('Missing windows / doors', 'structures', 800);
-      this.updateFeatureKey('prop_feature__structures__missing_windows_doors');
-    }
-    if (key === 'a' && shift) {
-      NotificationManager.info('Boarded up windows / doors ', 'structures', 800);
-      this.updateFeatureKey('prop_feature__structures__boarded_up_windows_doors');
-    }
-    if (key === 's' && shift) {
-      NotificationManager.info('Overgrown lawn ', 'structures', 800);
-      this.updateFeatureKey('prop_feature__structures__overgrown_lawn');
-    }
-    if (key === 'd' && shift) {
-      NotificationManager.info('Overgrown shrubbery/trees', 'structures', 800);
-      this.updateFeatureKey('prop_feature__structures__overgrown_shrubbery_trees');
-    }
-    if (key === 'z' && shift) {
-      NotificationManager.info('Structural issues ', 'structures', 800);
-      this.updateFeatureKey('prop_feature__structures__structural_issues');
-    }
-    if (key === 'x' && shift) {
-      NotificationManager.info('Faded paint', 'structures', 800);
-      this.updateFeatureKey('prop_feature__structures__faded_paint');
-    }
-    if (key === 'c' && shift) {
-      NotificationManager.info('Litter in / around structure', 'structures', 800);
-      this.updateFeatureKey('prop_feature__structures__litter_in_around_structure');
     }
     console.log(' key', key, 'shiftKey', shift);
   }
@@ -209,7 +151,8 @@ const mapDispatchToProps = {
   downloadGeojsonFile,
   fetchFeature,
   updateIndex,
-  updateFeature
+  updateFeature,
+  preloadImages
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withStyles(styles))(MainPage);

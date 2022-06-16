@@ -121,7 +121,9 @@ export function preloadImages(index, data, totalFeatures) {
       try {
         let img = new Image();
         img.src = geo.properties.url;
-        img.id = `img_${geo.properties.url}`;
+        img.id = `${geo.properties.url}`;
+        img.key = `${geo.properties.url}`;
+
         if (geo.properties.tiles_neighbors) {
           for (var [keyTiNe, valueTiNe] of Object.entries(geo.properties.tiles_neighbors)) {
             let img_ti_ne = new Image();

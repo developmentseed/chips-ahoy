@@ -120,6 +120,7 @@ class PaperImage extends Component {
               }}
               key={feature.properties.url}
               src={feature.properties.url}
+              id={feature.properties.url}
               onClick={this.handleImageClick}
               width={minor}
               alt="img"
