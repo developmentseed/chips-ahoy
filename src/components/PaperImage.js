@@ -104,7 +104,6 @@ class PaperImage extends Component {
 
   render() {
     const { classes, feature } = this.props;
-    const { minor } = this.state;
     // console.log(width, height, minor);
     return (
       <div
@@ -122,7 +121,7 @@ class PaperImage extends Component {
               src={feature.properties.url}
               id={feature.properties.url}
               onClick={this.handleImageClick}
-              width={minor}
+              width="100%"
               alt="img"
             />
             {this.renderDot()}

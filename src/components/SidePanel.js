@@ -358,7 +358,7 @@ class SidePanel extends Component {
                   name="prop_feature__vacant_lots__litter_dumping_tires"
                 />
               }
-              label="Litter/dumping/Tires"
+              label="Litter/ dumping/ Tires"
             />
           </FormGroup>
           <label className={classes.label}>Structures</label>
@@ -392,7 +392,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__broken_missing_windows_doors"
                 />
               }
-              label="Broken/missing windows/doors "
+              label="Broken/ missing windows/ doors "
             />
             <FormControlLabel
               control={
@@ -402,7 +402,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__boarded_up_windows_doors"
                 />
               }
-              label="Boarded up windows/doors"
+              label="Boarded up windows/ doors"
             />
             <FormControlLabel
               control={
@@ -422,7 +422,7 @@ class SidePanel extends Component {
                   name="prop_feature__structures__overgrown_shrubbery_trees"
                 />
               }
-              label="Overgrown shrubbery/trees"
+              label="Overgrown shrubbery/ trees"
             />
             <FormControlLabel
               control={
