@@ -30,3 +30,47 @@ export function makeChartData(data) {
     { name: 'unreviewed', value: features.length - yes - no - unrecognized }
   ];
 }
+
+export function getNextIndex(index, features) {
+  var newIndex = index + 1;
+
+  try {
+    if (features.length <= newIndex) return index;
+
+    while (newIndex < features.length) {
+      const properties = features[newIndex].properties;
+      const has_field = Object.keys(properties)
+        .filter((i) => i.includes('prop_feature__'))
+        .some((j) => properties[j]);
+      if (has_field) {
+        break;
+      }
+      newIndex++;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  return newIndex;
+}
+
+export function getPrevIndex(index, features) {
+  var newIndex = index - 1;
+
+  try {
+    if (newIndex < 0) return index;
+
+    while (newIndex >= 0) {
+      const properties = features[newIndex].properties;
+      const has_field = Object.keys(properties)
+        .filter((i) => i.includes('prop_feature__'))
+        .some((j) => properties[j]);
+      if (has_field) {
+        break;
+      }
+      newIndex--;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  return newIndex;
+}

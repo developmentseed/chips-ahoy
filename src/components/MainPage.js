@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { downloadGeojsonFile } from '../actions/controlAction';
 import { fetchFeature, preloadImages, updateFeature, updateIndex } from '../actions/dataActions';
+import { getNextIndex, getPrevIndex } from '../utils/utils';
 import styles from './../style/HomeStyles';
 import PaperImage from './PaperImage';
 import SidePanel from './SidePanel';
@@ -68,6 +69,14 @@ class MainPage extends Component {
         break;
       case '1':
         updateIndex(index - 1);
+        break;
+      case 'd':
+        const nexIndex = getNextIndex(index, [...data.features]);
+        updateIndex(nexIndex);
+        break;
+      case 'a':
+        const prevIndex = getPrevIndex(index, [...data.features]);
+        updateIndex(prevIndex);
         break;
       default:
         break;
