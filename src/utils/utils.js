@@ -33,16 +33,17 @@ export function makeChartData(data) {
 
 export function getNextIndex(index, features) {
   var newIndex = index + 1;
+  var has_modifications = false;
 
   try {
     if (features.length <= newIndex) return index;
-
     while (newIndex < features.length) {
       const properties = features[newIndex].properties;
       const has_field = Object.keys(properties)
         .filter((i) => i.includes('prop_feature__'))
         .some((j) => properties[j]);
       if (has_field) {
+        has_modifications = true;
         break;
       }
       newIndex++;
@@ -50,11 +51,12 @@ export function getNextIndex(index, features) {
   } catch (error) {
     console.error(error);
   }
-  return newIndex;
+  return has_modifications ? newIndex : index;
 }
 
 export function getPrevIndex(index, features) {
   var newIndex = index - 1;
+  var has_modifications = false;
 
   try {
     if (newIndex < 0) return index;
@@ -65,6 +67,7 @@ export function getPrevIndex(index, features) {
         .filter((i) => i.includes('prop_feature__'))
         .some((j) => properties[j]);
       if (has_field) {
+        has_modifications = true;
         break;
       }
       newIndex--;
@@ -72,5 +75,5 @@ export function getPrevIndex(index, features) {
   } catch (error) {
     console.error(error);
   }
-  return newIndex;
+  return has_modifications ? newIndex : index;
 }
