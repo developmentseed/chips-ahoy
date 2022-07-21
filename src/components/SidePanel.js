@@ -176,6 +176,9 @@ class SidePanel extends Component {
         prop_feature__structures__structural_issues: false,
         prop_feature__structures__faded_paint: false,
         prop_feature__structures__litter_in_around_structure: false,
+        //
+        prop_feature__no_blight__no_structures: false,
+        prop_feature__no_blight__no_vacant_lots: false,
         ...props_state
       };
       this.setState({ ...initial_state });
@@ -249,7 +252,8 @@ class SidePanel extends Component {
               primary={`${l.key}`
                 .replace('prop_feature__', '')
                 .replace('structures__', 'struc/ ')
-                .replace('vacant_lots__', 'VLots/ ')}
+                .replace('vacant_lots__', 'VLots/ ')
+                .replace('no_blight__', 'NBlig/ ')}
             />
             <ListItemSecondaryAction>
               <Typography variant="body1" component="span" color="textSecondary">
@@ -292,7 +296,9 @@ class SidePanel extends Component {
       prop_feature__structures__overgrown_shrubbery_trees,
       prop_feature__structures__structural_issues,
       prop_feature__structures__faded_paint,
-      prop_feature__structures__litter_in_around_structure
+      prop_feature__structures__litter_in_around_structure,
+
+      prop_feature__no_blight__structures_vlots
     } = this.state;
 
     return (
@@ -443,6 +449,20 @@ class SidePanel extends Component {
                 />
               }
               label="Litter in/around structure"
+            />
+          </FormGroup>
+          <label className={classes.label}>No Urban Blight </label>
+          <Divider />
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <CustomCheckBox
+                  checked={prop_feature__no_blight__structures_vlots}
+                  onChange={this.handleChangeCheck}
+                  name="prop_feature__no_blight__structures_vlots"
+                />
+              }
+              label="No blight"
             />
           </FormGroup>
         </FormControl>
