@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/chips-ahoy/precache-manifest.887c9ea1ceb5cba5266fe82680d59ede.js"
+  "/chips-ahoy/precache-manifest.382b5f41fb4cae9de27afbd9736a3b4f.js"
 );
 
 self.addEventListener('message', (event) => {
