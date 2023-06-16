@@ -123,9 +123,8 @@ class MainPage extends Component {
     }
   }
   render() {
-    const { classes, feature } = this.props;
+    const { classes } = this.props;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-    console.log(feature);
     return (
       <main className={classes.content}>
         <Container maxWidth="xl" className={classes.container}>

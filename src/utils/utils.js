@@ -1,3 +1,5 @@
+import jwt_decode from 'jwt-decode';
+
 export function makeChartData(data) {
   if (!data) return null;
   const { features } = data;
@@ -76,4 +78,15 @@ export function getPrevIndex(index, features) {
     console.error(error);
   }
   return has_modifications ? newIndex : index;
+}
+
+export function decodeToken(token_url) {
+  if (!token_url) return null;
+  try {
+    const decoded = jwt_decode(token_url);
+    return decoded;
+  } catch (error) {
+    console.error(error);
+  }
+  return null;
 }
