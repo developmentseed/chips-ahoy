@@ -2,12 +2,18 @@ import {
   GET_TOKEN_URL,
   GET_TOKEN_URL_EMPTY,
   GET_TOKEN_URL_FAILURE,
-  GET_TOKEN_URL_SUCCESS
+  GET_TOKEN_URL_SUCCESS,
+  SET_ACCESS,
+  REMOVE_ACCESS
 } from '../actions/dsAnnotate';
 
 const initialState = {
   token_url: '',
-  token_url_decode: {}
+  token_url_decode: {},
+  setup_tool: {},
+  task_id: '',
+  user_data: {},
+  has_access: false
 };
 
 export default function dsAnnotateReducer(state = initialState, action) {
@@ -32,6 +38,16 @@ export default function dsAnnotateReducer(state = initialState, action) {
       return {
         ...state,
         ...action.payload
+      };
+    case SET_ACCESS:
+      return {
+        ...state,
+        has_access: true
+      };
+    case REMOVE_ACCESS:
+      return {
+        ...state,
+        has_access: false
       };
     default:
       return state;

@@ -7,7 +7,7 @@ import { tokeUrl } from '../actions/dsAnnotate';
 import styles from './../style/HomeStyles';
 import Header from './Header';
 import MainPage from './MainPage';
-
+import BlankPage from './BlankPage';
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +19,15 @@ class Home extends Component {
   }
   render() {
     // const open =true;
-    const { classes } = this.props;
+    const { classes, has_access } = this.props;
+    if (!has_access) {
+      return (
+        <div className={classes.root}>
+          <Header handleDrawerOpen={this.handleDrawerOpen} />
+          <BlankPage />
+        </div>
+      );
+    }
 
     return (
       <div className={classes.root}>
@@ -31,7 +39,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  token_decode: state.dsAnnotate.token_url_decode
+  has_access: state.dsAnnotate.has_access
 });
 const mapDispatchToProps = {
   tokeUrl

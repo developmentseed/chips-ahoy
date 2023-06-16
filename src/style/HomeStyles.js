@@ -106,6 +106,11 @@ const styles = (theme) => ({
   overflowNone: {
     overflow: 'unset',
     padding: 0
+  },
+  imageunavailable: {
+    width: '100%',
+    height:' 100%',
+    objectFit: 'contain',
   }
 });
 
