@@ -17,12 +17,19 @@ class Header extends Component {
   }
 
   downloadFile() {
+    const { setup_tool } = this.props;
+    const { can_download_data } = setup_tool;
+    if (!can_download_data) {
+      return;
+    }
+
     this.props.dispatch(downloadGeojsonFile(true));
   }
 
   render() {
-    const { classes, fileName, totalFeatures } = this.props;
+    const { classes, fileName, totalFeatures, setup_tool } = this.props;
     const hasFeatures = totalFeatures !== 0;
+    const { can_download_data } = setup_tool;
     return (
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar
@@ -43,7 +50,7 @@ class Header extends Component {
             {fileName}
           </Typography>
           <ProgressBar />
-          {hasFeatures ? (
+          {can_download_data && hasFeatures ? (
             <Button className={classes.button} color="inherit" onClick={this.downloadFile}>
               DOWNLOAD
             </Button>
@@ -56,7 +63,8 @@ class Header extends Component {
 
 const mapStateToProps = (state) => ({
   fileName: state.geojsonData.fileName,
-  totalFeatures: state.geojsonData.totalFeatures
+  totalFeatures: state.geojsonData.totalFeatures,
+  setup_tool: state.dsAnnotate.setup_tool
 });
 
 export default compose(connect(mapStateToProps), withStyles(styles))(Header);

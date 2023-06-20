@@ -153,7 +153,7 @@ const mapStateToProps = (state) => ({
   index: state.geojsonData.index,
   totalFeatures: state.geojsonData.totalFeatures,
   fileName: state.geojsonData.fileName,
-  downloadFile: state.control.downloadFile
+  downloadFile: state.control.downloadFile,
 });
 const mapDispatchToProps = {
   downloadGeojsonFile,

@@ -152,6 +152,8 @@ class SidePanel extends Component {
     this.handleChangeTab = this.handleChangeTab.bind(this);
     this.handleChangeCheck = this.handleChangeCheck.bind(this);
   }
+
+
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { feature } = nextProps;
     if (feature && feature.properties) {
@@ -480,11 +482,12 @@ class SidePanel extends Component {
       </React.Fragment>
     );
   }
+
   render() {
     const { classes, total, index, feature } = this.props;
     return (
       <div className={classes.container}>
-        {!feature && !total ? <Loadfile /> : null}
+        <Loadfile />
         {feature ? (
           <div className={classes.paddinBox}>
             <TextField
@@ -520,7 +523,8 @@ const mapStateToProps = (state) => ({
   total: state.geojsonData.totalFeatures,
   index: state.geojsonData.index,
   feature: state.geojsonData.feature,
-  data: state.geojsonData.data
+  data: state.geojsonData.data,
+  setup_tool: state.dsAnnotate.setup_tool
 });
 const mapDispatchToProps = {
   updateFeature,

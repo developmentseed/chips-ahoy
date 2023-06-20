@@ -6,12 +6,19 @@ import Files from 'react-files';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import { fetchData } from './../actions/dataActions';
+import { fetchData, fetchApiData } from './../actions/dataActions';
+import { IconButton } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = (theme) => ({
   container: {
-    height: 250,
+    height: 100,
     padding: theme.spacing(2)
+  },
+  paperFetch: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexDirection: 'row'
   }
 });
 class Loadfile extends Component {
@@ -19,23 +26,41 @@ class Loadfile extends Component {
     super(props);
     this.onFilesChange = this.onFilesChange.bind(this);
   }
-
+  componentDidMount() {
+    const { setup_tool, total, feature, task_id, fetchApiData } = this.props;
+    const { fetch_data } = setup_tool;
+    if (fetch_data && task_id && !total && !feature) {
+      fetchApiData(task_id);
+    }
+  }
   onFilesChange(files) {
-    this.props.dispatch(fetchData(files));
+    const { fetchData } = this.props;
+    fetchData(files);
   }
 
   onFilesError(error) {
     console.error('error code ' + error.code + ': ' + error.message);
   }
 
-  render() {
-    const { classes } = this.props;
+  renderLoadFileContainer() {
+    const { setup_tool, classes } = this.props;
+    const { can_load_data, fetch_data } = setup_tool;
 
-    return (
-      <div className={classes.container}>
-        <Typography variant="caption" display="block" gutterBottom>
-          Load geojson file
-        </Typography>
+    if (fetch_data ) {
+      return (
+        <Paper elevation={2} className={classes.paperFetch}>
+          <IconButton aria-label="delete" aria-label="Fetch data api">
+            <Typography display="block" variant="caption" gutterBottom>
+              Feching ...
+            </Typography>
+            <CircularProgress size={30} />
+          </IconButton>
+        </Paper>
+      );
+    }
+
+    if (can_load_data) {
+      return (
         <Paper>
           <Files
             className="files-dropzone-list"
@@ -49,9 +74,36 @@ class Loadfile extends Component {
             <input type="submit" value="Choose a file" style={{ width: '96%', margin: '5px' }} />
           </Files>
         </Paper>
+      );
+    }
+    return null;
+  }
+
+  render() {
+    const { classes, total, feature } = this.props;
+    if (feature && total) {
+      return null;
+    }
+    return (
+      <div className={classes.container}>
+        <Typography variant="caption" display="block" gutterBottom>
+          Load data
+        </Typography>
+        {this.renderLoadFileContainer()}
       </div>
     );
   }
 }
 
-export default compose(connect(null), withStyles(styles))(Loadfile);
+const mapStateToProps = (state) => ({
+  total: state.geojsonData.totalFeatures,
+  feature: state.geojsonData.feature,
+  setup_tool: state.dsAnnotate.setup_tool,
+  task_id: state.dsAnnotate.task_id
+});
+
+const mapDispatchToProps = {
+  fetchData,
+  fetchApiData
+};
+export default compose(connect(mapStateToProps, mapDispatchToProps), withStyles(styles))(Loadfile);

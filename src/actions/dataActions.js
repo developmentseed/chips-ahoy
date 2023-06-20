@@ -1,4 +1,6 @@
+import axios from 'axios';
 import { rangeImages, validateFileName } from '../utils/validate';
+const { REACT_APP_API_URL } = process.env;
 
 export const FETCH_DATA_BEGIN = 'FETCH_DATA_BEGIN';
 export const FETCH_DATA_SUCCESS = 'FETCH_DATA_SUCCESS';
@@ -56,6 +58,25 @@ export function fetchData(files) {
       dispatch(fetchFeature(0, geojson, total));
     };
     fileReader.readAsText(files[0]);
+  };
+}
+
+export function fetchApiData(task_id) {
+  return (dispatch) => {
+    dispatch(fetchDataBegin());
+    axios
+      .get(`${REACT_APP_API_URL}/${task_id}/get_data`)
+      .then(function (response) {
+        console.log(response);
+        const geojson = response.data.data;
+        const total = (geojson.features || []).length;
+        dispatch(fetchDataSuccess(geojson, validateFileName(`data_${task_id}.geojson`), total));
+        dispatch(updateIndex(0));
+        dispatch(fetchFeature(0, geojson, total));
+      })
+      .catch(function (error) {
+        dispatch(fetchDataFailure(error.message));
+      });
   };
 }
 

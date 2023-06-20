@@ -114,3 +114,4 @@ dist
 *.npz
 build/
 scripts/data/*
+.env
