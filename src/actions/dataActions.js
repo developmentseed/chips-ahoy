@@ -68,7 +68,7 @@ export function fetchApiData(task_id) {
       .get(`${REACT_APP_API_URL}/${task_id}/get_data`)
       .then(function (response) {
         console.log(response);
-        const geojson = response.data.data;
+        const geojson = response.data;
         const total = (geojson.features || []).length;
         dispatch(fetchDataSuccess(geojson, validateFileName(`data_${task_id}.geojson`), total));
         dispatch(updateIndex(0));

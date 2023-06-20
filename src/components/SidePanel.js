@@ -22,101 +22,7 @@ import { headerHeigth } from '../style/HomeStyles';
 import Loadfile from './Loadfile';
 
 const CHECKBOXHEIGHT = 530;
-const IMAGE_SCALE = 100;
-
-const styles = (theme) => ({
-  container: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-    alignContent: 'center',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch'
-  },
-  listfeatures: {
-    display: 'flex',
-    flexDirection: 'column',
-    maxHeight: `calc(100vh - 64px - 32px - 70px - ${CHECKBOXHEIGHT}px - ${headerHeigth * 1.7}px)`,
-    overflow: 'auto',
-    width: '100%',
-    padding: theme.spacing(2),
-    paddingRight: 0
-  },
-  tabContainer: {
-    minHeight: CHECKBOXHEIGHT + 5,
-    padding: 0
-  },
-  chartContainer: {
-    height: CHECKBOXHEIGHT,
-    padding: 0
-  },
-  lItem: {
-    paddingBottom: 2,
-    paddingRight: 0,
-    paddingLeft: 0,
-    paddingTop: 2,
-
-    wordWrap: 'break-word'
-  },
-  lItemText: {
-    marginBottom: 2,
-    marginTop: 2
-  },
-  primaryText: {
-    textAlign: 'center',
-    color: '#808080'
-  },
-  secondaryText: {
-    color: 'red',
-    fontSize: '1rem'
-  },
-  paddinBox: {
-    padding: theme.spacing(2)
-  },
-  canvasContainer: {
-    textAlign: 'left',
-    padding: 8
-    // height: CHECKBOXHEIGHT
-  },
-  image: {
-    maxHeight: CHECKBOXHEIGHT
-  },
-  tableSmall: {
-    overflow: 'hidden',
-    height: CHECKBOXHEIGHT,
-    position: 'relative',
-    width: 'auto',
-    pointerEvents: 'none'
-  },
-  label: {
-    fontSize: '1rem',
-    fontWeight: 600
-  },
-  tableBig: {
-    height: (CHECKBOXHEIGHT - IMAGE_SCALE) * 3,
-    width: (CHECKBOXHEIGHT - IMAGE_SCALE) * 3,
-    display: 'grid',
-    gridTemplateColumns: `repeat(3, ${CHECKBOXHEIGHT - IMAGE_SCALE}px)`,
-    gridTemplateRows: `repeat(3, ${CHECKBOXHEIGHT - IMAGE_SCALE}px)`,
-    gridColumnGap: 0,
-    gridRowGap: 0,
-    overflow: 'hidden',
-    position: 'absolute',
-    left: '50%',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
-    pointerEvents: 'none'
-  },
-  div1: { gridArea: '1 / 1 / 2 / 2', border: '1px solid red', pointerEvents: 'none' },
-  div2: { gridArea: '1 / 2 / 2 / 3', border: '1px solid red', pointerEvents: 'none' },
-  div3: { gridArea: '1 / 3 / 2 / 4', border: '1px solid red', pointerEvents: 'none' },
-  div4: { gridArea: '2 / 1 / 3 / 2', border: '1px solid red', pointerEvents: 'none' },
-  div5: { gridArea: '2 / 2 / 3 / 3', border: '1px solid red', pointerEvents: 'none' },
-  div6: { gridArea: '2 / 3 / 3 / 4', border: '1px solid red', pointerEvents: 'none' },
-  div7: { gridArea: '3 / 1 / 4 / 2', border: '1px solid red', pointerEvents: 'none' },
-  div8: { gridArea: '3 / 2 / 4 / 3', border: '1px solid red', pointerEvents: 'none' },
-  div9: { gridArea: '3 / 3 / 4 / 4', border: '1px solid red', pointerEvents: 'none' }
-});
+// const IMAGE_SCALE = 100;
 
 const CustomCheckBox = withStyles({
   root: {
@@ -129,58 +35,41 @@ class SidePanel extends Component {
     super();
     this.state = {
       value: '',
-      focus_tab: 0,
+      focus_tab: 0
       // states
-      // cat 1
-      prop_feature__vacant_lots__paved: false,
-      prop_feature__vacant_lots__unpaved: false,
-      prop_feature__vacant_lots__overgrown_lawn: false,
-      prop_feature__vacant_lots__overgrown_shrubbery_trees: false,
-      prop_feature__vacant_lots__fenced: false,
-      prop_feature__vacant_lots__litter_dumping_tires: false,
-      // cat 2
-      prop_feature__structures__damaged_roof: false,
-      prop_feature__structures__broken_missing_windows_doors: false,
-      prop_feature__structures__boarded_up_windows_doors: false,
-      prop_feature__structures__overgrown_lawn: false,
-      prop_feature__structures__overgrown_shrubbery_trees: false,
-      prop_feature__structures__structural_issues: false,
-      prop_feature__structures__faded_paint: false,
-      prop_feature__structures__litter_in_around_structure: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeTab = this.handleChangeTab.bind(this);
     this.handleChangeCheck = this.handleChangeCheck.bind(this);
   }
 
-
+  componentDidMount() {
+    const { classes_annotate } = this.props;
+    // create states
+    const classes_dict = classes_annotate.reduce((acc, elem) => {
+      acc[elem] = false;
+      return acc;
+    }, {});
+    this.setState({ ...classes_dict });
+  }
   UNSAFE_componentWillReceiveProps(nextProps) {
+    const { classes_annotate } = this.props;
+
     const { feature } = nextProps;
     if (feature && feature.properties) {
       const props_state = Object.keys(feature.properties || {})
         .sort()
         .filter((i) => i.includes('prop_feature'))
         .reduce((a, v) => ({ ...a, [v]: feature.properties[v] }), {});
+      // create states
+      const classes_dict = classes_annotate.reduce((acc, elem) => {
+        acc[elem] = false;
+        return acc;
+      }, {});
+      this.setState({ ...classes_dict });
       let initial_state = {
         // cat 1
-        prop_feature__vacant_lots__paved: false,
-        prop_feature__vacant_lots__unpaved: false,
-        prop_feature__vacant_lots__overgrown_lawn: false,
-        prop_feature__vacant_lots__overgrown_shrubbery_trees: false,
-        prop_feature__vacant_lots__fenced: false,
-        prop_feature__vacant_lots__litter_dumping_tires: false,
-        // cat 2
-        prop_feature__structures__damaged_roof: false,
-        prop_feature__structures__broken_missing_windows_doors: false,
-        prop_feature__structures__boarded_up_windows_doors: false,
-        prop_feature__structures__overgrown_lawn: false,
-        prop_feature__structures__overgrown_shrubbery_trees: false,
-        prop_feature__structures__structural_issues: false,
-        prop_feature__structures__faded_paint: false,
-        prop_feature__structures__litter_in_around_structure: false,
-        //
-        prop_feature__no_blight__no_structures: false,
-        prop_feature__no_blight__no_vacant_lots: false,
+        ...classes_dict,
         ...props_state
       };
       this.setState({ ...initial_state });
@@ -283,190 +172,31 @@ class SidePanel extends Component {
   }
 
   renderCheckboxs() {
-    const { classes } = this.props;
-    const {
-      prop_feature__vacant_lots__paved,
-      prop_feature__vacant_lots__unpaved,
-      prop_feature__vacant_lots__overgrown_lawn,
-      prop_feature__vacant_lots__overgrown_shrubbery_trees,
-      prop_feature__vacant_lots__fenced,
-      prop_feature__vacant_lots__litter_dumping_tires,
-      prop_feature__structures__damaged_roof,
-      prop_feature__structures__broken_missing_windows_doors,
-      prop_feature__structures__boarded_up_windows_doors,
-      prop_feature__structures__overgrown_lawn,
-      prop_feature__structures__overgrown_shrubbery_trees,
-      prop_feature__structures__structural_issues,
-      prop_feature__structures__faded_paint,
-      prop_feature__structures__litter_in_around_structure,
-
-      prop_feature__no_blight__structures_vlots
-    } = this.state;
+    const { classes, classes_annotate_dict, classes_annotate } = this.props;
 
     return (
       <div className={classes.canvasContainer}>
         <FormControl size="small">
-          <label className={classes.label}>Vacant lots</label>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__vacant_lots__paved}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__vacant_lots__paved"
-                />
-              }
-              label="Paved"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__vacant_lots__unpaved}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__vacant_lots__unpaved"
-                />
-              }
-              label="Unpaved"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__vacant_lots__overgrown_lawn}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__vacant_lots__overgrown_lawn"
-                />
-              }
-              label="Overgrown lawn"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__vacant_lots__overgrown_shrubbery_trees}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__vacant_lots__overgrown_shrubbery_trees"
-                />
-              }
-              label="Overgrown shrubbery/trees"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__vacant_lots__fenced}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__vacant_lots__fenced"
-                />
-              }
-              label="Fenced"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__vacant_lots__litter_dumping_tires}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__vacant_lots__litter_dumping_tires"
-                />
-              }
-              label="Litter/ dumping/ Tires"
-            />
-          </FormGroup>
-          <label className={classes.label}>Structures</label>
-          <Divider />
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__damaged_roof}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__damaged_roof"
-                />
-              }
-              label="Damaged roof"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__structural_issues}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__structural_issues"
-                />
-              }
-              label="Structural issues"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__broken_missing_windows_doors}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__broken_missing_windows_doors"
-                />
-              }
-              label="Broken/ missing windows/ doors "
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__boarded_up_windows_doors}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__boarded_up_windows_doors"
-                />
-              }
-              label="Boarded up windows/ doors"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__overgrown_lawn}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__overgrown_lawn"
-                />
-              }
-              label="Overgrown lawn"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__overgrown_shrubbery_trees}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__overgrown_shrubbery_trees"
-                />
-              }
-              label="Overgrown shrubbery/ trees"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__faded_paint}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__faded_paint"
-                />
-              }
-              label="Faded paint"
-            />
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__structures__litter_in_around_structure}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__structures__litter_in_around_structure"
-                />
-              }
-              label="Litter in/around structure"
-            />
-          </FormGroup>
-          <label className={classes.label}>No Urban Blight </label>
-          <Divider />
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <CustomCheckBox
-                  checked={prop_feature__no_blight__structures_vlots}
-                  onChange={this.handleChangeCheck}
-                  name="prop_feature__no_blight__structures_vlots"
-                />
-              }
-              label="No blight"
-            />
-          </FormGroup>
+          {Object.keys(classes_annotate_dict).map((i) => (
+            <div key={i}>
+              <label className={classes.label}>{i.replace('_', ' ')}</label>
+              <FormGroup>
+                {classes_annotate_dict[i].map((j) => (
+                  <FormControlLabel
+                    key={`prop_feature__${i}__${j}`}
+                    control={
+                      <CustomCheckBox
+                        checked={this.state[`prop_feature__${i}__${j}`]}
+                        onChange={this.handleChangeCheck}
+                        name={`prop_feature__${i}__${j}`}
+                      />
+                    }
+                    label={j}
+                  />
+                ))}
+              </FormGroup>
+            </div>
+          ))}
         </FormControl>
       </div>
     );
@@ -524,10 +254,76 @@ const mapStateToProps = (state) => ({
   index: state.geojsonData.index,
   feature: state.geojsonData.feature,
   data: state.geojsonData.data,
-  setup_tool: state.dsAnnotate.setup_tool
+  setup_tool: state.dsAnnotate.setup_tool,
+  classes_annotate_dict: state.dsAnnotate.classes_annotate_dict,
+  classes_annotate: state.dsAnnotate.classes_annotate
 });
 const mapDispatchToProps = {
   updateFeature,
   updateIndex
 };
+
+const styles = (theme) => ({
+  container: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    alignContent: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'stretch'
+  },
+  listfeatures: {
+    display: 'flex',
+    flexDirection: 'column',
+    maxHeight: `calc(100vh - 64px - 32px - 70px - ${CHECKBOXHEIGHT}px - ${headerHeigth * 1.7}px)`,
+    overflow: 'auto',
+    width: '100%',
+    padding: theme.spacing(2),
+    paddingRight: 0
+  },
+  tabContainer: {
+    minHeight: CHECKBOXHEIGHT + 5,
+    padding: 0
+  },
+  chartContainer: {
+    height: CHECKBOXHEIGHT,
+    padding: 0
+  },
+  lItem: {
+    paddingBottom: 2,
+    paddingRight: 0,
+    paddingLeft: 0,
+    paddingTop: 2,
+
+    wordWrap: 'break-word'
+  },
+  lItemText: {
+    marginBottom: 2,
+    marginTop: 2
+  },
+  primaryText: {
+    textAlign: 'center',
+    color: '#808080'
+  },
+  secondaryText: {
+    color: 'red',
+    fontSize: '1rem'
+  },
+  paddinBox: {
+    padding: theme.spacing(2)
+  },
+  canvasContainer: {
+    textAlign: 'left',
+    padding: 8
+    // height: CHECKBOXHEIGHT
+  },
+  image: {
+    maxHeight: CHECKBOXHEIGHT
+  },
+  label: {
+    fontSize: '1rem',
+    fontWeight: 600
+  }
+});
+
 export default compose(connect(mapStateToProps, mapDispatchToProps), withStyles(styles))(SidePanel);

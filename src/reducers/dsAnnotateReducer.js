@@ -19,6 +19,42 @@ const initialState = {
   token_url: '',
   token_url_decode: {},
   setup_tool: { ...setup_tool },
+  classes_annotate_dict: {
+    vacant_lots: [
+      'paved',
+      'unpaved',
+      'overgrown_lawn',
+      'overgrown_shrubbery_trees',
+      'fenced',
+      'litter_dumping_tires'
+    ],
+    structures: [
+      'damaged_roof',
+      'broken_missing_windows_doors',
+      'boarded_up_windows_doors',
+      'overgrown_lawn',
+      'overgrown_shrubbery_trees',
+      'structural_issues',
+      'faded_paint',
+      'litter_in_around_structure'
+    ]
+  },
+  classes_annotate: [
+    'prop_feature__structures__damaged_roof',
+    'prop_feature__structures__broken_missing_windows_doors',
+    'prop_feature__structures__boarded_up_windows_doors',
+    'prop_feature__structures__overgrown_lawn',
+    'prop_feature__structures__overgrown_shrubbery_trees',
+    'prop_feature__structures__structural_issues',
+    'prop_feature__structures__faded_paint',
+    'prop_feature__structures__litter_in_around_structure',
+    'prop_feature__vacant_lots__paved',
+    'prop_feature__vacant_lots__unpaved',
+    'prop_feature__vacant_lots__overgrown_lawn',
+    'prop_feature__vacant_lots__overgrown_shrubbery_trees',
+    'prop_feature__vacant_lots__fenced',
+    'prop_feature__vacant_lots__litter_dumping_tires'
+  ],
   task_id: '',
   user_data: {},
   has_access: false

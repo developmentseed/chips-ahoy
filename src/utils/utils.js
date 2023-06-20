@@ -90,3 +90,18 @@ export function decodeToken(token_url) {
   }
   return null;
 }
+
+export function object2list(classes_annotate) {
+  // 2D -> 1D
+  if (!classes_annotate) {
+    return [];
+  }
+  try {
+    return Object.keys(classes_annotate)
+      .sort()
+      .map((i) => classes_annotate[i].map((j) => `prop_feature__${i}__${j}`))
+      .flat();
+  } catch (error) {
+    console.error(error);
+  }
+}
