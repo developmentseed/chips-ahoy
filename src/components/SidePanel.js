@@ -19,6 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { updateFeature, updateIndex } from '../actions/dataActions';
 import { headerHeigth } from '../style/HomeStyles';
+import { PREFIX_FIELD } from '../utils/constants';
 import Loadfile from './Loadfile';
 
 const CHECKBOXHEIGHT = 530;
@@ -59,7 +60,7 @@ class SidePanel extends Component {
     if (feature && feature.properties) {
       const props_state = Object.keys(feature.properties || {})
         .sort()
-        .filter((i) => i.includes('prop_feature'))
+        .filter((i) => i.includes(PREFIX_FIELD))
         .reduce((a, v) => ({ ...a, [v]: feature.properties[v] }), {});
       // create states
       const classes_dict = classes_annotate.reduce((acc, elem) => {
@@ -124,74 +125,27 @@ class SidePanel extends Component {
     return `${text}`;
   }
 
-  renderProperties() {
-    const { classes, feature } = this.props;
-    if (!feature || !feature.properties) return null;
-    const uuid_difference = feature.properties.uuid_difference || uuidv4();
-
-    const properties = Object.keys(feature.properties || {})
-      .sort()
-      .reverse()
-      .filter((i) => i.includes('prop_feature'))
-      .map((i) => ({ key: `${i}`, value: feature.properties[i] }));
-    return (
-      <>
-        {properties.map((l, k) => (
-          <ListItem key={`li-${uuid_difference}-${k}`} className={classes.lItem}>
-            <ListItemText
-              className={classes.lItemText}
-              primary={`${l.key}`
-                .replace('prop_feature__', '')
-                .replace('structures__', 'struc/ ')
-                .replace('vacant_lots__', 'VLots/ ')
-                .replace('no_blight__', 'NBlig/ ')}
-            />
-            <ListItemSecondaryAction>
-              <Typography variant="body1" component="span" color="textSecondary">
-                {this.convertSecondaryText(l.value)}
-              </Typography>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
-      </>
-    );
-  }
-
-  renderFeature() {
-    const { classes, feature } = this.props;
-    if (!feature || !feature.properties) return null;
-
-    return (
-      <React.Fragment>
-        <ListItem>
-          <ListItemText primary="Properties" classes={{ primary: classes.primaryText }} />
-        </ListItem>
-        {this.renderProperties()}
-      </React.Fragment>
-    );
-  }
-
   renderCheckboxs() {
-    const { classes, classes_annotate_dict, classes_annotate } = this.props;
+    const { classes, classes_annotate_dict } = this.props;
 
     return (
       <div className={classes.canvasContainer}>
         <FormControl size="small">
           {Object.keys(classes_annotate_dict).map((i) => (
             <div key={i}>
-              <label className={classes.label}>{i.replace('_', ' ')}</label>
+              <label className={classes.label}>{i.replaceAll('_', ' ').replaceAll('-', ' ')}</label>
               <FormGroup>
                 {classes_annotate_dict[i].map((j) => (
                   <FormControlLabel
-                    key={`prop_feature__${i}__${j}`}
+                    key={`${PREFIX_FIELD}__${i}__${j}`}
                     control={
                       <CustomCheckBox
-                        checked={this.state[`prop_feature__${i}__${j}`]}
+                        checked={this.state[`${PREFIX_FIELD}__${i}__${j}`]}
                         onChange={this.handleChangeCheck}
-                        name={`prop_feature__${i}__${j}`}
+                        name={`${PREFIX_FIELD}__${i}__${j}`}
                       />
                     }
-                    label={j}
+                    label={j.replaceAll('_', ' ').replaceAll('-', ' ')}
                   />
                 ))}
               </FormGroup>
@@ -208,7 +162,6 @@ class SidePanel extends Component {
     return (
       <React.Fragment>
         <div className={classes.tabContainer}>{this.renderCheckboxs()}</div>
-        <Divider />
       </React.Fragment>
     );
   }
@@ -219,31 +172,35 @@ class SidePanel extends Component {
       <div className={classes.container}>
         <Loadfile />
         {feature ? (
-          <div className={classes.paddinBox}>
-            <TextField
-              id="index"
-              label="Index"
-              onChange={this.handleChange}
-              value={index}
-              type="number"
-            />
+          <React.Fragment>
+            <div className={classes.paddinBox}>
+              <TextField
+                id="index"
+                label="Index"
+                onChange={this.handleChange}
+                value={index}
+                type="number"
+              />
+            </div>
             <Divider />
-          </div>
+          </React.Fragment>
         ) : null}
         {this.renderTabs()}
-        <List component="div" className={classes.listfeatures}>
-          {total !== 0 ? (
-            <ListItem className={classes.lItem}>
-              <ListItemText primary="Total" />
-              <ListItemSecondaryAction>
-                <Typography variant="body1" component="span" color="textSecondary">
-                  {total}
-                </Typography>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ) : null}
-          {this.renderFeature()}
-        </List>
+        {total !== 0 ? (
+          <React.Fragment>
+            <Divider />
+            <List component="div" className={classes.listfeatures}>
+              <ListItem className={classes.lItem}>
+                <ListItemText primary="Total" />
+                <ListItemSecondaryAction>
+                  <Typography variant="body1" component="span" color="textSecondary">
+                    {total}
+                  </Typography>
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </React.Fragment>
+        ) : null}
       </div>
     );
   }
@@ -321,7 +278,7 @@ const styles = (theme) => ({
     maxHeight: CHECKBOXHEIGHT
   },
   label: {
-    fontSize: '1rem',
+    fontSize: '1.01rem',
     fontWeight: 600
   }
 });

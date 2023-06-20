@@ -50,7 +50,7 @@ class MainPage extends Component {
 
   keyFunction(event) {
     const { updateIndex, index, data, totalFeatures, preloadImages } = this.props;
-    const shift = event.shiftKey;
+    // const shift = event.shiftKey;
     const key = `${event.key}`.toLocaleLowerCase();
     if (!totalFeatures) return;
 
@@ -58,8 +58,7 @@ class MainPage extends Component {
     switch (key) {
       case 'arrowright':
         updateIndex(index + 1);
-        const newData = { ...data };
-        preloadImages(index, newData, totalFeatures);
+        preloadImages(index, { ...data }, totalFeatures);
         break;
       case '2':
         updateIndex(index + 1);
@@ -71,17 +70,14 @@ class MainPage extends Component {
         updateIndex(index - 1);
         break;
       case 'd':
-        const nexIndex = getNextIndex(index, [...data.features]);
-        updateIndex(nexIndex);
+        updateIndex(getNextIndex(index, [...data.features]));
         break;
       case 'a':
-        const prevIndex = getPrevIndex(index, [...data.features]);
-        updateIndex(prevIndex);
+        updateIndex(getPrevIndex(index, [...data.features]));
         break;
       default:
         break;
     }
-    console.log(' key', key, 'shiftKey', shift);
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -153,7 +149,7 @@ const mapStateToProps = (state) => ({
   index: state.geojsonData.index,
   totalFeatures: state.geojsonData.totalFeatures,
   fileName: state.geojsonData.fileName,
-  downloadFile: state.control.downloadFile,
+  downloadFile: state.control.downloadFile
 });
 const mapDispatchToProps = {
   downloadGeojsonFile,

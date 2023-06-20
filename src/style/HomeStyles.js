@@ -109,8 +109,8 @@ const styles = (theme) => ({
   },
   imageunavailable: {
     width: '100%',
-    height:' 100%',
-    objectFit: 'contain',
+    height: ' 100%',
+    objectFit: 'contain'
   }
 });
 

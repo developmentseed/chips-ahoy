@@ -1,3 +1,5 @@
+import { IconButton } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -6,9 +8,7 @@ import Files from 'react-files';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import { fetchData, fetchApiData } from './../actions/dataActions';
-import { IconButton } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { fetchApiData, fetchData } from './../actions/dataActions';
 
 const styles = (theme) => ({
   container: {
@@ -46,10 +46,10 @@ class Loadfile extends Component {
     const { setup_tool, classes } = this.props;
     const { can_load_data, fetch_data } = setup_tool;
 
-    if (fetch_data ) {
+    if (fetch_data) {
       return (
         <Paper elevation={2} className={classes.paperFetch}>
-          <IconButton aria-label="delete" aria-label="Fetch data api">
+          <IconButton aria-label="Fetch data api">
             <Typography display="block" variant="caption" gutterBottom>
               Feching ...
             </Typography>

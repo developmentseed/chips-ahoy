@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { rangeImages, validateFileName } from '../utils/validate';
 const { REACT_APP_API_URL } = process.env;
 
@@ -67,7 +68,6 @@ export function fetchApiData(task_id) {
     axios
       .get(`${REACT_APP_API_URL}/${task_id}/get_data`)
       .then(function (response) {
-        console.log(response);
         const geojson = response.data;
         const total = (geojson.features || []).length;
         dispatch(fetchDataSuccess(geojson, validateFileName(`data_${task_id}.geojson`), total));

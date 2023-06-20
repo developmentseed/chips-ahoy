@@ -7,14 +7,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import styles from './../style/HomeStyles';
 import unavailable from '../assets/unavailable.jpg';
+import styles from './../style/HomeStyles';
 class BlankPage extends Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount() {}
-
   render() {
     const { classes } = this.props;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);

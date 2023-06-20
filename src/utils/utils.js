@@ -1,5 +1,6 @@
 import jwt_decode from 'jwt-decode';
 
+import { PREFIX_FIELD } from './constants';
 export function makeChartData(data) {
   if (!data) return null;
   const { features } = data;
@@ -42,7 +43,7 @@ export function getNextIndex(index, features) {
     while (newIndex < features.length) {
       const properties = features[newIndex].properties;
       const has_field = Object.keys(properties)
-        .filter((i) => i.includes('prop_feature__'))
+        .filter((i) => i.includes(`${PREFIX_FIELD}__`))
         .some((j) => properties[j]);
       if (has_field) {
         has_modifications = true;
@@ -66,7 +67,7 @@ export function getPrevIndex(index, features) {
     while (newIndex >= 0) {
       const properties = features[newIndex].properties;
       const has_field = Object.keys(properties)
-        .filter((i) => i.includes('prop_feature__'))
+        .filter((i) => i.includes(`${PREFIX_FIELD}__`))
         .some((j) => properties[j]);
       if (has_field) {
         has_modifications = true;
@@ -99,7 +100,7 @@ export function object2list(classes_annotate) {
   try {
     return Object.keys(classes_annotate)
       .sort()
-      .map((i) => classes_annotate[i].map((j) => `prop_feature__${i}__${j}`))
+      .map((i) => classes_annotate[i].map((j) => `${PREFIX_FIELD}__${i}__${j}`))
       .flat();
   } catch (error) {
     console.error(error);

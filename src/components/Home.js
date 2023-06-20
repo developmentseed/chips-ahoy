@@ -5,9 +5,9 @@ import { compose } from 'recompose';
 
 import { tokeUrl } from '../actions/dsAnnotate';
 import styles from './../style/HomeStyles';
+import BlankPage from './BlankPage';
 import Header from './Header';
 import MainPage from './MainPage';
-import BlankPage from './BlankPage';
 class Home extends Component {
   constructor(props) {
     super(props);
