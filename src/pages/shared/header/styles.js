@@ -1,4 +1,4 @@
-import { headerHeigth, drawerWidth } from "../../../utils/constants";
+import { headerHeigth, drawerWidth } from '../../../utils/constants';
 
 const styles = (theme) => ({
   flex: {
@@ -39,8 +39,7 @@ const styles = (theme) => ({
     marginRight: theme.spacing(1)
   },
   nameFile: {
-    marginLeft: '1.5rem',
-    marginRight: '1.5rem'
+    fontSize: '0.78rem'
   },
   button: {
     color: '#fff !important',
@@ -55,6 +54,15 @@ const styles = (theme) => ({
     position: 'relative',
     marginLeft: 0,
     width: `calc(100vw - ${drawerWidth * 3}px)`
+  },
+  appName: {
+    marginLeft: 10
+  },
+  progressBar: {
+    display:'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 

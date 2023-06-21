@@ -1,6 +1,8 @@
 import jwt_decode from 'jwt-decode';
-
+import { saveAs } from 'file-saver';
 import { PREFIX_FIELD } from './constants';
+import reactRouterDom from 'react-router-dom';
+
 export function makeChartData(data) {
   if (!data) return null;
   const { features } = data;
@@ -106,3 +108,26 @@ export function object2list(classes_annotate) {
     console.error(error);
   }
 }
+
+export function saveFile(dataUpdate, fileName) {
+  try {
+    const blob = new Blob([JSON.stringify(dataUpdate)], {
+      type: 'application/json;charset=utf-8'
+    });
+    saveAs(blob, fileName);
+    return true;
+  } catch (error) {
+    console.error(error);
+  }
+  return false;
+}
+
+export const fakeFilename = (fileName) => {
+  if (!fileName) return '';
+  try {
+    fileName = fileName.split('.');
+    return `${fileName[0].slice(0, 20)}....${fileName[1]}`;
+  } catch (error) {
+    return fileName;
+  }
+};

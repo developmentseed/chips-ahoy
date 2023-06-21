@@ -1,29 +1,28 @@
-import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, IconButton, Toolbar, Typography, Breadcrumbs } from '@material-ui/core';
 import { Weekend } from '@material-ui/icons';
 import { withStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-
-import { downloadGeojsonFile } from '../../../actions/controlAction';
+import { Link } from 'react-router-dom';
+import { downloadFile } from '../../../actions/controlAction';
 import styles from './styles';
 import ProgressBar from './ProgressBar';
+import HeaderLinks from './HeaderLinks';
 
 class HeaderAnnotate extends Component {
   constructor() {
     super();
-    this.downloadFile = this.downloadFile.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  downloadFile() {
-    const { setup_tool } = this.props;
+  handleClick() {
+    const { downloadFile, data, fileName, setup_tool } = this.props;
     const { can_download_data } = setup_tool;
-    if (!can_download_data) {
-      return;
+    if (can_download_data) {
+      downloadFile(data, fileName);
     }
-
-    this.props.dispatch(downloadGeojsonFile(true));
   }
 
   render() {
@@ -42,16 +41,19 @@ class HeaderAnnotate extends Component {
             edge="start"
             className={clsx(classes.menuButton)}>
             <Weekend />
+            <Typography variant="h6" noWrap className={classes.appName}>
+              CHIPS-AHOY
+            </Typography>
           </IconButton>
-          <Typography variant="h6" noWrap>
-            CHIPS-AHOY
-          </Typography>
-          <Typography variant="subtitle2" className={classes.nameFile}>
-            {fileName}
-          </Typography>
-          <ProgressBar />
+          <HeaderLinks />
+          <div className={classes.progressBar}>
+            <ProgressBar />
+            <Typography variant="caption" className={classes.nameFile}>
+              {fileName}
+            </Typography>
+          </div>
           {can_download_data && hasFeatures ? (
-            <Button className={classes.button} color="inherit" onClick={this.downloadFile}>
+            <Button className={classes.button} color="inherit" onClick={this.handleClick}>
               DOWNLOAD
             </Button>
           ) : null}
@@ -62,9 +64,17 @@ class HeaderAnnotate extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  data: state.geojsonData.data,
   fileName: state.geojsonData.fileName,
   totalFeatures: state.geojsonData.totalFeatures,
   setup_tool: state.dsAnnotate.setup_tool
 });
 
-export default compose(connect(mapStateToProps), withStyles(styles))(HeaderAnnotate);
+const mapDispatchToProps = {
+  downloadFile
+};
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withStyles(styles)
+)(HeaderAnnotate);
