@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
 import unavailable from '../assets/unavailable.jpg';
-import styles from './../style/HomeStyles';
+import styles from '../style/general';
 class BlankPage extends Component {
   render() {
     const { classes } = this.props;

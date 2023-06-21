@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
 import { tokeUrl } from '../actions/dsAnnotate';
-import styles from './../style/HomeStyles';
+import styles from '../style/general';
 import BlankPage from './BlankPage';
-import Header from './Header';
-import MainPage from './MainPage';
+import HeaderAnnotate from './shared/header/HeaderAnnotate';
+import AnnotatePage from './AnnotatePage';
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -20,19 +20,11 @@ class Home extends Component {
   render() {
     // const open =true;
     const { classes, has_access } = this.props;
-    if (!has_access) {
-      return (
-        <div className={classes.root}>
-          <Header handleDrawerOpen={this.handleDrawerOpen} />
-          <BlankPage />
-        </div>
-      );
-    }
 
     return (
       <div className={classes.root}>
-        <Header handleDrawerOpen={this.handleDrawerOpen} />
-        <MainPage />
+        <HeaderAnnotate handleDrawerOpen={this.handleDrawerOpen} />
+        {has_access ? <AnnotatePage /> : <BlankPage />}
       </div>
     );
   }

@@ -13,9 +13,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { downloadGeojsonFile } from '../actions/controlAction';
 import { fetchFeature, preloadImages, updateFeature, updateIndex } from '../actions/dataActions';
 import { getNextIndex, getPrevIndex } from '../utils/utils';
-import styles from './../style/HomeStyles';
-import PaperImage from './PaperImage';
-import SidePanel from './SidePanel';
+import styles from '../style/general';
+import PaperImage from './annotate/PaperImage';
+import SidebarAnnotate from './shared/sidebar/SidebarAnnotate';
 
 class MainPage extends Component {
   constructor(props) {
@@ -132,7 +132,7 @@ class MainPage extends Component {
             </Grid>
             <Grid item xs={12} sm={6} md={2} lg={2} xl={2}>
               <Paper className={clsx(fixedHeightPaper, classes.overflowNone)} elevation={3}>
-                <SidePanel />
+                <SidebarAnnotate />
               </Paper>
             </Grid>
           </Grid>

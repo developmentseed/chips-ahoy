@@ -8,19 +8,10 @@ import Files from 'react-files';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import { fetchApiData, fetchData } from './../actions/dataActions';
+import { fetchApiData, fetchData } from '../../../actions/dataActions';
 
-const styles = (theme) => ({
-  container: {
-    height: 100,
-    padding: theme.spacing(2)
-  },
-  paperFetch: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    flexDirection: 'row'
-  }
-});
+import styles from './styles';
+
 class Loadfile extends Component {
   constructor(props) {
     super(props);
@@ -85,7 +76,7 @@ class Loadfile extends Component {
       return null;
     }
     return (
-      <div className={classes.container}>
+      <div className={classes.containerLoad}>
         <Typography variant="caption" display="block" gutterBottom>
           Load data
         </Typography>

@@ -6,11 +6,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import { downloadGeojsonFile } from '../actions/controlAction';
-import styles from '../style/HomeStyles';
+import { downloadGeojsonFile } from '../../../actions/controlAction';
+import styles from './styles';
 import ProgressBar from './ProgressBar';
 
-class Header extends Component {
+class HeaderAnnotate extends Component {
   constructor() {
     super();
     this.downloadFile = this.downloadFile.bind(this);
@@ -67,4 +67,4 @@ const mapStateToProps = (state) => ({
   setup_tool: state.dsAnnotate.setup_tool
 });
 
-export default compose(connect(mapStateToProps), withStyles(styles))(Header);
+export default compose(connect(mapStateToProps), withStyles(styles))(HeaderAnnotate);

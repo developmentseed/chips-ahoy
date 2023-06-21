@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import styles from '../style/HomeStyles';
+import styles from './styles';
 
 const useStyles = makeStyles({
   root: {
@@ -26,7 +26,7 @@ function LinearProgressWithLabel(props) {
           variant="buffer"
           color="secondary"
           classes={{
-            root: classes.root
+            root: classes.flex
           }}
           {...props}
         />

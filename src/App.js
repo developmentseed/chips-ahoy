@@ -6,7 +6,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import React, { useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import Home from './components/Home';
+import Home from './pages/Home';
 
 const theme = createMuiTheme({
   palette: {
@@ -27,7 +27,6 @@ const App = () => {
     searchParams.delete('token');
     history.replace({ search: searchParams.toString() });
   }
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
