@@ -1,10 +1,8 @@
-import 'react-notifications/lib/notifications.css';
 
 import { Container, Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import React, { Component } from 'react';
-import { NotificationContainer } from 'react-notifications';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { v4 as uuidv4 } from 'uuid';
@@ -101,7 +99,6 @@ class MainPage extends Component {
               </Paper>
             </Grid>
           </Grid>
-          <NotificationContainer />
         </Container>
       </main>
     );

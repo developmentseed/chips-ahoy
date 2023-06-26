@@ -1,4 +1,4 @@
-import { drawerWidth, headerHeigth } from '../utils/constants';
+import { headerHeigth, drawerWidth } from "../utils/constants";
 
 const styles = (theme) => ({
   root: {

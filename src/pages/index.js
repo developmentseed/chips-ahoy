@@ -1,6 +1,7 @@
 import { withStyles } from '@material-ui/styles';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Route, Switch } from 'react-router-dom/cjs/react-router-dom.min';
 import { compose } from 'recompose';
 
 import { tokeUrl } from '../actions/dsAnnotate';
@@ -8,7 +9,7 @@ import styles from '../style/general';
 import AnnotatePage from './AnnotatePage.jsx';
 import BlankPage from './BlankPage.jsx';
 import HeaderAnnotate from './shared/header/HeaderAnnotate.jsx';
-
+import ValidatePage from './ValidatePage';
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -19,13 +20,24 @@ class Home extends Component {
     tokeUrl(token_url);
   }
   render() {
-    // const open =true;
     const { classes, has_access } = this.props;
 
     return (
       <div className={classes.root}>
         <HeaderAnnotate />
-        {has_access ? <AnnotatePage /> : <BlankPage />}
+        {has_access ? (
+          <Switch>
+            <Route exact path="/" component={AnnotatePage} />
+            <Route exact path="/validate" component={ValidatePage} />
+            <Route path="*" component={BlankPage} />
+          </Switch>
+        ) : (
+          <Switch>
+            {/* <Route path="*" component={BlankPage} /> */}
+            <Route exact path="/validate" component={ValidatePage} />
+
+          </Switch>
+        )}
       </div>
     );
   }
