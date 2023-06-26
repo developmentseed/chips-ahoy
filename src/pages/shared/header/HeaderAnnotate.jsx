@@ -8,8 +8,8 @@ import { compose } from 'recompose';
 import { Link } from 'react-router-dom';
 import { downloadFile } from '../../../actions/controlAction';
 import styles from './styles';
-import ProgressBar from './ProgressBar';
-import HeaderLinks from './HeaderLinks';
+import ProgressBar from './ProgressBar.jsx';
+import HeaderLinks from './HeaderLinks.jsx';
 
 class HeaderAnnotate extends Component {
   constructor() {

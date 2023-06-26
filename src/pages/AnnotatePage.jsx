@@ -12,8 +12,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { fetchFeature, preloadImages, updateFeature, updateIndex } from '../actions/dataActions';
 import { getNextIndex, getPrevIndex } from '../utils/utils';
 import styles from '../style/general';
-import PaperImage from './annotate/PaperImage';
-import SidebarAnnotate from './shared/sidebar/SidebarAnnotate';
+import PaperImage from './annotate/PaperImage.jsx';
+import SidebarAnnotate from './shared/sidebar/SidebarAnnotate.jsx';
 
 class MainPage extends Component {
   constructor(props) {
@@ -83,7 +83,6 @@ class MainPage extends Component {
       fetchFeature(nextProps.index, data, totalFeatures);
     }
   }
-  
   render() {
     const { classes } = this.props;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);

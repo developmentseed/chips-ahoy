@@ -18,8 +18,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { updateFeature, updateIndex } from '../../../actions/dataActions';
 import { PREFIX_FIELD } from '../../../utils/constants';
-import Loadfile from './Loadfile';
-import CustomCheckBox from './CustomCheckBox';
+import Loadfile from './Loadfile.jsx';
+import CustomCheckBox from './CustomCheckBox.jsx';
 import styles from './styles';
 
 
