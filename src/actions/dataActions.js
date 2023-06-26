@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { rangeImages, validateFileName } from '../utils/validate';
+
 const { REACT_APP_API_URL } = process.env;
 
 export const FETCH_DATA_BEGIN = 'FETCH_DATA_BEGIN';

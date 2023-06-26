@@ -1,4 +1,5 @@
 import { saveFile } from '../utils/utils';
+
 export const DOWNLOAD_FILE_FAILED = 'DOWNLOAD_FILE_FAILED';
 export const DOWNLOAD_FILE_SUCCESS = 'DOWNLOAD_FILE_SUCCESS';
 export const DOWNLOAD_FILE_RESTART = 'DOWNLOAD_FILE_RESTART';

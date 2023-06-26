@@ -10,8 +10,8 @@ import { compose } from 'recompose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { fetchFeature, preloadImages, updateFeature, updateIndex } from '../actions/dataActions';
-import { getNextIndex, getPrevIndex } from '../utils/utils';
 import styles from '../style/general';
+import { getNextIndex, getPrevIndex } from '../utils/utils';
 import PaperImage from './annotate/PaperImage.jsx';
 import SidebarAnnotate from './shared/sidebar/SidebarAnnotate.jsx';
 

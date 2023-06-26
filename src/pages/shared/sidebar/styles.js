@@ -1,4 +1,4 @@
-import { headerHeigth, CHECKBOXHEIGHT } from '../../../utils/constants';
+import { CHECKBOXHEIGHT, headerHeigth } from '../../../utils/constants';
 
 const styles = (theme) => ({
   containerLoad: {

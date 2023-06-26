@@ -1,9 +1,7 @@
+import { Link, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-
-import { Link, Typography } from '@material-ui/core';
-
 import { useLocation } from 'react-router-dom';
 
 function CustomLink({ children, to }) {

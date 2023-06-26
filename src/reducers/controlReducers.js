@@ -1,7 +1,7 @@
 import {
-  DOWNLOAD_FILE_SUCCESS,
+  DOWNLOAD_FILE_FAILED,
   DOWNLOAD_FILE_RESTART,
-  DOWNLOAD_FILE_FAILED
+  DOWNLOAD_FILE_SUCCESS
 } from '../actions/controlAction';
 
 const initialState = {

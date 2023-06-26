@@ -1,7 +1,7 @@
-import jwt_decode from 'jwt-decode';
 import { saveAs } from 'file-saver';
+import jwt_decode from 'jwt-decode';
+
 import { PREFIX_FIELD } from './constants';
-import reactRouterDom from 'react-router-dom';
 
 export function makeChartData(data) {
   if (!data) return null;

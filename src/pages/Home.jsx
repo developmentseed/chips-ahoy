@@ -5,9 +5,10 @@ import { compose } from 'recompose';
 
 import { tokeUrl } from '../actions/dsAnnotate';
 import styles from '../style/general';
+import AnnotatePage from './AnnotatePage.jsx';
 import BlankPage from './BlankPage.jsx';
 import HeaderAnnotate from './shared/header/HeaderAnnotate.jsx';
-import AnnotatePage from './AnnotatePage.jsx';
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +24,7 @@ class Home extends Component {
 
     return (
       <div className={classes.root}>
-        <HeaderAnnotate/>
+        <HeaderAnnotate />
         {has_access ? <AnnotatePage /> : <BlankPage />}
       </div>
     );

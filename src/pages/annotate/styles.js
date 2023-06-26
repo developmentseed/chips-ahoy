@@ -1,4 +1,4 @@
-const styles = (theme) => ({
+const styles = () => ({
   content: {
     position: 'relative',
     width: 'auto',

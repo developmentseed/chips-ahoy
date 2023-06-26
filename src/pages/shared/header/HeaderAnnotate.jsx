@@ -1,15 +1,15 @@
-import { AppBar, Button, IconButton, Toolbar, Typography, Breadcrumbs } from '@material-ui/core';
+import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core';
 import { Weekend } from '@material-ui/icons';
 import { withStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { Link } from 'react-router-dom';
+
 import { downloadFile } from '../../../actions/controlAction';
-import styles from './styles';
-import ProgressBar from './ProgressBar.jsx';
 import HeaderLinks from './HeaderLinks.jsx';
+import ProgressBar from './ProgressBar.jsx';
+import styles from './styles';
 
 class HeaderAnnotate extends Component {
   constructor() {

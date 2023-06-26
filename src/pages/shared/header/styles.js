@@ -1,4 +1,4 @@
-import { headerHeigth, drawerWidth } from '../../../utils/constants';
+import { drawerWidth, headerHeigth } from '../../../utils/constants';
 
 const styles = (theme) => ({
   flex: {
@@ -59,7 +59,7 @@ const styles = (theme) => ({
     marginLeft: 10
   },
   progressBar: {
-    display:'flex',
+    display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
