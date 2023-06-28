@@ -25,7 +25,8 @@ const styles = (theme) => ({
     padding: 0
   },
   fixedHeight: {
-    height: `calc(100vh - ${headerHeigth * 1.7}px)`
+    height: `calc(100vh - ${headerHeigth * 1.7}px)`,
+    overflowY: 'auto'
   },
   paperImage: {
     padding: 4
@@ -35,7 +36,15 @@ const styles = (theme) => ({
   },
   containerImages: {
     height: `calc(100vh - ${headerHeigth * 1.7}px)`,
-    overflowY: 'auto'
+    overflowY: 'auto',
+    alignContent: 'flex-start',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start'
+  },
+  imageunavailable: {
+    width: '100%',
+    height: ' 100%',
+    objectFit: 'contain'
   }
 });
 

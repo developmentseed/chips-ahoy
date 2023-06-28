@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { filterProps } from '../utils/utils';
 import { rangeImages, validateFileName } from '../utils/validate';
 
 const { REACT_APP_API_URL } = process.env;
@@ -160,6 +161,34 @@ export function preloadImages(index, data, totalFeatures) {
       } catch (error) {
         console.log(error);
       }
+    }
+  };
+}
+
+// filter data
+export const UPDATE_FILTER = 'UPDATE_FILTER';
+export const RESET_FILTER = 'RESET_FILTER';
+
+export const updateFilter = (payload) => {
+  return {
+    type: UPDATE_FILTER,
+    payload
+  };
+};
+
+export const resetFilter = () => {
+  return {
+    type: RESET_FILTER
+  };
+};
+
+export function setFilter(filter) {
+  return (dispatch) => {
+    try {
+      dispatch(updateFilter(filterProps(filter)));
+    } catch (error) {
+      console.log(error);
+      dispatch(resetFilter());
     }
   };
 }

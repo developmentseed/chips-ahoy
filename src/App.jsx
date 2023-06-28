@@ -1,14 +1,17 @@
+import 'react-notifications/lib/notifications.css';
+
 import amber from '@material-ui/core/colors/amber';
 import red from '@material-ui/core/colors/red';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import React, { useMemo } from 'react';
+import { NotificationContainer } from 'react-notifications';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import Home from './pages/Home.jsx';
+import Home from './pages';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: amber,
     secondary: red
@@ -32,6 +35,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Home token_url={token_url} />
+      <NotificationContainer />
     </ThemeProvider>
   );
 };

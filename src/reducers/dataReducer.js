@@ -2,22 +2,25 @@ import {
   FETCH_DATA_BEGIN,
   FETCH_DATA_FAILURE,
   FETCH_DATA_SUCCESS,
+  RESET_FILTER,
   SET_FEATURE,
   SET_INDEX,
   UPDATE_BUFFER,
   UPDATE_DATA,
-  UPDATE_FEATURE
+  UPDATE_FEATURE,
+  UPDATE_FILTER
 } from '../actions/dataActions';
 
 const initialState = {
-  data: { features: [] },
+  data: {},
   feature: null,
   loading: true,
   error: null,
   fileName: '',
   index: 0,
   totalFeatures: 0,
-  buffer: 0
+  buffer: 0,
+  filters: null
 };
 
 export default function dataReducer(state = initialState, action) {
@@ -67,6 +70,16 @@ export default function dataReducer(state = initialState, action) {
       return {
         ...state,
         buffer: action.payload.buffer
+      };
+    case UPDATE_FILTER:
+      return {
+        ...state,
+        filter: action.payload
+      };
+    case RESET_FILTER:
+      return {
+        ...state,
+        filter: null
       };
     default:
       return state;

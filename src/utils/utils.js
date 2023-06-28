@@ -131,3 +131,43 @@ export const fakeFilename = (fileName) => {
     return fileName;
   }
 };
+
+export const filterDataDict = (data, field, filters) => {
+  console.log(field, filters);
+
+  if (!data || !data.length) return [];
+  if (!filters || Object.keys(filters).length === 0) return [];
+
+  const newData = data.filter((item) => {
+    if (field) {
+      item = { ...item[field] };
+    }
+    for (var key in filters) {
+      if (item[key] === filters[key] && item[key]) return true;
+    }
+    return false;
+  });
+
+  return newData;
+};
+
+export const filterProps = (props) => {
+  let newProps = {};
+
+  for (var [key, val] of Object.entries(props)) {
+    if (val && key.includes(PREFIX_FIELD)) {
+      newProps[key] = val;
+    }
+  }
+  return newProps;
+};
+
+export const fixPropName = (propName) => {
+  if (!propName) return propName;
+  return propName
+    .replace(`${PREFIX_FIELD}__`, '')
+    .replaceAll('_', ' ')
+    .replaceAll('-', ' ')
+    .replaceAll('  ', ' ')
+    .trim();
+};

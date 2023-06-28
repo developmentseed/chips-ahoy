@@ -7,21 +7,23 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  TextField,
-  Typography
+  Typography,
+  Button
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import queryString from 'query-string';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { compose } from 'recompose';
-import { v4 as uuidv4 } from 'uuid';
 
-import { updateFeature, updateIndex } from '../../../actions/dataActions';
 import { PREFIX_FIELD } from '../../../utils/constants';
 import CustomCheckBox from './CustomCheckBox.jsx';
 import styles from './styles';
+import { setFilter } from '../../../actions/dataActions';
 
-class SidePanel extends Component {
+import { filterProps } from '../../../utils/utils';
+class SidebarValidatePanel extends Component {
   constructor() {
     super();
     this.state = {
@@ -29,91 +31,44 @@ class SidePanel extends Component {
       focus_tab: 0
       // states
     };
-    this.handleChange = this.handleChange.bind(this);
     this.handleChangeCheck = this.handleChangeCheck.bind(this);
   }
-
   componentDidMount() {
-    const { classes_annotate } = this.props;
+    const { classes_annotate, history, setFilter } = this.props;
     // create states
-    const classes_dict = classes_annotate.reduce((acc, elem) => {
+    let classes_dict = classes_annotate.reduce((acc, elem) => {
       acc[elem] = false;
       return acc;
     }, {});
+    // from url
+    const parsed = queryString.parse(history.location.search, { parseBooleans: true });
+    if (parsed) {
+      classes_dict = { ...classes_dict, ...parsed };
+      setFilter({ ...parsed });
+    }
+
     this.setState({ ...classes_dict });
-  }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { classes_annotate } = this.props;
-
-    const { feature } = nextProps;
-    if (feature && feature.properties) {
-      const props_state = Object.keys(feature.properties || {})
-        .sort()
-        .filter((i) => i.includes(PREFIX_FIELD))
-        .reduce((a, v) => ({ ...a, [v]: feature.properties[v] }), {});
-      // create states
-      const classes_dict = classes_annotate.reduce((acc, elem) => {
-        acc[elem] = false;
-        return acc;
-      }, {});
-      this.setState({ ...classes_dict });
-      let initial_state = {
-        // cat 1
-        ...classes_dict,
-        ...props_state
-      };
-      this.setState({ ...initial_state });
-    }
-  }
-
-
-  handleChange(e) {
-    const { total, updateIndex } = this.props;
-
-    try {
-      const re = /[0-9]+/g;
-      let value = e.target.value;
-      if (value === '' || re.test(value)) {
-        value = parseInt(value);
-        if (total >= value && value >= 0) {
-          updateIndex(value);
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   handleChangeCheck(e) {
-    const { feature, updateFeature } = this.props;
+    const { history, setFilter } = this.props;
+
+    let parsed = queryString.parse(history.location.search, { parseBooleans: true });
+    parsed[e.target.name] = e.target.checked;
+    const newParsed = filterProps(parsed);
+
+    // update state and props
     this.setState({
       [e.target.name]: e.target.checked
     });
-    // update props feature
-
-    let newFature = Object(feature);
-    // category
-    const old_value = !!newFature.properties[e.target.name];
-
-    newFature.properties[e.target.name] = !old_value;
-    newFature.properties.uuid_difference = uuidv4();
-
-    [('pointScale', 'sizeImage')].forEach((i) => {
-      if (newFature.properties[i]) {
-        delete newFature.properties[i];
-      }
-    });
-    updateFeature(newFature);
-  }
-
-  convertSecondaryText(text) {
-    if (['', null, undefined].includes(text)) return '';
-    if (`${typeof text}` === 'object') return JSON.stringify(text);
-    return `${text}`;
+    setFilter({ ...newParsed });
+    const stringified = queryString.stringify({ ...newParsed });
+    history.replace({ search: stringified });
   }
 
   renderCheckboxs() {
     const { classes, classes_annotate_dict } = this.props;
+    if (!classes_annotate_dict) return null;
 
     return (
       <div className={classes.canvasContainer}>
@@ -127,7 +82,7 @@ class SidePanel extends Component {
                     key={`${PREFIX_FIELD}__${i}__${j}`}
                     control={
                       <CustomCheckBox
-                        checked={this.state[`${PREFIX_FIELD}__${i}__${j}`]}
+                        checked={this.state[`${PREFIX_FIELD}__${i}__${j}`] || false}
                         onChange={this.handleChangeCheck}
                         name={`${PREFIX_FIELD}__${i}__${j}`}
                       />
@@ -144,66 +99,60 @@ class SidePanel extends Component {
   }
 
   renderTabs() {
-    const { classes, feature, total } = this.props;
-    if (!feature || total === 0) return null;
+    const { classes, classes_annotate } = this.props;
+    if (!classes_annotate) return null;
     return (
       <React.Fragment>
         <div className={classes.tabContainer}>{this.renderCheckboxs()}</div>
       </React.Fragment>
     );
   }
+  renderTotal() {
+    const { classes, total } = this.props;
+
+    return (
+      <React.Fragment>
+        <Divider />
+        <List component="div" className={classes.listfeatures}>
+          <ListItem className={classes.lItem}>
+            <ListItemText primary="Total" />
+            <ListItemSecondaryAction>
+              <Typography variant="body1" component="span" color="textSecondary">
+                {total}
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+        </List>
+      </React.Fragment>
+    );
+  }
 
   render() {
-    const { classes, total, index, feature } = this.props;
+    const { classes } = this.props;
     return (
       <div className={classes.container}>
-        {feature ? (
-          <React.Fragment>
-            <div className={classes.paddinBox}>
-              <TextField
-                id="index"
-                label="Index"
-                onChange={this.handleChange}
-                value={index}
-                type="number"
-              />
-            </div>
-            <Divider />
-          </React.Fragment>
-        ) : null}
+        <div className={classes.paddinBox}>
+          <Typography variant="body1" component="span">
+            Filter props
+          </Typography>{' '}
+          <Divider />
+        </div>
         {this.renderTabs()}
-        {total !== 0 ? (
-          <React.Fragment>
-            <Divider />
-            <List component="div" className={classes.listfeatures}>
-              <ListItem className={classes.lItem}>
-                <ListItemText primary="Total" />
-                <ListItemSecondaryAction>
-                  <Typography variant="body1" component="span" color="textSecondary">
-                    {total}
-                  </Typography>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-          </React.Fragment>
-        ) : null}
+        {this.renderTotal()}
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  total: state.geojsonData.totalFeatures,
-  index: state.geojsonData.index,
-  feature: state.geojsonData.feature,
   data: state.geojsonData.data,
-  setup_tool: state.dsAnnotate.setup_tool,
   classes_annotate_dict: state.dsAnnotate.classes_annotate_dict,
   classes_annotate: state.dsAnnotate.classes_annotate
 });
 const mapDispatchToProps = {
-  updateFeature,
-  updateIndex
+  setFilter
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), withStyles(styles))(SidePanel);
+export default withRouter(
+  compose(connect(mapStateToProps, mapDispatchToProps), withStyles(styles))(SidebarValidatePanel)
+);

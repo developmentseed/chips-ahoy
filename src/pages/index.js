@@ -33,9 +33,7 @@ class Home extends Component {
           </Switch>
         ) : (
           <Switch>
-            {/* <Route path="*" component={BlankPage} /> */}
-            <Route exact path="/validate" component={ValidatePage} />
-
+            <Route path="*" component={BlankPage} />
           </Switch>
         )}
       </div>
