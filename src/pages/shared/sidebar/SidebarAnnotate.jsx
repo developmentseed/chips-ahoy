@@ -36,12 +36,19 @@ class SidePanel extends Component {
   }
 
   componentDidMount() {
-    const { classes_annotate } = this.props;
+    const { classes_annotate, feature } = this.props;
     // create states
-    const classes_dict = classes_annotate.reduce((acc, elem) => {
+    let classes_dict = classes_annotate.reduce((acc, elem) => {
       acc[elem] = false;
       return acc;
     }, {});
+    if (feature && feature.properties) {
+      const props_state = Object.keys(feature.properties || {})
+        .sort()
+        .filter((i) => i.includes(PREFIX_FIELD))
+        .reduce((a, v) => ({ ...a, [v]: feature.properties[v] }), {});
+      classes_dict = { ...classes_dict, ...props_state };
+    }
     this.setState({ ...classes_dict });
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -131,7 +138,7 @@ class SidePanel extends Component {
                     key={`${PREFIX_FIELD}__${i}__${j}`}
                     control={
                       <CustomCheckBox
-                        checked={this.state[`${PREFIX_FIELD}__${i}__${j}`]}
+                        checked={this.state[`${PREFIX_FIELD}__${i}__${j}`] || false}
                         onChange={this.handleChangeCheck}
                         name={`${PREFIX_FIELD}__${i}__${j}`}
                       />
