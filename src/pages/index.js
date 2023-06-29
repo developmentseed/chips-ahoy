@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom/cjs/react-router-dom.min';
 import { compose } from 'recompose';
 
-import { tokeUrl } from '../actions/dsAnnotate';
+import { tokeUrl } from '../actions/annotationSeed';
 import styles from '../style/general';
 import AnnotatePage from './AnnotatePage.jsx';
 import BlankPage from './BlankPage.jsx';
@@ -43,7 +43,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  has_access: state.dsAnnotate.has_access
+  has_access: state.annotationSeed.has_access
 });
 const mapDispatchToProps = {
   tokeUrl

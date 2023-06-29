@@ -73,9 +73,9 @@ class ProgressBar extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  buffer: state.geojsonData.buffer,
-  index: state.geojsonData.index,
-  totalFeatures: state.geojsonData.totalFeatures
+  buffer: state.data.buffer,
+  index: state.data.index,
+  totalFeatures: state.data.totalFeatures
 });
 const mapDispatchToProps = {};
 

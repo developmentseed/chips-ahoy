@@ -64,10 +64,10 @@ class HeaderAnnotate extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  data: state.geojsonData.data,
-  fileName: state.geojsonData.fileName,
-  totalFeatures: state.geojsonData.totalFeatures,
-  setup_tool: state.dsAnnotate.setup_tool
+  data: state.data.data,
+  fileName: state.data.fileName,
+  totalFeatures: state.data.totalFeatures,
+  setup_tool: state.annotationSeed.setup_tool
 });
 
 const mapDispatchToProps = {

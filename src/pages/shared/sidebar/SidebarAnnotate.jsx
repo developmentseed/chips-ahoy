@@ -205,13 +205,13 @@ class SidePanel extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  total: state.geojsonData.totalFeatures,
-  index: state.geojsonData.index,
-  feature: state.geojsonData.feature,
-  data: state.geojsonData.data,
-  setup_tool: state.dsAnnotate.setup_tool,
-  classes_annotate_dict: state.dsAnnotate.classes_annotate_dict,
-  classes_annotate: state.dsAnnotate.classes_annotate
+  total: state.data.totalFeatures,
+  index: state.data.index,
+  feature: state.data.feature,
+  data: state.data.data,
+  setup_tool: state.annotationSeed.setup_tool,
+  classes_annotate_dict: state.annotationSeed.classes_annotate_dict,
+  classes_annotate: state.annotationSeed.classes_annotate
 });
 const mapDispatchToProps = {
   updateFeature,

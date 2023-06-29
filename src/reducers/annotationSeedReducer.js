@@ -8,27 +8,37 @@ import {
   GET_TOKEN_URL_SUCCESS,
   REMOVE_ACCESS,
   SET_ACCESS
-} from '../actions/dsAnnotate';
+} from '../actions/annotationSeed';
 
 const setup_tool = {
   can_load_data: false,
   can_download_data: false,
   fetch_data: false
 };
+const setup_data = {
+  format: 'geojson',
+  extension: 'geojson',
+  fieldProperties: 'properties',
+  geojsonMetadara: {
+    crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } }
+  }
+};
 
 const initialState = {
   token_url: '',
   token_url_decode: {},
   setup_tool: { ...setup_tool },
+  setup_data: { ...setup_data },
   classes_annotate_dict: {},
   classes_annotate: [],
+  classes_annotate_setup: {},
   is_geo: false,
   task_id: '',
   user_data: {},
   has_access: false
 };
 
-export default function dsAnnotateReducer(state = initialState, action) {
+export default function annotationSeedReducer(state = initialState, action) {
   switch (action.type) {
     case GET_TOKEN_URL:
       return {

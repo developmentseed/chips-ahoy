@@ -116,9 +116,9 @@ class PaperImage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  feature: state.geojsonData.feature,
-  index: state.geojsonData.index,
-  totalFeatures: state.geojsonData.totalFeatures
+  feature: state.data.feature,
+  index: state.data.index,
+  totalFeatures: state.data.totalFeatures
 });
 
 const mapDispatchToProps = {

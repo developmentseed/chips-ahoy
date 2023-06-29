@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
 import control from './controlReducers';
-import geojsonData from './dataReducer';
-import dsAnnotate from './dsAnnotateReducer';
+import data from './dataReducer';
+import annotationSeed from './annotationSeedReducer';
 
 export default combineReducers({
-  geojsonData,
+  data,
   control,
-  dsAnnotate
+  annotationSeed
 });

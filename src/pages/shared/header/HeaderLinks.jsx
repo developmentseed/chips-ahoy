@@ -22,16 +22,14 @@ class HeaderLinks extends Component {
           to={{
             pathname: '/',
             search: `?index=${index || ''}`
-          }}
-        >
+          }}>
           Annotate
         </CustomLink>
         <CustomLink
           to={{
             pathname: '/validate',
             search: `?${queryString.stringify({ ...filter })}`
-          }}
-        >
+          }}>
           Validate
         </CustomLink>
       </Typography>
@@ -40,8 +38,8 @@ class HeaderLinks extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  index: state.geojsonData.index,
-  filter: state.geojsonData.filter
+  index: state.data.index,
+  filter: state.data.filter
 });
 const mapDispatchToProps = {};
 export default compose(

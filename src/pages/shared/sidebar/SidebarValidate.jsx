@@ -144,9 +144,9 @@ class SidebarValidatePanel extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  data: state.geojsonData.data,
-  classes_annotate_dict: state.dsAnnotate.classes_annotate_dict,
-  classes_annotate: state.dsAnnotate.classes_annotate
+  data: state.data.data,
+  classes_annotate_dict: state.annotationSeed.classes_annotate_dict,
+  classes_annotate: state.annotationSeed.classes_annotate
 });
 const mapDispatchToProps = {
   setFilter

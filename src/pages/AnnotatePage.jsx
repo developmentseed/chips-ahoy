@@ -105,11 +105,11 @@ class MainPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  data: state.geojsonData.data,
-  feature: state.geojsonData.feature,
-  index: state.geojsonData.index,
-  totalFeatures: state.geojsonData.totalFeatures,
-  fileName: state.geojsonData.fileName,
+  data: state.data.data,
+  feature: state.data.feature,
+  index: state.data.index,
+  totalFeatures: state.data.totalFeatures,
+  fileName: state.data.fileName,
   downloadFile: state.control.downloadFile
 });
 const mapDispatchToProps = {

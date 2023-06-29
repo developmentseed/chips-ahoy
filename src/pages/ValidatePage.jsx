@@ -64,11 +64,11 @@ class ValidatePage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  data: state.geojsonData.data,
-  filter: state.geojsonData.filter,
+  data: state.data.data,
+  filter: state.data.filter,
 
-  index: state.geojsonData.index,
-  totalFeatures: state.geojsonData.totalFeatures
+  index: state.data.index,
+  totalFeatures: state.data.totalFeatures
 });
 const mapDispatchToProps = {
   fetchFeature,

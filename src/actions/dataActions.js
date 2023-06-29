@@ -39,7 +39,7 @@ export const setFeature = (feature) => ({
 
 export function updateIndex(newIndex) {
   return (dispatch, getState) => {
-    let { totalFeatures } = getState().geojsonData;
+    let { totalFeatures } = getState().data;
     if (newIndex < 0) return null;
     if (totalFeatures >= newIndex && newIndex >= 0) {
       dispatch(setIndex(newIndex));
@@ -50,7 +50,9 @@ export function updateIndex(newIndex) {
 }
 
 export function fetchData(files) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    let { totalFeatures } = getState().annotationSeed;
+
     dispatch(fetchDataBegin());
     const fileReader = new FileReader();
     fileReader.onload = function () {
@@ -108,7 +110,7 @@ export const updateData = (fData) => {
 
 export function updateFeature(newFeature, next_page = false) {
   return (dispatch, getState) => {
-    let { index, data, totalFeatures } = getState().geojsonData;
+    let { index, data, totalFeatures } = getState().data;
     newFeature.properties.__reviewed = true;
     data.features[index] = newFeature;
     const newData = { ...data };

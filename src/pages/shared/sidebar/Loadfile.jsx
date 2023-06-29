@@ -87,10 +87,10 @@ class Loadfile extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  total: state.geojsonData.totalFeatures,
-  feature: state.geojsonData.feature,
-  setup_tool: state.dsAnnotate.setup_tool,
-  task_id: state.dsAnnotate.task_id
+  total: state.data.totalFeatures,
+  feature: state.data.feature,
+  setup_tool: state.annotationSeed.setup_tool,
+  task_id: state.annotationSeed.task_id
 });
 
 const mapDispatchToProps = {
