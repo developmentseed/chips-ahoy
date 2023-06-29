@@ -133,8 +133,6 @@ export const fakeFilename = (fileName) => {
 };
 
 export const filterDataDict = (data, field, filters) => {
-  console.log(field, filters);
-
   if (!data || !data.length) return [];
   if (!filters || Object.keys(filters).length === 0) return [];
 

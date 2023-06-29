@@ -1,25 +1,16 @@
-import {
-  Container,
-  Grid,
-  Paper,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Typography
-} from '@material-ui/core';
+import { Container, Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import { fetchFeature, preloadImages, updateFeature, updateIndex } from '../actions/dataActions';
+import { fetchFeature, updateFeature, updateIndex } from '../actions/dataActions';
+import nodata from '../assets/nodata.jpg';
+import { filterDataDict } from '../utils/utils';
 import SidebarValidate from './shared/sidebar/SidebarValidate.jsx';
 import FeatureCard from './validate/FeatureCard';
 import styles from './validate/style';
-import { filterDataDict } from '../utils/utils';
-import nodata from '../assets/nodata.jpg';
 
 class ValidatePage extends Component {
   constructor(props) {
@@ -28,14 +19,7 @@ class ValidatePage extends Component {
       dataFilter: []
     };
   }
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  //   const { filter, data } = this.props;
-  //   if (nextProps.filter !== filter) {
-  //     this.setState({
-  //       dataFilter: filterDataDict(data.features, 'properties', nextProps.filter)
-  //     });
-  //   }
-  // }
+
   renderData() {
     const { classes, filter, data } = this.props;
     const paperStyle = clsx(classes.paper, classes.fixedHeight);

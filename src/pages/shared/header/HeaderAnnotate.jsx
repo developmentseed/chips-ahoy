@@ -32,14 +32,14 @@ class HeaderAnnotate extends Component {
     return (
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar
-          className={
-            hasFeatures ? clsx(classes.toolbar) : clsx(classes.toolbar, classes.justifyCo)
-          }>
+          className={hasFeatures ? clsx(classes.toolbar) : clsx(classes.toolbar, classes.justifyCo)}
+        >
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
-            className={clsx(classes.menuButton)}>
+            className={clsx(classes.menuButton)}
+          >
             <Weekend />
             <Typography variant="h6" noWrap className={classes.appName}>
               CHIPS-AHOY

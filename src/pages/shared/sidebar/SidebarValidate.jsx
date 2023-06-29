@@ -7,8 +7,7 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Typography,
-  Button
+  Typography
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import queryString from 'query-string';
@@ -17,12 +16,12 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'recompose';
 
+import { setFilter } from '../../../actions/dataActions';
 import { PREFIX_FIELD } from '../../../utils/constants';
+import { filterProps } from '../../../utils/utils';
 import CustomCheckBox from './CustomCheckBox.jsx';
 import styles from './styles';
-import { setFilter } from '../../../actions/dataActions';
 
-import { filterProps } from '../../../utils/utils';
 class SidebarValidatePanel extends Component {
   constructor() {
     super();

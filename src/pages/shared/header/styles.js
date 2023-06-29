@@ -63,6 +63,11 @@ const styles = (theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  rootLinks: {
+    '& > * + *': {
+      marginLeft: theme.spacing(2)
+    }
   }
 });
 

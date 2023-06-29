@@ -1,7 +1,8 @@
-import { Grid, Card, CardMedia, Typography } from '@material-ui/core';
-import React from 'react';
+import { Card, CardMedia, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+
 import { filterProps, fixPropName } from '../../utils/utils';
 
 const FeatureCard = ({ feature }) => {
@@ -50,7 +51,7 @@ const useStyles = makeStyles(() => ({
     lineHeight: 0.2,
     margin: '0px 2px',
     borderRadius: 8,
-    padding: '0px 2px',
+    padding: '0px 2px'
   }
 }));
 

@@ -52,7 +52,7 @@ export const downloadFile = (data, filename) => {
         dispatch(downloadFileSuccess());
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     dispatch(downloadFileFailed());
   };

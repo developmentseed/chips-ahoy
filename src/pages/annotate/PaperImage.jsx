@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { withStyles } from '@material-ui/styles';
 import React, { Component } from 'react';
@@ -76,7 +77,8 @@ class PaperImage extends Component {
     return (
       <p
         className={classes.dot}
-        style={{ top: scaleX * pointScale.y, left: scaleX * pointScale.x - 20 }}>
+        style={{ top: scaleX * pointScale.y, left: scaleX * pointScale.x - 20 }}
+      >
         X
       </p>
     );
@@ -90,7 +92,8 @@ class PaperImage extends Component {
         className={classes.content}
         ref={(divElement) => {
           this.divElement = divElement;
-        }}>
+        }}
+      >
         {feature && feature.properties.url ? (
           <>
             <img

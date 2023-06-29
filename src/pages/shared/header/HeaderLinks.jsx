@@ -1,47 +1,50 @@
-import { Link, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { Typography } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import queryString from 'query-string';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
-function CustomLink({ children, to }) {
-  const location = useLocation();
-  const classes = useStyles();
-  const underline = location.pathname === to ? 'always' : 'hover';
+import CustomLink from './CustomLink.jsx';
+import styles from './styles';
 
-  return (
-    <Link
-      className={classes.link}
-      component={RouterLink}
-      to={to}
-      color="inherit"
-      underline={underline}>
-      {children}
-    </Link>
-  );
+class HeaderLinks extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const { classes, index, filter } = this.props;
+
+    return (
+      <Typography className={classes.rootLinks}>
+        <CustomLink
+          to={{
+            pathname: '/',
+            search: `?index=${index || ''}`
+          }}
+        >
+          Annotate
+        </CustomLink>
+        <CustomLink
+          to={{
+            pathname: '/validate',
+            search: `?${queryString.stringify({ ...filter })}`
+          }}
+        >
+          Validate
+        </CustomLink>
+      </Typography>
+    );
+  }
 }
 
-const HeaderLinks = () => {
-  const classes = useStyles();
-
-  return (
-    <Typography className={classes.root}>
-      <CustomLink to="/">Annotate</CustomLink>
-      <CustomLink to="/validate">Validate</CustomLink>
-    </Typography>
-  );
-};
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& > * + *': {
-      marginLeft: theme.spacing(2)
-    }
-  },
-  link: {
-    fontWeight: 500,
-    fontSize: '0.875rem',
-    textTransform: 'uppercase'
-  }
-}));
-
-export default HeaderLinks;
+const mapStateToProps = (state) => ({
+  index: state.geojsonData.index,
+  filter: state.geojsonData.filter
+});
+const mapDispatchToProps = {};
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withStyles(styles)
+)(HeaderLinks);

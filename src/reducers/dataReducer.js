@@ -20,7 +20,7 @@ const initialState = {
   index: 0,
   totalFeatures: 0,
   buffer: 0,
-  filters: null
+  filter: null
 };
 
 export default function dataReducer(state = initialState, action) {

@@ -1,4 +1,3 @@
-
 import { Container, Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 import clsx from 'clsx';

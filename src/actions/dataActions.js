@@ -44,7 +44,7 @@ export function updateIndex(newIndex) {
     if (totalFeatures >= newIndex && newIndex >= 0) {
       dispatch(setIndex(newIndex));
     } else {
-      console.log('index out range');
+      console.error('index out range');
     }
   };
 }
@@ -89,7 +89,7 @@ export function fetchFeature(index, data, totalFeatures) {
     if (totalFeatures >= index && index >= 0) {
       dispatch(setFeature(data.features[index]));
     } else {
-      console.log('index out range');
+      console.error('index out range');
     }
   };
 }
@@ -159,7 +159,7 @@ export function preloadImages(index, data, totalFeatures) {
         gridImagesDiv.push(img);
         dispatch(updateBuffer(start + i));
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   };
@@ -187,7 +187,7 @@ export function setFilter(filter) {
     try {
       dispatch(updateFilter(filterProps(filter)));
     } catch (error) {
-      console.log(error);
+      console.error(error);
       dispatch(resetFilter());
     }
   };

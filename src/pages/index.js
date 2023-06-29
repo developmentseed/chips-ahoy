@@ -10,6 +10,7 @@ import AnnotatePage from './AnnotatePage.jsx';
 import BlankPage from './BlankPage.jsx';
 import HeaderAnnotate from './shared/header/HeaderAnnotate.jsx';
 import ValidatePage from './ValidatePage';
+
 class Home extends Component {
   constructor(props) {
     super(props);

@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
 import { fetchApiData, fetchData } from '../../../actions/dataActions';
-
 import styles from './styles';
 
 class Loadfile extends Component {
@@ -61,7 +60,8 @@ class Loadfile extends Component {
             maxFiles={1}
             maxFileSize={1000000000}
             minFileSize={0}
-            clickable>
+            clickable
+          >
             <input type="submit" value="Choose a file" style={{ width: '96%', margin: '5px' }} />
           </Files>
         </Paper>
