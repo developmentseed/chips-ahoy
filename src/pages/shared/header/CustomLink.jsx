@@ -15,8 +15,7 @@ function CustomLink({ children, to }) {
       component={RouterLink}
       to={to}
       color="inherit"
-      underline={underline}
-    >
+      underline={underline}>
       {children}
     </Link>
   );

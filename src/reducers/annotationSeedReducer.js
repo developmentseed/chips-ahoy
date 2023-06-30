@@ -84,6 +84,7 @@ export default function annotationSeedReducer(state = initialState, action) {
       return {
         ...state,
         setup_tool: { ...setup_tool },
+        setup_data: { ...setup_data },
         classes_annotate_dict: {},
         classes_annotate: [],
         is_geo: false

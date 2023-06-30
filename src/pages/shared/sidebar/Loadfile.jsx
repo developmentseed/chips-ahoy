@@ -60,8 +60,7 @@ class Loadfile extends Component {
             maxFiles={1}
             maxFileSize={1000000000}
             minFileSize={0}
-            clickable
-          >
+            clickable>
             <input type="submit" value="Choose a file" style={{ width: '96%', margin: '5px' }} />
           </Files>
         </Paper>

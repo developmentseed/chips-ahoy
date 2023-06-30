@@ -18,7 +18,7 @@ import { compose } from 'recompose';
 
 import { setFilter } from '../../../actions/dataActions';
 import { PREFIX_FIELD } from '../../../utils/constants';
-import { filterProps, parseSearchBoolean , listClassesAnnotate2State} from '../../../utils/utils';
+import { filterProps, listClassesAnnotate2State, parseSearchBoolean } from '../../../utils/utils';
 import CustomCheckBox from './CustomCheckBox.jsx';
 import styles from './styles';
 

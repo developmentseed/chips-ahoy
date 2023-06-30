@@ -1,6 +1,7 @@
 import axios from 'axios';
+import queryString from 'query-string';
 
-import { filterProps, setIndexData, getPropFeature } from '../utils/utils';
+import { filterProps, getPropFeature, setIndexData } from '../utils/utils';
 import { rangeImages, validateFileName } from '../utils/validate';
 
 const { REACT_APP_API_URL } = process.env;
@@ -37,14 +38,22 @@ export const setFeature = (feature) => ({
   payload: { feature }
 });
 
-export function updateIndex(newIndex) {
+export function updateIndex(newIndex, history) {
   return (dispatch, getState) => {
     let { totalFeatures } = getState().data;
     if (newIndex < 0) return null;
+    if (totalFeatures <= 0) return null;
     if (totalFeatures >= newIndex && newIndex >= 0) {
       dispatch(setIndex(newIndex));
+      if (history) {
+        try {
+          history.replace({ search: queryString.stringify({ index: newIndex }) });
+        } catch (error) {
+          console.error(error);
+        }
+      }
     } else {
-      console.error('index out range');
+      console.error('updateIndex', ' index out range', newIndex, totalFeatures);
     }
   };
 }
@@ -105,7 +114,7 @@ export function fetchFeature(index, data, totalFeatures) {
     if (totalFeatures >= index && index >= 0) {
       dispatch(setFeature(data[index]));
     } else {
-      console.error('index out range');
+      console.error('fetchFeature', 'index out range', index, totalFeatures);
     }
   };
 }
@@ -122,7 +131,7 @@ export const updateData = (fData) => {
   };
 };
 
-export function updateFeature(newFeature, next_page = false) {
+export function updateFeature(newFeature, next_page = false, history = null) {
   return (dispatch, getState) => {
     const { index, data, totalFeatures } = getState().data;
     const { setup_data } = getState().annotationSeed;
@@ -141,7 +150,7 @@ export function updateFeature(newFeature, next_page = false) {
     dispatch(fetchFeature(index, newData, totalFeatures));
 
     if (next_page) {
-      dispatch(updateIndex(index + 1));
+      dispatch(updateIndex(index + 1, history));
       dispatch(preloadImages(index, newData, totalFeatures));
     }
   };
@@ -169,11 +178,11 @@ export function preloadImages(index, data, totalFeatures) {
     }
     const data_tmp = data.slice(start, end);
     let gridImagesDiv = [];
-    for (const [i, geo] of data_tmp.entries()) {
+    for (var [i, geo] of data_tmp.entries()) {
       try {
         let img = new Image();
         const newFeatureProps = getPropFeature(Object(geo), fieldProperties);
-        
+
         img.src = newFeatureProps.url;
         img.id = `${newFeatureProps.url}`;
         img.key = `${newFeatureProps.url}`;

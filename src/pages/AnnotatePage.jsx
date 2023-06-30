@@ -1,6 +1,5 @@
 import { Container, Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
-import queryString from 'query-string';
 import clsx from 'clsx';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -9,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { fetchFeature, preloadImages, updateFeature, updateIndex } from '../actions/dataActions';
 import styles from '../style/general';
-import { getNextIndex, getPrevIndex, parseSearchNumber, getPropFeature } from '../utils/utils';
+import { getNextIndex, getPrevIndex, getPropFeature, parseSearchNumber } from '../utils/utils';
 import PaperImage from './annotate/PaperImage.jsx';
 import SidebarAnnotate from './shared/sidebar/SidebarAnnotate.jsx';
 
@@ -20,14 +19,18 @@ class MainPage extends Component {
     this.updateFeatureKey = this.updateFeatureKey.bind(this);
   }
   componentDidMount() {
-    const { history, updateIndex } = this.props;
+    const { history, updateIndex, totalFeatures } = this.props;
 
     // key event
     document.addEventListener('keydown', this.keyFunction, false);
     // query string
     const parsed = parseSearchNumber(history);
-    if (parsed.index || parsed.index === 0) {
-      updateIndex(parsed.index);
+    if (parsed.index && parsed.index >= 0) {
+      if (totalFeatures) {
+        updateIndex(parsed.index, history);
+      } else {
+        history.replace({ search: '' });
+      }
     }
   }
   componentWillUnmount() {
@@ -60,7 +63,8 @@ class MainPage extends Component {
   }
 
   keyFunction(event) {
-    const { updateIndex, index, data, totalFeatures, preloadImages, setup_data } = this.props;
+    const { updateIndex, index, data, totalFeatures, preloadImages, setup_data, history } =
+      this.props;
     // const shift = event.shiftKey;
     const key = `${event.key}`.toLocaleLowerCase();
     if (!totalFeatures) return;
@@ -68,23 +72,23 @@ class MainPage extends Component {
     // generic
     switch (key) {
       case 'arrowright':
-        updateIndex(index + 1);
+        updateIndex(index + 1, history);
         preloadImages(index, [...data], totalFeatures);
         break;
       case '2':
-        updateIndex(index + 1);
+        updateIndex(index + 1, history);
         break;
       case 'arrowleft':
-        updateIndex(index - 1);
+        updateIndex(index - 1, history);
         break;
       case '1':
-        updateIndex(index - 1);
+        updateIndex(index - 1, history);
         break;
       case 'd':
-        updateIndex(getNextIndex(index, [...data], setup_data.fieldProperties));
+        updateIndex(getNextIndex(index, [...data], setup_data.fieldProperties), history);
         break;
       case 'a':
-        updateIndex(getPrevIndex(index, [...data], setup_data.fieldProperties));
+        updateIndex(getPrevIndex(index, [...data], setup_data.fieldProperties), history);
         break;
       default:
         break;
@@ -128,7 +132,6 @@ const mapStateToProps = (state) => ({
   index: state.data.index,
   totalFeatures: state.data.totalFeatures,
   setup_data: state.annotationSeed.setup_data
-
 });
 const mapDispatchToProps = {
   fetchFeature,

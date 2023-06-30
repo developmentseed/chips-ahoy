@@ -13,19 +13,20 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { compose } from 'recompose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { updateFeature, updateIndex } from '../../../actions/dataActions';
 import { PREFIX_FIELD } from '../../../utils/constants';
+import {
+  filterFieldsPrefix,
+  getPropFeature,
+  listClassesAnnotate2State
+} from '../../../utils/utils';
 import CustomCheckBox from './CustomCheckBox.jsx';
 import Loadfile from './Loadfile.jsx';
 import styles from './styles';
-import {
-  listClassesAnnotate2State,
-  filterFieldsPrefix,
-  getPropFeature
-} from '../../../utils/utils';
 
 class SidePanel extends Component {
   constructor() {
@@ -59,7 +60,7 @@ class SidePanel extends Component {
     const { feature } = nextProps;
     if (!feature || feature === {}) return;
 
-    let newFeature = getPropFeature(feature,fieldProperties );
+    let newFeature = getPropFeature(feature, fieldProperties);
 
     const props_state = filterFieldsPrefix(newFeature);
     // create states
@@ -79,7 +80,7 @@ class SidePanel extends Component {
   }
 
   handleChange(e) {
-    const { total, updateIndex } = this.props;
+    const { total, updateIndex, history } = this.props;
 
     try {
       const re = /[0-9]+/g;
@@ -87,7 +88,7 @@ class SidePanel extends Component {
       if (value === '' || re.test(value)) {
         value = parseInt(value);
         if (total >= value && value >= 0) {
-          updateIndex(value);
+          updateIndex(value, history);
         }
       }
     } catch (error) {
@@ -225,4 +226,6 @@ const mapDispatchToProps = {
   updateIndex
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), withStyles(styles))(SidePanel);
+export default withRouter(
+  compose(connect(mapStateToProps, mapDispatchToProps), withStyles(styles))(SidePanel)
+);

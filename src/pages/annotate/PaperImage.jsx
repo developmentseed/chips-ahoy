@@ -4,6 +4,7 @@
 import { withStyles } from '@material-ui/styles';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { compose } from 'recompose';
 
 import { updateFeature } from '../../actions/dataActions';
@@ -45,7 +46,7 @@ class PaperImage extends Component {
   handleImageClick(e) {
     e.stopPropagation();
 
-    const { feature, updateFeature } = this.props;
+    const { feature, updateFeature, history } = this.props;
 
     // const currentCoord = { x: e.clientX, y: e.clientY };
     // const rect = this.image.getBoundingClientRect();
@@ -64,7 +65,7 @@ class PaperImage extends Component {
     //   height: e.currentTarget.naturalHeight
     // });
 
-    updateFeature(newFature, true);
+    updateFeature(newFature, true, history);
   }
 
   renderDot() {
@@ -131,7 +132,6 @@ const mapDispatchToProps = {
   updateFeature
 };
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withStyles(styles)
-)(PaperImage);
+export default withRouter(
+  compose(connect(mapStateToProps, mapDispatchToProps), withStyles(styles))(PaperImage)
+);
