@@ -4,16 +4,13 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { PREFIX_FIELD_INTERNAL } from '../../utils/constants';
-import { filterProps, fixPropName } from '../../utils/utils';
+import { filterProps, fixPropName, getPropFeature } from '../../utils/utils';
 
 const FeatureCard = ({ feature, fieldProperties }) => {
   const classes = useStyles();
-  let featureProps = { ...feature };
+  let featureProps = getPropFeature(feature, fieldProperties);
   const index = feature[`${PREFIX_FIELD_INTERNAL}__index`] || '';
 
-  if (fieldProperties && fieldProperties !== '') {
-    featureProps = { ...feature[fieldProperties] };
-  }
   const fields = filterProps(featureProps);
   const renderFields = Object.keys(fields).map((item) => (
     <Typography className={classes.field} variant="caption" key={item}>

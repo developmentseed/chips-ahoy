@@ -37,14 +37,16 @@ export function makeChartData(data) {
   ];
 }
 
-export function getNextIndex(index, features) {
+export function getNextIndex(index, features, fieldProperties) {
   var newIndex = index + 1;
   var has_modifications = false;
 
   try {
     if (features.length <= newIndex) return index;
     while (newIndex < features.length) {
-      const properties = features[newIndex].properties;
+      const feature = { ...features[newIndex] };
+      let properties = getPropFeature(feature, fieldProperties);
+
       const has_field = Object.keys(properties)
         .filter((i) => i.includes(`${PREFIX_FIELD}__`))
         .some((j) => properties[j]);
@@ -60,7 +62,7 @@ export function getNextIndex(index, features) {
   return has_modifications ? newIndex : index;
 }
 
-export function getPrevIndex(index, features) {
+export function getPrevIndex(index, features, fieldProperties) {
   var newIndex = index - 1;
   var has_modifications = false;
 
@@ -68,7 +70,9 @@ export function getPrevIndex(index, features) {
     if (newIndex < 0) return index;
 
     while (newIndex >= 0) {
-      const properties = features[newIndex].properties;
+      const feature = { ...features[newIndex] };
+      let properties = getPropFeature(feature, fieldProperties);
+
       const has_field = Object.keys(properties)
         .filter((i) => i.includes(`${PREFIX_FIELD}__`))
         .some((j) => properties[j]);
@@ -193,4 +197,11 @@ export const filterFieldsPrefix = (props) => {
     .filter((i) => i.includes(PREFIX_FIELD))
     .reduce((a, v) => ({ ...a, [v]: props[v] }), {});
   return newProps;
+};
+
+export const getPropFeature = (feature, fieldProperties) => {
+  if (fieldProperties && fieldProperties !== '') {
+    return { ...feature[fieldProperties] };
+  }
+  return { ...Object(feature) };
 };

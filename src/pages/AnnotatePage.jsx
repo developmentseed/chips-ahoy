@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { fetchFeature, preloadImages, updateFeature, updateIndex } from '../actions/dataActions';
 import styles from '../style/general';
-import { getNextIndex, getPrevIndex, parseSearchNumber } from '../utils/utils';
+import { getNextIndex, getPrevIndex, parseSearchNumber, getPropFeature } from '../utils/utils';
 import PaperImage from './annotate/PaperImage.jsx';
 import SidebarAnnotate from './shared/sidebar/SidebarAnnotate.jsx';
 
@@ -36,24 +36,31 @@ class MainPage extends Component {
   }
 
   updateFeatureKey(value) {
-    const { feature, updateFeature } = this.props;
-    if (!feature) return;
-    let newFature = Object(feature);
-    // category
-    const old_value = !!newFature.properties[value];
+    const { feature, updateFeature, setup_data } = this.props;
+    const { fieldProperties } = setup_data;
 
-    newFature.properties[value] = !old_value;
-    newFature.properties.uuid_difference = uuidv4();
+    if (!feature) return;
+    let newFatureProps = getPropFeature(Object(feature), fieldProperties);
+
+    // category
+    const old_value = !!newFatureProps[value];
+
+    newFatureProps[value] = !old_value;
+    newFatureProps.uuid_difference = uuidv4();
     [('pointScale', 'sizeImage')].forEach((i) => {
-      if (newFature.properties[i]) {
-        delete newFature.properties[i];
+      if (newFatureProps[i]) {
+        delete newFatureProps[i];
       }
     });
-    updateFeature(newFature);
+    if (fieldProperties && fieldProperties !== '') {
+      updateFeature({ ...feature, [fieldProperties]: { ...newFatureProps } });
+    } else {
+      updateFeature({ ...newFatureProps });
+    }
   }
 
   keyFunction(event) {
-    const { updateIndex, index, data, totalFeatures, preloadImages } = this.props;
+    const { updateIndex, index, data, totalFeatures, preloadImages, setup_data } = this.props;
     // const shift = event.shiftKey;
     const key = `${event.key}`.toLocaleLowerCase();
     if (!totalFeatures) return;
@@ -74,10 +81,10 @@ class MainPage extends Component {
         updateIndex(index - 1);
         break;
       case 'd':
-        updateIndex(getNextIndex(index, [...data]));
+        updateIndex(getNextIndex(index, [...data], setup_data.fieldProperties));
         break;
       case 'a':
-        updateIndex(getPrevIndex(index, [...data]));
+        updateIndex(getPrevIndex(index, [...data], setup_data.fieldProperties));
         break;
       default:
         break;
@@ -119,7 +126,9 @@ const mapStateToProps = (state) => ({
   data: state.data.data,
   feature: state.data.feature,
   index: state.data.index,
-  totalFeatures: state.data.totalFeatures
+  totalFeatures: state.data.totalFeatures,
+  setup_data: state.annotationSeed.setup_data
+
 });
 const mapDispatchToProps = {
   fetchFeature,

@@ -21,7 +21,7 @@ class HeaderAnnotate extends Component {
     const { downloadFile, data, fileName, setup_tool } = this.props;
     const { can_download_data } = setup_tool;
     if (can_download_data) {
-      downloadFile(data, fileName);
+      downloadFile(data, fileName, setup_tool);
     }
   }
 

@@ -67,9 +67,10 @@ export const fetchSetupToolBegin = () => ({
 
 export const fetchSetupToolSuccess = (setupParams) => {
   const classes_annotate = object2list(setupParams.classes_annotate_dict);
+  const { classes_annotate_dict, is_geo, setup_tool } = setupParams;
   return {
     type: FETCH_SETUP_TOOL_SUCCESS,
-    payload: { ...setupParams, classes_annotate }
+    payload: { ...setup_tool, classes_annotate_dict, is_geo, classes_annotate }
   };
 };
 

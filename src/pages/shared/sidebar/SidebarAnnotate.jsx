@@ -21,7 +21,11 @@ import { PREFIX_FIELD } from '../../../utils/constants';
 import CustomCheckBox from './CustomCheckBox.jsx';
 import Loadfile from './Loadfile.jsx';
 import styles from './styles';
-import { listClassesAnnotate2State, filterFieldsPrefix } from '../../../utils/utils';
+import {
+  listClassesAnnotate2State,
+  filterFieldsPrefix,
+  getPropFeature
+} from '../../../utils/utils';
 
 class SidePanel extends Component {
   constructor() {
@@ -43,10 +47,7 @@ class SidePanel extends Component {
     let classes_dict = listClassesAnnotate2State(classes_annotate);
 
     if (feature && feature !== {}) {
-      let props_state = feature;
-      if (fieldProperties && fieldProperties !== '') {
-        props_state = filterFieldsPrefix(feature[fieldProperties]);
-      }
+      const props_state = filterFieldsPrefix(getPropFeature(feature, fieldProperties));
 
       classes_dict = { ...classes_dict, ...props_state };
     }
@@ -58,10 +59,7 @@ class SidePanel extends Component {
     const { feature } = nextProps;
     if (!feature || feature === {}) return;
 
-    let newFeature = { ...feature };
-    if (fieldProperties && fieldProperties !== '') {
-      newFeature = { ...feature[fieldProperties] };
-    }
+    let newFeature = getPropFeature(feature,fieldProperties );
 
     const props_state = filterFieldsPrefix(newFeature);
     // create states
@@ -105,10 +103,8 @@ class SidePanel extends Component {
       [e.target.name]: e.target.checked
     });
     // update props feature
-    let newFature = { ...feature };
-    if (fieldProperties && fieldProperties !== '') {
-      newFature = { ...feature[fieldProperties] };
-    }
+    let newFature = getPropFeature(feature, fieldProperties);
+
     // category
     const old_value = !!newFature[e.target.name];
 
@@ -121,11 +117,10 @@ class SidePanel extends Component {
       }
     });
     if (fieldProperties && fieldProperties !== '') {
-      const tmpFeature = { ...newFature };
-      newFature = { ...feature };
-      newFature[fieldProperties] = { ...tmpFeature };
+      updateFeature({ ...feature, [fieldProperties]: { ...newFature } });
+    } else {
+      updateFeature(newFature);
     }
-    updateFeature(newFature);
   }
 
   convertSecondaryText(text) {

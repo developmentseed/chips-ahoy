@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { filterProps, setIndexData } from '../utils/utils';
+import { filterProps, setIndexData, getPropFeature } from '../utils/utils';
 import { rangeImages, validateFileName } from '../utils/validate';
 
 const { REACT_APP_API_URL } = process.env;
@@ -169,22 +169,21 @@ export function preloadImages(index, data, totalFeatures) {
     }
     const data_tmp = data.slice(start, end);
     let gridImagesDiv = [];
-    for (var [i, geo] of data_tmp.entries()) {
+    for (const [i, geo] of data_tmp.entries()) {
       try {
         let img = new Image();
-        if (fieldProperties && fieldProperties !== '') {
-          geo = { ...geo[fieldProperties] };
-        }
-        img.src = geo.url;
-        img.id = `${geo.url}`;
-        img.key = `${geo.url}`;
+        const newFeatureProps = getPropFeature(Object(geo), fieldProperties);
+        
+        img.src = newFeatureProps.url;
+        img.id = `${newFeatureProps.url}`;
+        img.key = `${newFeatureProps.url}`;
 
-        if (geo.tiles_neighbors) {
-          for (var [keyTiNe, valueTiNe] of Object.entries(geo.tiles_neighbors)) {
+        if (newFeatureProps.tiles_neighbors) {
+          for (var [keyTiNe, valueTiNe] of Object.entries(newFeatureProps.tiles_neighbors)) {
             let img_ti_ne = new Image();
             img_ti_ne.src = valueTiNe;
             img_ti_ne.id = `img_${valueTiNe}`;
-            img_ti_ne.alt = `img_${geo.url}__${keyTiNe}`;
+            img_ti_ne.alt = `img_${newFeatureProps.url}__${keyTiNe}`;
             gridImagesDiv.push(img_ti_ne);
           }
         }

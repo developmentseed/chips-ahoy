@@ -1,3 +1,4 @@
+import { PREFIX_FIELD } from '../utils/constants';
 import { saveFile } from '../utils/utils';
 
 export const DOWNLOAD_FILE_FAILED = 'DOWNLOAD_FILE_FAILED';
@@ -22,27 +23,40 @@ export const downloadFileSuccess = () => {
   };
 };
 
-export const downloadFile = (data, filename) => {
-  return (dispatch, getState) => {
-    const { setup_data } = getState().annotationSeed;
-    const { format, geojsonMetadara } = setup_data;
+export const downloadFile = (data, filename, setup_data) => {
+  return (dispatch) => {
+    const { format, geojsonMetadara, fieldProperties } = setup_data;
     dispatch(downloadFileRestart());
 
     if (!filename || !data) return null;
 
     try {
       const newData = data.map((feat) => {
-        const prop_feats = Object.keys(feat.properties || {})
-          .filter((i) => i.includes('prop_feature'))
-          .map((i) => ({ key: `${i}`, value: feat.properties[i] }));
+        let prop_feats;
+        // custon field
+        if (fieldProperties && fieldProperties !== '') {
+          prop_feats = Object.keys(feat[fieldProperties] || {})
+            .filter((i) => i.includes(PREFIX_FIELD))
+            .map((i) => ({ key: `${i}`, value: feat[fieldProperties][i] }));
+        } else {
+          prop_feats = Object.keys(feat || {})
+            .filter((i) => i.includes(PREFIX_FIELD))
+            .map((i) => ({ key: `${i}`, value: feat[i] }));
+        }
 
         const feat_cat = {
           sub_category: prop_feats.filter((j) => j.value).map((j) => j.key.split('__')[2]),
           category: [...new Set(prop_feats.filter((j) => j.value).map((j) => j.key.split('__')[1]))]
         };
-        const new_feat = { ...feat, properties: { ...feat.properties, ...feat_cat } };
-        return new_feat;
+
+        // custon field
+        if (fieldProperties && fieldProperties !== '') {
+          return { ...feat, [fieldProperties]: { ...feat_cat } };
+        } else {
+          return { ...feat, ...feat_cat };
+        }
       });
+
       let dataOutput;
       if (format === 'geojson') {
         dataOutput = {
