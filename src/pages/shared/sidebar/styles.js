@@ -40,7 +40,6 @@ const styles = (theme) => ({
     paddingRight: 0,
     paddingLeft: 0,
     paddingTop: 2,
-
     wordWrap: 'break-word'
   },
   lItemText: {

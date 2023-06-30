@@ -11,6 +11,7 @@ import styles from './styles';
 class HeaderLinks extends Component {
   constructor(props) {
     super(props);
+    this.state = {};
   }
 
   render() {

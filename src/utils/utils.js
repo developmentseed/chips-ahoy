@@ -1,7 +1,8 @@
 import { saveAs } from 'file-saver';
 import jwt_decode from 'jwt-decode';
+import queryString from 'query-string';
 
-import { PREFIX_FIELD } from './constants';
+import { PREFIX_FIELD, PREFIX_FIELD_INTERNAL } from './constants';
 
 export function makeChartData(data) {
   if (!data) return null;
@@ -168,4 +169,28 @@ export const fixPropName = (propName) => {
     .replaceAll('-', ' ')
     .replaceAll('  ', ' ')
     .trim();
+};
+
+export const setIndexData = (data) =>
+  data.map((item, index) => ({ ...item, [`${PREFIX_FIELD_INTERNAL}__index`]: index }));
+
+export const parseSearchNumber = (history) =>
+  queryString.parse(history.location.search, { parseNumbers: true });
+
+export const parseSearchBoolean = (history) =>
+  queryString.parse(history.location.search, { parseBooleans: true });
+
+export const listClassesAnnotate2State = (classes_annotate) =>
+  classes_annotate.reduce((acc, elem) => {
+    acc[elem] = false;
+    return acc;
+  }, {});
+
+export const filterFieldsPrefix = (props) => {
+  if (props === {} || !props) return {};
+  const newProps = Object.keys(props || {})
+    .sort()
+    .filter((i) => i.includes(PREFIX_FIELD))
+    .reduce((a, v) => ({ ...a, [v]: props[v] }), {});
+  return newProps;
 };

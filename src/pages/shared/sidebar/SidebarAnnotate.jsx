@@ -21,6 +21,7 @@ import { PREFIX_FIELD } from '../../../utils/constants';
 import CustomCheckBox from './CustomCheckBox.jsx';
 import Loadfile from './Loadfile.jsx';
 import styles from './styles';
+import { listClassesAnnotate2State, filterFieldsPrefix } from '../../../utils/utils';
 
 class SidePanel extends Component {
   constructor() {
@@ -36,45 +37,46 @@ class SidePanel extends Component {
   }
 
   componentDidMount() {
-    const { classes_annotate, feature } = this.props;
+    const { classes_annotate, feature, setup_data } = this.props;
+    const { fieldProperties } = setup_data;
     // create states
-    let classes_dict = classes_annotate.reduce((acc, elem) => {
-      acc[elem] = false;
-      return acc;
-    }, {});
-    if (feature && feature.properties) {
-      const props_state = Object.keys(feature.properties || {})
-        .sort()
-        .filter((i) => i.includes(PREFIX_FIELD))
-        .reduce((a, v) => ({ ...a, [v]: feature.properties[v] }), {});
+    let classes_dict = listClassesAnnotate2State(classes_annotate);
+
+    if (feature && feature !== {}) {
+      let props_state = feature;
+      if (fieldProperties && fieldProperties !== '') {
+        props_state = filterFieldsPrefix(feature[fieldProperties]);
+      }
+
       classes_dict = { ...classes_dict, ...props_state };
     }
     this.setState({ ...classes_dict });
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const { classes_annotate } = this.props;
-
+    const { classes_annotate, setup_data } = this.props;
+    const { fieldProperties } = setup_data;
     const { feature } = nextProps;
-    if (feature && feature.properties) {
-      const props_state = Object.keys(feature.properties || {})
-        .sort()
-        .filter((i) => i.includes(PREFIX_FIELD))
-        .reduce((a, v) => ({ ...a, [v]: feature.properties[v] }), {});
-      // create states
-      const classes_dict = classes_annotate.reduce((acc, elem) => {
-        acc[elem] = false;
-        return acc;
-      }, {});
-      this.setState({ ...classes_dict });
-      let initial_state = {
-        // cat 1
-        ...classes_dict,
-        ...props_state
-      };
-      this.setState({ ...initial_state });
+    if (!feature || feature === {}) return;
+
+    let newFeature = { ...feature };
+    if (fieldProperties && fieldProperties !== '') {
+      newFeature = { ...feature[fieldProperties] };
     }
+
+    const props_state = filterFieldsPrefix(newFeature);
+    // create states
+    const classes_dict = listClassesAnnotate2State(classes_annotate);
+
+    this.setState({ ...classes_dict });
+    let initial_state = {
+      // cat 1
+      ...classes_dict,
+      ...props_state
+    };
+    this.setState({ ...initial_state });
   }
   handleChangeTab(ev, focus_tab) {
+    console.warn(ev);
     this.setState({ focus_tab });
   }
 
@@ -96,24 +98,33 @@ class SidePanel extends Component {
   }
 
   handleChangeCheck(e) {
-    const { feature, updateFeature } = this.props;
+    const { feature, updateFeature, setup_data } = this.props;
+    const { fieldProperties } = setup_data;
+
     this.setState({
       [e.target.name]: e.target.checked
     });
     // update props feature
-
-    let newFature = Object(feature);
+    let newFature = { ...feature };
+    if (fieldProperties && fieldProperties !== '') {
+      newFature = { ...feature[fieldProperties] };
+    }
     // category
-    const old_value = !!newFature.properties[e.target.name];
+    const old_value = !!newFature[e.target.name];
 
-    newFature.properties[e.target.name] = !old_value;
-    newFature.properties.uuid_difference = uuidv4();
+    newFature[e.target.name] = !old_value;
+    newFature.uuid_difference = uuidv4();
 
     [('pointScale', 'sizeImage')].forEach((i) => {
-      if (newFature.properties[i]) {
-        delete newFature.properties[i];
+      if (newFature[i]) {
+        delete newFature[i];
       }
     });
+    if (fieldProperties && fieldProperties !== '') {
+      const tmpFeature = { ...newFature };
+      newFature = { ...feature };
+      newFature[fieldProperties] = { ...tmpFeature };
+    }
     updateFeature(newFature);
   }
 
@@ -210,6 +221,7 @@ const mapStateToProps = (state) => ({
   feature: state.data.feature,
   data: state.data.data,
   setup_tool: state.annotationSeed.setup_tool,
+  setup_data: state.annotationSeed.setup_data,
   classes_annotate_dict: state.annotationSeed.classes_annotate_dict,
   classes_annotate: state.annotationSeed.classes_annotate
 });

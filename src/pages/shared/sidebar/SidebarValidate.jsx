@@ -18,7 +18,7 @@ import { compose } from 'recompose';
 
 import { setFilter } from '../../../actions/dataActions';
 import { PREFIX_FIELD } from '../../../utils/constants';
-import { filterProps } from '../../../utils/utils';
+import { filterProps, parseSearchBoolean , listClassesAnnotate2State} from '../../../utils/utils';
 import CustomCheckBox from './CustomCheckBox.jsx';
 import styles from './styles';
 
@@ -35,12 +35,9 @@ class SidebarValidatePanel extends Component {
   componentDidMount() {
     const { classes_annotate, history, setFilter } = this.props;
     // create states
-    let classes_dict = classes_annotate.reduce((acc, elem) => {
-      acc[elem] = false;
-      return acc;
-    }, {});
+    let classes_dict = listClassesAnnotate2State(classes_annotate);
     // from url
-    const parsed = queryString.parse(history.location.search, { parseBooleans: true });
+    const parsed = parseSearchBoolean(history);
     if (parsed) {
       classes_dict = { ...classes_dict, ...parsed };
       setFilter({ ...parsed });
@@ -52,7 +49,7 @@ class SidebarValidatePanel extends Component {
   handleChangeCheck(e) {
     const { history, setFilter } = this.props;
 
-    let parsed = queryString.parse(history.location.search, { parseBooleans: true });
+    let parsed = parseSearchBoolean(history);
     parsed[e.target.name] = e.target.checked;
     const newParsed = filterProps(parsed);
 

@@ -1,5 +1,6 @@
 import { Container, Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
+import queryString from 'query-string';
 import clsx from 'clsx';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -8,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { fetchFeature, preloadImages, updateFeature, updateIndex } from '../actions/dataActions';
 import styles from '../style/general';
-import { getNextIndex, getPrevIndex } from '../utils/utils';
+import { getNextIndex, getPrevIndex, parseSearchNumber } from '../utils/utils';
 import PaperImage from './annotate/PaperImage.jsx';
 import SidebarAnnotate from './shared/sidebar/SidebarAnnotate.jsx';
 
@@ -19,9 +20,18 @@ class MainPage extends Component {
     this.updateFeatureKey = this.updateFeatureKey.bind(this);
   }
   componentDidMount() {
+    const { history, updateIndex } = this.props;
+
+    // key event
     document.addEventListener('keydown', this.keyFunction, false);
+    // query string
+    const parsed = parseSearchNumber(history);
+    if (parsed.index || parsed.index === 0) {
+      updateIndex(parsed.index);
+    }
   }
   componentWillUnmount() {
+    // key event
     document.removeEventListener('keydown', this.keyFunction, false);
   }
 
@@ -52,7 +62,7 @@ class MainPage extends Component {
     switch (key) {
       case 'arrowright':
         updateIndex(index + 1);
-        preloadImages(index, { ...data }, totalFeatures);
+        preloadImages(index, [...data], totalFeatures);
         break;
       case '2':
         updateIndex(index + 1);
@@ -64,10 +74,10 @@ class MainPage extends Component {
         updateIndex(index - 1);
         break;
       case 'd':
-        updateIndex(getNextIndex(index, [...data.features]));
+        updateIndex(getNextIndex(index, [...data]));
         break;
       case 'a':
-        updateIndex(getPrevIndex(index, [...data.features]));
+        updateIndex(getPrevIndex(index, [...data]));
         break;
       default:
         break;
@@ -80,6 +90,7 @@ class MainPage extends Component {
       fetchFeature(nextProps.index, data, totalFeatures);
     }
   }
+
   render() {
     const { classes } = this.props;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
@@ -93,7 +104,7 @@ class MainPage extends Component {
               </Paper>
             </Grid>
             <Grid item xs={12} sm={6} md={2} lg={2} xl={2}>
-              <Paper className={clsx(fixedHeightPaper, classes.overflowNone)} elevation={3}>
+              <Paper className={clsx(fixedHeightPaper, classes.overflowY)} elevation={3}>
                 <SidebarAnnotate />
               </Paper>
             </Grid>
@@ -108,9 +119,7 @@ const mapStateToProps = (state) => ({
   data: state.data.data,
   feature: state.data.feature,
   index: state.data.index,
-  totalFeatures: state.data.totalFeatures,
-  fileName: state.data.fileName,
-  downloadFile: state.control.downloadFile
+  totalFeatures: state.data.totalFeatures
 });
 const mapDispatchToProps = {
   fetchFeature,

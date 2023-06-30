@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
 import { updateFeature } from '../../actions/dataActions';
+import { PREFIX_FIELD_INTERNAL } from '../../utils/constants';
 import styles from './styles';
 
 class PaperImage extends Component {
@@ -54,11 +55,11 @@ class PaperImage extends Component {
     // // currentWith/natutalWith
     // const scale = e.currentTarget.width / e.currentTarget.naturalWidth;
     // //  scale add properties
-    let newFature = Object(feature);
-    newFature.properties.timestamp = Date.now();
-    // newFature.properties.dc_has_pattern_school = 'yes';
-    // newFature.properties.pointScale = Object({ x: x / scale, y: y / scale });
-    // newFature.properties.sizeImage = Object({
+    let newFature = { ...feature };
+    newFature[`${PREFIX_FIELD_INTERNAL}__timestamp`] = Date.now().toString();
+    // newFature.dc_has_pattern_school = 'yes';
+    // newFature.pointScale = Object({ x: x / scale, y: y / scale });
+    // newFature.sizeImage = Object({
     //   width: e.currentTarget.naturalWidth,
     //   height: e.currentTarget.naturalHeight
     // });
@@ -70,39 +71,43 @@ class PaperImage extends Component {
     const { feature, classes } = this.props;
     const { minor } = this.state;
 
-    if (!(feature && feature.properties.pointScale && feature.properties.sizeImage)) return null;
-    const { pointScale, sizeImage } = feature.properties;
+    if (!(feature && feature.pointScale && feature.sizeImage)) return null;
+
+    const { pointScale, sizeImage } = feature;
     const scaleX = minor / sizeImage.width;
 
     return (
       <p
         className={classes.dot}
-        style={{ top: scaleX * pointScale.y, left: scaleX * pointScale.x - 20 }}
-      >
+        style={{ top: scaleX * pointScale.y, left: scaleX * pointScale.x - 20 }}>
         X
       </p>
     );
   }
 
   render() {
-    const { classes, feature } = this.props;
+    const { classes, feature, setup_data } = this.props;
     // console.log(width, height, minor);
+    let urlImage = (feature || {}).url || null;
+    if (feature && setup_data.fieldProperties) {
+      urlImage = feature[setup_data.fieldProperties].url;
+    }
+
     return (
       <div
         className={classes.content}
         ref={(divElement) => {
           this.divElement = divElement;
-        }}
-      >
-        {feature && feature.properties.url ? (
+        }}>
+        {feature && urlImage ? (
           <>
             <img
               ref={(c) => {
                 this.image = c;
               }}
-              key={feature.properties.url}
-              src={feature.properties.url}
-              id={feature.properties.url}
+              key={urlImage}
+              src={urlImage}
+              id={urlImage}
               onClick={this.handleImageClick}
               width="100%"
               alt="img"
@@ -118,7 +123,8 @@ class PaperImage extends Component {
 const mapStateToProps = (state) => ({
   feature: state.data.feature,
   index: state.data.index,
-  totalFeatures: state.data.totalFeatures
+  totalFeatures: state.data.totalFeatures,
+  setup_data: state.annotationSeed.setup_data
 });
 
 const mapDispatchToProps = {

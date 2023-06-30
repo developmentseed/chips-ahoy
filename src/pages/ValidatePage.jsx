@@ -5,8 +5,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import { fetchFeature, updateFeature, updateIndex } from '../actions/dataActions';
 import nodata from '../assets/nodata.jpg';
+import { PREFIX_FIELD_INTERNAL } from '../utils/constants';
 import { filterDataDict } from '../utils/utils';
 import SidebarValidate from './shared/sidebar/SidebarValidate.jsx';
 import FeatureCard from './validate/FeatureCard';
@@ -15,16 +15,15 @@ import styles from './validate/style';
 class ValidatePage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      dataFilter: []
-    };
+    this.state = {};
   }
 
   renderData() {
-    const { classes, filter, data } = this.props;
+    const { classes, filter, data, setup_data } = this.props;
+    const { fieldProperties } = setup_data;
     const paperStyle = clsx(classes.paper, classes.fixedHeight);
 
-    const dataFilter = filterDataDict(data.features, 'properties', filter);
+    const dataFilter = filterDataDict(data, fieldProperties, filter);
     if (dataFilter.length === 0) {
       return (
         <Paper className={paperStyle} elevation={3}>
@@ -35,7 +34,11 @@ class ValidatePage extends Component {
     return (
       <Grid container className={classes.containerImages} spacing={1}>
         {dataFilter.map((item) => (
-          <FeatureCard key={item.uuid_id_} feature={item} />
+          <FeatureCard
+            key={item[`${PREFIX_FIELD_INTERNAL}__index`]}
+            feature={item}
+            fieldProperties={fieldProperties}
+          />
         ))}
       </Grid>
     );
@@ -66,15 +69,9 @@ class ValidatePage extends Component {
 const mapStateToProps = (state) => ({
   data: state.data.data,
   filter: state.data.filter,
-
-  index: state.data.index,
-  totalFeatures: state.data.totalFeatures
+  setup_data: state.annotationSeed.setup_data
 });
-const mapDispatchToProps = {
-  fetchFeature,
-  updateIndex,
-  updateFeature
-};
+const mapDispatchToProps = {};
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
+import annotationSeed from './annotationSeedReducer';
 import control from './controlReducers';
 import data from './dataReducer';
-import annotationSeed from './annotationSeedReducer';
 
 export default combineReducers({
   data,

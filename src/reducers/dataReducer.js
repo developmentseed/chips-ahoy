@@ -12,7 +12,7 @@ import {
 } from '../actions/dataActions';
 
 const initialState = {
-  data: {},
+  data: [],
   feature: null,
   loading: true,
   error: null,
@@ -44,7 +44,7 @@ export default function dataReducer(state = initialState, action) {
         ...state,
         loading: false,
         error: action.payload.error,
-        data: {}
+        data: []
       };
     case SET_INDEX:
       return {

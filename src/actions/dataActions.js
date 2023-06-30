@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { filterProps } from '../utils/utils';
+import { filterProps, setIndexData } from '../utils/utils';
 import { rangeImages, validateFileName } from '../utils/validate';
 
 const { REACT_APP_API_URL } = process.env;
@@ -49,34 +49,48 @@ export function updateIndex(newIndex) {
   };
 }
 
+const dataSuccess = (data, filename) => {
+  return (dispatch) => {
+    const newData = setIndexData(data);
+    dispatch(fetchDataSuccess(newData, validateFileName(filename), newData.length));
+    dispatch(updateIndex(0));
+    dispatch(fetchFeature(0, newData, data.length));
+  };
+};
+
 export function fetchData(files) {
   return (dispatch, getState) => {
-    let { totalFeatures } = getState().annotationSeed;
-
+    const { setup_data } = getState().annotationSeed;
+    const { format } = setup_data;
     dispatch(fetchDataBegin());
+
     const fileReader = new FileReader();
     fileReader.onload = function () {
-      const geojson = JSON.parse(fileReader.result);
-      const total = (geojson.features || []).length;
-      dispatch(fetchDataSuccess(geojson, validateFileName(files[0].name), total));
-      dispatch(updateIndex(0));
-      dispatch(fetchFeature(0, geojson, total));
+      let dataRaw = JSON.parse(fileReader.result);
+      if (format === 'geojson') {
+        dataRaw = [...dataRaw.features];
+      }
+      const filename = files[0].name;
+      dispatch(dataSuccess(dataRaw, filename));
     };
     fileReader.readAsText(files[0]);
   };
 }
 
 export function fetchApiData(task_id) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { setup_data } = getState().annotationSeed;
+    const { format, extension } = setup_data;
     dispatch(fetchDataBegin());
     axios
       .get(`${REACT_APP_API_URL}/${task_id}/get_data`)
       .then(function (response) {
-        const geojson = response.data;
-        const total = (geojson.features || []).length;
-        dispatch(fetchDataSuccess(geojson, validateFileName(`data_${task_id}.geojson`), total));
-        dispatch(updateIndex(0));
-        dispatch(fetchFeature(0, geojson, total));
+        let dataRaw = response.data;
+        if (format === 'geojson') {
+          dataRaw = [...dataRaw.features];
+        }
+        const filename = `task_${task_id}.${extension}`;
+        dispatch(dataSuccess(dataRaw, filename));
       })
       .catch(function (error) {
         dispatch(fetchDataFailure(error.message));
@@ -89,7 +103,7 @@ export function fetchApiData(task_id) {
 export function fetchFeature(index, data, totalFeatures) {
   return (dispatch) => {
     if (totalFeatures >= index && index >= 0) {
-      dispatch(setFeature(data.features[index]));
+      dispatch(setFeature(data[index]));
     } else {
       console.error('index out range');
     }
@@ -110,12 +124,22 @@ export const updateData = (fData) => {
 
 export function updateFeature(newFeature, next_page = false) {
   return (dispatch, getState) => {
-    let { index, data, totalFeatures } = getState().data;
-    newFeature.properties.__reviewed = true;
-    data.features[index] = newFeature;
-    const newData = { ...data };
+    const { index, data, totalFeatures } = getState().data;
+    const { setup_data } = getState().annotationSeed;
+    const { fieldProperties } = setup_data;
+    const tmpNewFeature = { ...newFeature };
+
+    if (fieldProperties && fieldProperties !== '') {
+      tmpNewFeature[fieldProperties].__reviewed = true;
+    } else {
+      tmpNewFeature.__reviewed = true;
+    }
+
+    data[index] = tmpNewFeature;
+    const newData = [...data];
     dispatch(updateData(newData));
     dispatch(fetchFeature(index, newData, totalFeatures));
+
     if (next_page) {
       dispatch(updateIndex(index + 1));
       dispatch(preloadImages(index, newData, totalFeatures));
@@ -135,26 +159,32 @@ export const updateBuffer = (buffer) => {
 };
 
 export function preloadImages(index, data, totalFeatures) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { setup_data } = getState().annotationSeed;
+    const { fieldProperties } = setup_data;
+
     let { start, end } = rangeImages(index);
     if (end >= totalFeatures) {
       end = totalFeatures;
     }
-    const data_tmp = data.features.slice(start, end);
+    const data_tmp = data.slice(start, end);
     let gridImagesDiv = [];
     for (var [i, geo] of data_tmp.entries()) {
       try {
         let img = new Image();
-        img.src = geo.properties.url;
-        img.id = `${geo.properties.url}`;
-        img.key = `${geo.properties.url}`;
+        if (fieldProperties && fieldProperties !== '') {
+          geo = { ...geo[fieldProperties] };
+        }
+        img.src = geo.url;
+        img.id = `${geo.url}`;
+        img.key = `${geo.url}`;
 
-        if (geo.properties.tiles_neighbors) {
-          for (var [keyTiNe, valueTiNe] of Object.entries(geo.properties.tiles_neighbors)) {
+        if (geo.tiles_neighbors) {
+          for (var [keyTiNe, valueTiNe] of Object.entries(geo.tiles_neighbors)) {
             let img_ti_ne = new Image();
             img_ti_ne.src = valueTiNe;
             img_ti_ne.id = `img_${valueTiNe}`;
-            img_ti_ne.alt = `img_${geo.properties.url}__${keyTiNe}`;
+            img_ti_ne.alt = `img_${geo.url}__${keyTiNe}`;
             gridImagesDiv.push(img_ti_ne);
           }
         }
