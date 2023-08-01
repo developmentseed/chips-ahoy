@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.js": "/chips-ahoy/static/js/main.f693a67b.chunk.js",
-    "main.js.map": "/chips-ahoy/static/js/main.f693a67b.chunk.js.map",
-    "runtime~main.js": "/chips-ahoy/static/js/runtime~main.644ce2a7.js",
-    "runtime~main.js.map": "/chips-ahoy/static/js/runtime~main.644ce2a7.js.map",
-    "static/css/2.d27014f9.chunk.css": "/chips-ahoy/static/css/2.d27014f9.chunk.css",
-    "static/js/2.00454067.chunk.js": "/chips-ahoy/static/js/2.00454067.chunk.js",
-    "static/js/2.00454067.chunk.js.map": "/chips-ahoy/static/js/2.00454067.chunk.js.map",
+    "main.js": "/chips-ahoy/static/js/main.5ca51e35.chunk.js",
+    "main.js.map": "/chips-ahoy/static/js/main.5ca51e35.chunk.js.map",
+    "runtime~main.js": "/chips-ahoy/static/js/runtime~main.e8ee21cc.js",
+    "runtime~main.js.map": "/chips-ahoy/static/js/runtime~main.e8ee21cc.js.map",
+    "static/css/2.5372c25d.chunk.css": "/chips-ahoy/static/css/2.5372c25d.chunk.css",
+    "static/js/2.a0225b49.chunk.js": "/chips-ahoy/static/js/2.a0225b49.chunk.js",
+    "static/js/2.a0225b49.chunk.js.map": "/chips-ahoy/static/js/2.a0225b49.chunk.js.map",
     "index.html": "/chips-ahoy/index.html",
-    "precache-manifest.b7a73e2120ac0fa3d2f35d7cd915bf3e.js": "/chips-ahoy/precache-manifest.b7a73e2120ac0fa3d2f35d7cd915bf3e.js",
+    "precache-manifest.4204ea1baf466f4306e86228b16c0c8f.js": "/chips-ahoy/precache-manifest.4204ea1baf466f4306e86228b16c0c8f.js",
     "service-worker.js": "/chips-ahoy/service-worker.js",
-    "static/css/2.d27014f9.chunk.css.map": "/chips-ahoy/static/css/2.d27014f9.chunk.css.map",
+    "static/css/2.5372c25d.chunk.css.map": "/chips-ahoy/static/css/2.5372c25d.chunk.css.map",
     "static/media/notifications.css": "/chips-ahoy/static/media/notification.c0d3c94c.eot"
   }
 }

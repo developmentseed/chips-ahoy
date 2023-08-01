@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "8659939a4bac6ec6ef38845bc77a3f75",
+    "revision": "ba0942f7e5a4cd9be2929a6aca0910a9",
     "url": "/chips-ahoy/index.html"
   },
   {
-    "revision": "6279cc0fce5dc30a9c5d",
-    "url": "/chips-ahoy/static/css/2.d27014f9.chunk.css"
+    "revision": "8a77a0b9d59bdb5aaa87",
+    "url": "/chips-ahoy/static/css/2.5372c25d.chunk.css"
   },
   {
-    "revision": "6279cc0fce5dc30a9c5d",
-    "url": "/chips-ahoy/static/js/2.00454067.chunk.js"
+    "revision": "8a77a0b9d59bdb5aaa87",
+    "url": "/chips-ahoy/static/js/2.a0225b49.chunk.js"
   },
   {
-    "revision": "4f279246c45bac336301",
-    "url": "/chips-ahoy/static/js/main.f693a67b.chunk.js"
+    "revision": "251fd8b6ee0492c3241c",
+    "url": "/chips-ahoy/static/js/main.5ca51e35.chunk.js"
   },
   {
-    "revision": "d4cf3fbbc2df632c564c",
-    "url": "/chips-ahoy/static/js/runtime~main.644ce2a7.js"
+    "revision": "3b42ca124343edd8a6a5",
+    "url": "/chips-ahoy/static/js/runtime~main.e8ee21cc.js"
   },
   {
     "revision": "0b4ac1dc75df35e169b70d7719afe4cc",
