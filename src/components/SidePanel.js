@@ -138,8 +138,8 @@ class SidePanel extends Component {
       prop_feature__vacant_lots__overgrown_shrubbery_trees: false,
       prop_feature__vacant_lots__fenced: false,
       prop_feature__vacant_lots__litter_dumping_tires: false,
-      prop_feature__vacant_lots_litter_garbage: false,
-      prop_feature__vacant_lots_litter_bush: false,
+      prop_feature__vacant_lots__litter_garbage: false,
+      prop_feature__vacant_lots__litter_bush: false,
 
       // cat 2
       prop_feature__structures__damaged_roof: false,
@@ -150,8 +150,8 @@ class SidePanel extends Component {
       prop_feature__structures__structural_issues: false,
       prop_feature__structures__faded_paint: false,
       prop_feature__structures__litter_in_around_structure: false,
-      prop_feature__structures_litter_garbage: false,
-      prop_feature__structures_litter_bush: false
+      prop_feature__structures__litter_garbage: false,
+      prop_feature__structures__litter_bush: false
 
     };
     this.handleChange = this.handleChange.bind(this);
@@ -173,8 +173,8 @@ class SidePanel extends Component {
         prop_feature__vacant_lots__overgrown_shrubbery_trees: false,
         prop_feature__vacant_lots__fenced: false,
         prop_feature__vacant_lots__litter_dumping_tires: false,
-        prop_feature__vacant_lots_litter_garbage: false,
-        prop_feature__vacant_lots_litter_bush: false,
+        prop_feature__vacant_lots__litter_garbage: false,
+        prop_feature__vacant_lots__litter_bush: false,
         // cat 2
         prop_feature__structures__damaged_roof: false,
         prop_feature__structures__broken_missing_windows_doors: false,
@@ -184,8 +184,8 @@ class SidePanel extends Component {
         prop_feature__structures__structural_issues: false,
         prop_feature__structures__faded_paint: false,
         prop_feature__structures__litter_in_around_structure: false,
-        prop_feature__structures_litter_garbage: false,
-        prop_feature__structures_litter_bush: false,
+        prop_feature__structures__litter_garbage: false,
+        prop_feature__structures__litter_bush: false,
         //
         prop_feature__no_blight__no_structures: false,
         prop_feature__no_blight__no_vacant_lots: false,
@@ -299,8 +299,8 @@ class SidePanel extends Component {
       prop_feature__vacant_lots__overgrown_shrubbery_trees,
       prop_feature__vacant_lots__fenced,
       prop_feature__vacant_lots__litter_dumping_tires,
-      prop_feature__vacant_lots_litter_garbage,
-      prop_feature__vacant_lots_litter_bush,
+      prop_feature__vacant_lots__litter_garbage,
+      prop_feature__vacant_lots__litter_bush,
       prop_feature__structures__damaged_roof,
       prop_feature__structures__broken_missing_windows_doors,
       prop_feature__structures__boarded_up_windows_doors,
@@ -309,8 +309,8 @@ class SidePanel extends Component {
       prop_feature__structures__structural_issues,
       prop_feature__structures__faded_paint,
       prop_feature__structures__litter_in_around_structure,
-      prop_feature__structures_litter_garbage,
-      prop_feature__structures_litter_bush,
+      prop_feature__structures__litter_garbage,
+      prop_feature__structures__litter_bush,
 
       prop_feature__no_blight__structures_vlots
     } = this.state;
@@ -383,9 +383,9 @@ class SidePanel extends Component {
              <FormControlLabel
               control={
                 <CustomCheckBox
-                  checked={prop_feature__vacant_lots_litter_garbage}
+                  checked={prop_feature__vacant_lots__litter_garbage}
                   onChange={this.handleChangeCheck}
-                  name="prop_feature__vacant_lots_litter_garbage"
+                  name="prop_feature__vacant_lots__litter_garbage"
                 />
               }
               label="Litter garbage"
@@ -393,9 +393,9 @@ class SidePanel extends Component {
              <FormControlLabel
               control={
                 <CustomCheckBox
-                  checked={prop_feature__vacant_lots_litter_bush}
+                  checked={prop_feature__vacant_lots__litter_bush}
                   onChange={this.handleChangeCheck}
-                  name="prop_feature__vacant_lots_litter_bush"
+                  name="prop_feature__vacant_lots__litter_bush"
                 />
               }
               label="Litter bush"
@@ -488,9 +488,9 @@ class SidePanel extends Component {
             <FormControlLabel
               control={
                 <CustomCheckBox
-                  checked={prop_feature__structures_litter_garbage}
+                  checked={prop_feature__structures__litter_garbage}
                   onChange={this.handleChangeCheck}
-                  name="prop_feature__structures_litter_garbage"
+                  name="prop_feature__structures__litter_garbage"
                 />
               }
               label="Litter garbage"
@@ -498,9 +498,9 @@ class SidePanel extends Component {
             <FormControlLabel
               control={
                 <CustomCheckBox
-                  checked={prop_feature__structures_litter_bush}
+                  checked={prop_feature__structures__litter_bush}
                   onChange={this.handleChangeCheck}
-                  name="prop_feature__structures_litter_bush"
+                  name="prop_feature__structures__litter_bush"
                 />
               }
               label="Litter bushs"
